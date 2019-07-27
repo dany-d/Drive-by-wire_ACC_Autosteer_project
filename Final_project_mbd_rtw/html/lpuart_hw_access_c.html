@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * Copyright (c) 2013 - 2016, Freescale Semiconductor, Inc.</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> * Copyright 2016-2017 NXP</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * All rights reserved.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * THIS SOFTWARE IS PROVIDED BY NXP "AS IS" AND ANY EXPRESSED OR</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> * IN NO EVENT SHALL NXP OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct"> * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="ct"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct"> * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="ct"> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</span></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct"> * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="ct"> * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF</span></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="ct"> * THE POSSIBILITY OF SUCH DAMAGE.</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="ct">/*!</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="ct"> * @file lpuart_hw_access.c</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="ct"> * @page misra_violations MISRA-C:2012 violations</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="ct"> * Violates MISRA 2012 Advisory Rule 8.7, External could be made static.</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="ct"> * The functions are only used by LPUART driver, errors appear for LIN driver where</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="ct"> * they are not used.</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="ct"> * Violates MISRA 2012 Required Rule 10.3, Expression assigned to a</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="ct"> * narrower or different essential type.</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="ct"> * The assign operations are safe as the baud rate calculation algorithm cannot</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="ct"> * overflow the result.</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td><span class="ct"> * Violates MISRA 2012 Advisory Rule 15.5, Return statement before end of</span></td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td><span class="ct"> * function .</span></td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><span class="ct"> * The return statement before end of function is used for simpler code structure</span></td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><span class="ct"> * and better readability.</span></td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="pp">#include "lpuart_hw_access.h"</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td><span class="ct">/*******************************************************************************</span></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="ct"> * Code</span></td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td><span class="ct"> ******************************************************************************/</span></td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td><span class="ct"> * Function Name : LPUART_Init</span></td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td><span class="ct"> * Description   : Initializes the LPUART controller to known state, using</span></td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td><span class="ct"> *                 register reset values defined in the reference manual.</span></td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td><span class="kw">void</span> <a id="52c6" class="tk">LPUART_Init</a>(<a id="52c18" class="tk">LPUART_Type</a> <a id="52c30" class="tk">*</a> <a id="52c32" class="tk">base</a>)</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td><span class="br">{</span></td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td>  <span class="ct">/* Set the default oversampling ratio (16) and baud-rate divider (4) */</span></td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td>  <a id="55c3" class="tk">base</a>-&gt;<a id="55c9" class="tk">BAUD</a> = ((<a id="55c18" class="tk">uint32_t</a>)((<a id="55c29" class="tk">FEATURE_LPUART_DEFAULT_OSR</a> <a id="55c56" class="tk">&lt;&lt;</a> <a id="55c59" class="tk">LPUART_BAUD_OSR_SHIFT</a>)</td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>    <a id="56c5" class="tk">|</a> \</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td></td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td>  (<a id="58c4" class="tk">FEATURE_LPUART_DEFAULT_SBR</a> <a id="58c31" class="tk">&lt;&lt;</a> <a id="58c34" class="tk">LPUART_BAUD_SBR_SHIFT</a>)));</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td></td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td>  <span class="ct">/* Clear the error/interrupt flags */</span></td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td>  <a id="61c3" class="tk">base</a>-&gt;<a id="61c9" class="tk">STAT</a> = <a id="61c16" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>;</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td></td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td>  <span class="ct">/* Reset all features/interrupts by default */</span></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td>  <a id="64c3" class="tk">base</a>-&gt;<a id="64c9" class="tk">CTRL</a> = 0x00000000;</td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td></td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td>  <span class="ct">/* Reset match addresses */</span></td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td>  <a id="67c3" class="tk">base</a>-&gt;<a id="67c9" class="tk">MATCH</a> = 0x00000000;</td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td></td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td><span class="pp">#if</span> <a id="69c5" class="tk">FEATURE_LPUART_HAS_MODEM_SUPPORT</a></td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td></td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td>  <span class="ct">/* Reset IrDA modem features */</span></td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td>  <a id="72c3" class="tk">base</a>-&gt;<a id="72c9" class="tk">MODIR</a> = 0x00000000;</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td></td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td></td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td><span class="pp">#if</span> <a id="76c5" class="tk">FEATURE_LPUART_FIFO_SIZE</a> <a id="76c30" class="tk">&gt;</a> 0U</td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td></td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td>  <span class="ct">/* Reset FIFO feature */</span></td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td>  <a id="79c3" class="tk">base</a>-&gt;<a id="79c9" class="tk">FIFO</a> = <a id="79c16" class="tk">FEATURE_LPUART_FIFO_RESET_MASK</a>;</td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td></td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td>  <span class="ct">/* Reset FIFO Watermark values */</span></td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td>  <a id="82c3" class="tk">base</a>-&gt;<a id="82c9" class="tk">WATER</a> = 0x00000000;</td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td></td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td></td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td><span class="br">}</span></td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td></td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td><span class="ct"> * Function Name : LPUART_SetBitCountPerChar</span></td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td><span class="ct"> * Description   : Configures the number of bits per char in LPUART controller.</span></td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td><span class="ct"> * In some LPUART instances, the user should disable the transmitter/receiver</span></td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td><span class="ct"> * before calling this function.</span></td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td><span class="ct"> * Generally, this may be applied to all LPUARTs to ensure safe operation.</span></td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td><span class="kw">void</span> <a id="96c6" class="tk">LPUART_SetBitCountPerChar</a>(<a id="96c32" class="tk">LPUART_Type</a> <a id="96c44" class="tk">*</a> <a id="96c46" class="tk">base</a>, <a id="96c52" class="tk">lpuart_bit_count_per_char_t</a></td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td>  <a id="97c3" class="tk">bitCountPerChar</a>, <span class="kw">bool</span> <a id="97c25" class="tk">parity</a>)</td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td><span class="br">{</span></td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td>  <a id="99c3" class="tk">uint32_t</a> <a id="99c12" class="tk">tmpBitCountPerChar</a> = (<a id="99c34" class="tk">uint32_t</a>)<a id="99c43" class="tk">bitCountPerChar</a>;</td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td>  <span class="kw">if</span> (<a id="100c7" class="tk">parity</a>) <span class="br">{</span></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td>    <a id="101c5" class="tk">tmpBitCountPerChar</a> <a id="101c24" class="tk">+=</a> 1U;</td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td>  <span class="kw">if</span> (<a id="104c7" class="tk">tmpBitCountPerChar</a> <a id="104c26" class="tk">==</a> (<a id="104c30" class="tk">uint32_t</a>)<a id="104c39" class="tk">LPUART_10_BITS_PER_CHAR</a>) <span class="br">{</span></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td>    <a id="105c5" class="tk">base</a>-&gt;<a id="105c11" class="tk">BAUD</a> = (<a id="105c19" class="tk">base</a>-&gt;<a id="105c25" class="tk">BAUD</a> <a id="105c30" class="tk">&amp;</a> <a id="105c32" class="tk">~</a><a id="105c33" class="tk">LPUART_BAUD_M10_MASK</a>) <a id="105c55" class="tk">|</a> ((<a id="105c59" class="tk">uint32_t</a>)1U <a id="105c71" class="tk">&lt;&lt;</a></td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td>      <a id="106c7" class="tk">LPUART_BAUD_M10_SHIFT</a>);</td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td>    <span class="ct">/* config 8-bit (M=0) or 9-bits (M=1) */</span></td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td>    <a id="109c5" class="tk">base</a>-&gt;<a id="109c11" class="tk">CTRL</a> = (<a id="109c19" class="tk">base</a>-&gt;<a id="109c25" class="tk">CTRL</a> <a id="109c30" class="tk">&amp;</a> <a id="109c32" class="tk">~</a><a id="109c33" class="tk">LPUART_CTRL_M_MASK</a>) <a id="109c53" class="tk">|</a> (<a id="109c56" class="tk">tmpBitCountPerChar</a> <a id="109c75" class="tk">&lt;&lt;</a></td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td>      <a id="110c7" class="tk">LPUART_CTRL_M_SHIFT</a>);</td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td></td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td>    <span class="ct">/* clear M10 to make sure not 10-bit mode */</span></td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td>    <a id="113c5" class="tk">base</a>-&gt;<a id="113c11" class="tk">BAUD</a> <a id="113c16" class="tk">&amp;=</a> <a id="113c19" class="tk">~</a><a id="113c20" class="tk">LPUART_BAUD_M10_MASK</a>;</td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td><span class="br">}</span></td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td></td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td><span class="ct"> * Function Name : LPUART_SetParityMode</span></td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td><span class="ct"> * Description   : Configures parity mode in the LPUART controller.</span></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="ct"> * In some LPUART instances, the user should disable the transmitter/receiver</span></td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="ct"> * before calling this function.</span></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td><span class="ct"> * Generally, this may be applied to all LPUARTs to ensure safe operation.</span></td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="kw">void</span> <a id="125c6" class="tk">LPUART_SetParityMode</a>(<a id="125c27" class="tk">LPUART_Type</a> <a id="125c39" class="tk">*</a> <a id="125c41" class="tk">base</a>, <a id="125c47" class="tk">lpuart_parity_mode_t</a></td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td>  <a id="126c3" class="tk">parityModeType</a>)</td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><span class="br">{</span></td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td>  <a id="128c3" class="tk">base</a>-&gt;<a id="128c9" class="tk">CTRL</a> = (<a id="128c17" class="tk">base</a>-&gt;<a id="128c23" class="tk">CTRL</a> <a id="128c28" class="tk">&amp;</a> <a id="128c30" class="tk">~</a><a id="128c31" class="tk">LPUART_CTRL_PE_MASK</a>) <a id="128c52" class="tk">|</a> (((<a id="128c57" class="tk">uint32_t</a>)<a id="128c66" class="tk">parityModeType</a> <a id="128c81" class="tk">&gt;&gt;</a></td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td>    1U) <a id="129c9" class="tk">&lt;&lt;</a> <a id="129c12" class="tk">LPUART_CTRL_PE_SHIFT</a>);</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td>  <a id="130c3" class="tk">base</a>-&gt;<a id="130c9" class="tk">CTRL</a> = (<a id="130c17" class="tk">base</a>-&gt;<a id="130c23" class="tk">CTRL</a> <a id="130c28" class="tk">&amp;</a> <a id="130c30" class="tk">~</a><a id="130c31" class="tk">LPUART_CTRL_PT_MASK</a>) <a id="130c52" class="tk">|</a> (((<a id="130c57" class="tk">uint32_t</a>)<a id="130c66" class="tk">parityModeType</a></td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td>    <a id="131c5" class="tk">&amp;</a> 1U) <a id="131c11" class="tk">&lt;&lt;</a> <a id="131c14" class="tk">LPUART_CTRL_PT_SHIFT</a>);</td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td><span class="br">}</span></td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td></td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td><span class="ct"> * Function Name : LPUART_Putchar9</span></td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td><span class="ct"> * Description   : Sends the LPUART 9-bit character.</span></td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="kw">void</span> <a id="139c6" class="tk">LPUART_Putchar9</a>(<a id="139c22" class="tk">LPUART_Type</a> <a id="139c34" class="tk">*</a> <a id="139c36" class="tk">base</a>, <a id="139c42" class="tk">uint16_t</a> <a id="139c51" class="tk">data</a>)</td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td><span class="br">{</span></td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td>  <a id="141c3" class="tk">uint8_t</a> <a id="141c11" class="tk">ninthDataBit</a>;</td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td>  <span class="kw">volatile</span> <a id="142c12" class="tk">uint8_t</a> <a id="142c20" class="tk">*</a> <a id="142c22" class="tk">dataRegBytes</a> = (<span class="kw">volatile</span> <a id="142c47" class="tk">uint8_t</a> <a id="142c55" class="tk">*</a>)(<a id="142c58" class="tk">&amp;</a>(<a id="142c60" class="tk">base</a>-&gt;<a id="142c66" class="tk">DATA</a>));</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td>  <a id="143c3" class="tk">ninthDataBit</a> = (<a id="143c19" class="tk">uint8_t</a>)((<a id="143c29" class="tk">data</a> <a id="143c34" class="tk">&gt;&gt;</a> 8U) <a id="143c41" class="tk">&amp;</a> 0x1U);</td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td></td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td>  <span class="ct">/* write to ninth data bit T8(where T[0:7]=8-bits, T8=9th bit) */</span></td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td>  <a id="146c3" class="tk">base</a>-&gt;<a id="146c9" class="tk">CTRL</a> = (<a id="146c17" class="tk">base</a>-&gt;<a id="146c23" class="tk">CTRL</a> <a id="146c28" class="tk">&amp;</a> <a id="146c30" class="tk">~</a><a id="146c31" class="tk">LPUART_CTRL_R9T8_MASK</a>) <a id="146c54" class="tk">|</a> ((<a id="146c58" class="tk">uint32_t</a>)(<a id="146c68" class="tk">ninthDataBit</a>)</td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td>    <a id="147c5" class="tk">&lt;&lt;</a> <a id="147c8" class="tk">LPUART_CTRL_R9T8_SHIFT</a>);</td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td></td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td>  <span class="ct">/* write 8-bits to the data register*/</span></td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td>  <a id="150c3" class="tk">dataRegBytes</a>[0] = (<a id="150c22" class="tk">uint8_t</a>)<a id="150c30" class="tk">data</a>;</td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td><span class="br">}</span></td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td></td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td><span class="ct"> * Function Name : LPUART_Putchar10</span></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td><span class="ct"> * Description   : Sends the LPUART 10-bit character.</span></td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td><span class="kw">void</span> <a id="158c6" class="tk">LPUART_Putchar10</a>(<a id="158c23" class="tk">LPUART_Type</a> <a id="158c35" class="tk">*</a> <a id="158c37" class="tk">base</a>, <a id="158c43" class="tk">uint16_t</a> <a id="158c52" class="tk">data</a>)</td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td><span class="br">{</span></td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td>  <a id="160c3" class="tk">uint8_t</a> <a id="160c11" class="tk">ninthDataBit</a>, <a id="160c25" class="tk">tenthDataBit</a>;</td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td>  <a id="161c3" class="tk">uint32_t</a> <a id="161c12" class="tk">ctrlRegVal</a>;</td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td>  <span class="kw">volatile</span> <a id="162c12" class="tk">uint8_t</a> <a id="162c20" class="tk">*</a> <a id="162c22" class="tk">dataRegBytes</a> = (<span class="kw">volatile</span> <a id="162c47" class="tk">uint8_t</a> <a id="162c55" class="tk">*</a>)(<a id="162c58" class="tk">&amp;</a>(<a id="162c60" class="tk">base</a>-&gt;<a id="162c66" class="tk">DATA</a>));</td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td>  <a id="163c3" class="tk">ninthDataBit</a> = (<a id="163c19" class="tk">uint8_t</a>)((<a id="163c29" class="tk">data</a> <a id="163c34" class="tk">&gt;&gt;</a> 8U) <a id="163c41" class="tk">&amp;</a> 0x1U);</td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td>  <a id="164c3" class="tk">tenthDataBit</a> = (<a id="164c19" class="tk">uint8_t</a>)((<a id="164c29" class="tk">data</a> <a id="164c34" class="tk">&gt;&gt;</a> 9U) <a id="164c41" class="tk">&amp;</a> 0x1U);</td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td></td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td>  <span class="ct">/* write to ninth/tenth data bit (T[0:7]=8-bits, T8=9th bit, T9=10th bit) */</span></td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td>  <a id="167c3" class="tk">ctrlRegVal</a> = <a id="167c16" class="tk">base</a>-&gt;<a id="167c22" class="tk">CTRL</a>;</td></tr>
+<tr name="168" id="168">
+<td><a id="l168" class='ln'>168</a></td><td>  <a id="168c3" class="tk">ctrlRegVal</a> = (<a id="168c17" class="tk">ctrlRegVal</a> <a id="168c28" class="tk">&amp;</a> <a id="168c30" class="tk">~</a><a id="168c31" class="tk">LPUART_CTRL_R9T8_MASK</a>) <a id="168c54" class="tk">|</a> ((<a id="168c58" class="tk">uint32_t</a>)<a id="168c67" class="tk">ninthDataBit</a> <a id="168c80" class="tk">&lt;&lt;</a></td></tr>
+<tr name="169" id="169">
+<td><a id="l169" class='ln'>169</a></td><td>    <a id="169c5" class="tk">LPUART_CTRL_R9T8_SHIFT</a>);</td></tr>
+<tr name="170" id="170">
+<td><a id="l170" class='ln'>170</a></td><td>  <a id="170c3" class="tk">ctrlRegVal</a> = (<a id="170c17" class="tk">ctrlRegVal</a> <a id="170c28" class="tk">&amp;</a> <a id="170c30" class="tk">~</a><a id="170c31" class="tk">LPUART_CTRL_R8T9_MASK</a>) <a id="170c54" class="tk">|</a> ((<a id="170c58" class="tk">uint32_t</a>)<a id="170c67" class="tk">tenthDataBit</a> <a id="170c80" class="tk">&lt;&lt;</a></td></tr>
+<tr name="171" id="171">
+<td><a id="l171" class='ln'>171</a></td><td>    <a id="171c5" class="tk">LPUART_CTRL_R8T9_SHIFT</a>);</td></tr>
+<tr name="172" id="172">
+<td><a id="l172" class='ln'>172</a></td><td>  <a id="172c3" class="tk">base</a>-&gt;<a id="172c9" class="tk">CTRL</a> = <a id="172c16" class="tk">ctrlRegVal</a>;</td></tr>
+<tr name="173" id="173">
+<td><a id="l173" class='ln'>173</a></td><td></td></tr>
+<tr name="174" id="174">
+<td><a id="l174" class='ln'>174</a></td><td>  <span class="ct">/* write to 8-bits to the data register */</span></td></tr>
+<tr name="175" id="175">
+<td><a id="l175" class='ln'>175</a></td><td>  <a id="175c3" class="tk">dataRegBytes</a>[0] = (<a id="175c22" class="tk">uint8_t</a>)<a id="175c30" class="tk">data</a>;</td></tr>
+<tr name="176" id="176">
+<td><a id="l176" class='ln'>176</a></td><td><span class="br">}</span></td></tr>
+<tr name="177" id="177">
+<td><a id="l177" class='ln'>177</a></td><td></td></tr>
+<tr name="178" id="178">
+<td><a id="l178" class='ln'>178</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="179" id="179">
+<td><a id="l179" class='ln'>179</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="180" id="180">
+<td><a id="l180" class='ln'>180</a></td><td><span class="ct"> * Function Name : LPUART_Getchar9</span></td></tr>
+<tr name="181" id="181">
+<td><a id="l181" class='ln'>181</a></td><td><span class="ct"> * Description   : Gets the LPUART 9-bit character.</span></td></tr>
+<tr name="182" id="182">
+<td><a id="l182" class='ln'>182</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="183" id="183">
+<td><a id="l183" class='ln'>183</a></td><td><span class="kw">void</span> <a id="183c6" class="tk">LPUART_Getchar9</a>(<span class="kw">const</span> <a id="183c28" class="tk">LPUART_Type</a> <a id="183c40" class="tk">*</a> <a id="183c42" class="tk">base</a>, <a id="183c48" class="tk">uint16_t</a> <a id="183c57" class="tk">*</a><a id="183c58" class="tk">readData</a>)</td></tr>
+<tr name="184" id="184">
+<td><a id="l184" class='ln'>184</a></td><td><span class="br">{</span></td></tr>
+<tr name="185" id="185">
+<td><a id="l185" class='ln'>185</a></td><td>  <a id="185c3" class="tk">DEV_ASSERT</a>(<a id="185c14" class="tk">readData</a> <a id="185c23" class="tk">!=</a> <a id="185c26" class="tk">NULL</a>);</td></tr>
+<tr name="186" id="186">
+<td><a id="l186" class='ln'>186</a></td><td></td></tr>
+<tr name="187" id="187">
+<td><a id="l187" class='ln'>187</a></td><td>  <span class="ct">/* get ninth bit from lpuart data register */</span></td></tr>
+<tr name="188" id="188">
+<td><a id="l188" class='ln'>188</a></td><td>  <a id="188c3" class="tk">*</a><a id="188c4" class="tk">readData</a> = (<a id="188c16" class="tk">uint16_t</a>)(((<a id="188c28" class="tk">base</a>-&gt;<a id="188c34" class="tk">CTRL</a> <a id="188c39" class="tk">&gt;&gt;</a> <a id="188c42" class="tk">LPUART_CTRL_R8T9_SHIFT</a>) <a id="188c66" class="tk">&amp;</a> 1U) <a id="188c72" class="tk">&lt;&lt;</a> 8);</td></tr>
+<tr name="189" id="189">
+<td><a id="l189" class='ln'>189</a></td><td></td></tr>
+<tr name="190" id="190">
+<td><a id="l190" class='ln'>190</a></td><td>  <span class="ct">/* get 8-bit data from the lpuart data register */</span></td></tr>
+<tr name="191" id="191">
+<td><a id="l191" class='ln'>191</a></td><td>  <a id="191c3" class="tk">*</a><a id="191c4" class="tk">readData</a> <a id="191c13" class="tk">|=</a> (<a id="191c17" class="tk">uint8_t</a>)<a id="191c25" class="tk">base</a>-&gt;<a id="191c31" class="tk">DATA</a>;</td></tr>
+<tr name="192" id="192">
+<td><a id="l192" class='ln'>192</a></td><td><span class="br">}</span></td></tr>
+<tr name="193" id="193">
+<td><a id="l193" class='ln'>193</a></td><td></td></tr>
+<tr name="194" id="194">
+<td><a id="l194" class='ln'>194</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="195" id="195">
+<td><a id="l195" class='ln'>195</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="196" id="196">
+<td><a id="l196" class='ln'>196</a></td><td><span class="ct"> * Function Name : LPUART_Getchar10</span></td></tr>
+<tr name="197" id="197">
+<td><a id="l197" class='ln'>197</a></td><td><span class="ct"> * Description   : Gets the LPUART 10-bit character</span></td></tr>
+<tr name="198" id="198">
+<td><a id="l198" class='ln'>198</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="199" id="199">
+<td><a id="l199" class='ln'>199</a></td><td><span class="kw">void</span> <a id="199c6" class="tk">LPUART_Getchar10</a>(<span class="kw">const</span> <a id="199c29" class="tk">LPUART_Type</a> <a id="199c41" class="tk">*</a> <a id="199c43" class="tk">base</a>, <a id="199c49" class="tk">uint16_t</a> <a id="199c58" class="tk">*</a><a id="199c59" class="tk">readData</a>)</td></tr>
+<tr name="200" id="200">
+<td><a id="l200" class='ln'>200</a></td><td><span class="br">{</span></td></tr>
+<tr name="201" id="201">
+<td><a id="l201" class='ln'>201</a></td><td>  <a id="201c3" class="tk">DEV_ASSERT</a>(<a id="201c14" class="tk">readData</a> <a id="201c23" class="tk">!=</a> <a id="201c26" class="tk">NULL</a>);</td></tr>
+<tr name="202" id="202">
+<td><a id="l202" class='ln'>202</a></td><td></td></tr>
+<tr name="203" id="203">
+<td><a id="l203" class='ln'>203</a></td><td>  <span class="ct">/* read tenth data bit */</span></td></tr>
+<tr name="204" id="204">
+<td><a id="l204" class='ln'>204</a></td><td>  <a id="204c3" class="tk">*</a><a id="204c4" class="tk">readData</a> = (<a id="204c16" class="tk">uint16_t</a>)(((<a id="204c28" class="tk">base</a>-&gt;<a id="204c34" class="tk">CTRL</a> <a id="204c39" class="tk">&gt;&gt;</a> <a id="204c42" class="tk">LPUART_CTRL_R9T8_SHIFT</a>) <a id="204c66" class="tk">&amp;</a> 1U) <a id="204c72" class="tk">&lt;&lt;</a> 9);</td></tr>
+<tr name="205" id="205">
+<td><a id="l205" class='ln'>205</a></td><td></td></tr>
+<tr name="206" id="206">
+<td><a id="l206" class='ln'>206</a></td><td>  <span class="ct">/* read ninth data bit */</span></td></tr>
+<tr name="207" id="207">
+<td><a id="l207" class='ln'>207</a></td><td>  <a id="207c3" class="tk">*</a><a id="207c4" class="tk">readData</a> <a id="207c13" class="tk">|=</a> (<a id="207c17" class="tk">uint16_t</a>)(((<a id="207c29" class="tk">base</a>-&gt;<a id="207c35" class="tk">CTRL</a> <a id="207c40" class="tk">&gt;&gt;</a> <a id="207c43" class="tk">LPUART_CTRL_R8T9_SHIFT</a>) <a id="207c67" class="tk">&amp;</a> 1U) <a id="207c73" class="tk">&lt;&lt;</a> 8);</td></tr>
+<tr name="208" id="208">
+<td><a id="l208" class='ln'>208</a></td><td></td></tr>
+<tr name="209" id="209">
+<td><a id="l209" class='ln'>209</a></td><td>  <span class="ct">/* get 8-bit data */</span></td></tr>
+<tr name="210" id="210">
+<td><a id="l210" class='ln'>210</a></td><td>  <a id="210c3" class="tk">*</a><a id="210c4" class="tk">readData</a> <a id="210c13" class="tk">|=</a> (<a id="210c17" class="tk">uint8_t</a>)<a id="210c25" class="tk">base</a>-&gt;<a id="210c31" class="tk">DATA</a>;</td></tr>
+<tr name="211" id="211">
+<td><a id="l211" class='ln'>211</a></td><td><span class="br">}</span></td></tr>
+<tr name="212" id="212">
+<td><a id="l212" class='ln'>212</a></td><td></td></tr>
+<tr name="213" id="213">
+<td><a id="l213" class='ln'>213</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="214" id="214">
+<td><a id="l214" class='ln'>214</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="215" id="215">
+<td><a id="l215" class='ln'>215</a></td><td><span class="ct"> * Function Name : LPUART_SetIntMode</span></td></tr>
+<tr name="216" id="216">
+<td><a id="l216" class='ln'>216</a></td><td><span class="ct"> * Description   : Configures the LPUART module interrupts to enable/disable</span></td></tr>
+<tr name="217" id="217">
+<td><a id="l217" class='ln'>217</a></td><td><span class="ct"> * various interrupt sources.</span></td></tr>
+<tr name="218" id="218">
+<td><a id="l218" class='ln'>218</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="219" id="219">
+<td><a id="l219" class='ln'>219</a></td><td><span class="kw">void</span> <a id="219c6" class="tk">LPUART_SetIntMode</a>(<a id="219c24" class="tk">LPUART_Type</a> <a id="219c36" class="tk">*</a> <a id="219c38" class="tk">base</a>, <a id="219c44" class="tk">lpuart_interrupt_t</a> <a id="219c63" class="tk">intSrc</a>, <span class="kw">bool</span></td></tr>
+<tr name="220" id="220">
+<td><a id="l220" class='ln'>220</a></td><td>  <a id="220c3" class="tk">enable</a>)</td></tr>
+<tr name="221" id="221">
+<td><a id="l221" class='ln'>221</a></td><td><span class="br">{</span></td></tr>
+<tr name="222" id="222">
+<td><a id="l222" class='ln'>222</a></td><td>  <a id="222c3" class="tk">uint32_t</a> <a id="222c12" class="tk">reg</a> = (<a id="222c19" class="tk">uint32_t</a>)(<a id="222c29" class="tk">intSrc</a>) <a id="222c37" class="tk">&gt;&gt;</a> <a id="222c40" class="tk">LPUART_SHIFT</a>;</td></tr>
+<tr name="223" id="223">
+<td><a id="l223" class='ln'>223</a></td><td>  <a id="223c3" class="tk">uint32_t</a> <a id="223c12" class="tk">intRegOffset</a> = (<a id="223c28" class="tk">uint16_t</a>)(<a id="223c38" class="tk">intSrc</a>);</td></tr>
+<tr name="224" id="224">
+<td><a id="l224" class='ln'>224</a></td><td>  <span class="kw">switch</span> (<a id="224c11" class="tk">reg</a>)</td></tr>
+<tr name="225" id="225">
+<td><a id="l225" class='ln'>225</a></td><td>  <span class="br">{</span></td></tr>
+<tr name="226" id="226">
+<td><a id="l226" class='ln'>226</a></td><td>   <span class="kw">case</span> <a id="226c9" class="tk">LPUART_BAUD_REG_ID</a><a id="226c27" class="tk">:</a></td></tr>
+<tr name="227" id="227">
+<td><a id="l227" class='ln'>227</a></td><td>    <a id="227c5" class="tk">base</a>-&gt;<a id="227c11" class="tk">BAUD</a> = (<a id="227c19" class="tk">base</a>-&gt;<a id="227c25" class="tk">BAUD</a> <a id="227c30" class="tk">&amp;</a> <a id="227c32" class="tk">~</a>(1UL <a id="227c38" class="tk">&lt;&lt;</a> <a id="227c41" class="tk">intRegOffset</a>)) <a id="227c56" class="tk">|</a> ((<a id="227c60" class="tk">enable</a> <a id="227c67" class="tk">?</a> 1U <a id="227c72" class="tk">:</a> 0U) <a id="227c78" class="tk">&lt;&lt;</a></td></tr>
+<tr name="228" id="228">
+<td><a id="l228" class='ln'>228</a></td><td>      <a id="228c7" class="tk">intRegOffset</a>);</td></tr>
+<tr name="229" id="229">
+<td><a id="l229" class='ln'>229</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="230" id="230">
+<td><a id="l230" class='ln'>230</a></td><td></td></tr>
+<tr name="231" id="231">
+<td><a id="l231" class='ln'>231</a></td><td>   <span class="kw">case</span> <a id="231c9" class="tk">LPUART_STAT_REG_ID</a><a id="231c27" class="tk">:</a></td></tr>
+<tr name="232" id="232">
+<td><a id="l232" class='ln'>232</a></td><td>    <a id="232c5" class="tk">base</a>-&gt;<a id="232c11" class="tk">STAT</a> = (<a id="232c19" class="tk">base</a>-&gt;<a id="232c25" class="tk">STAT</a> <a id="232c30" class="tk">&amp;</a> (<a id="232c33" class="tk">~</a><a id="232c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a> <a id="232c69" class="tk">&amp;</a> <a id="232c71" class="tk">~</a>(1UL <a id="232c77" class="tk">&lt;&lt;</a></td></tr>
+<tr name="233" id="233">
+<td><a id="l233" class='ln'>233</a></td><td>      <a id="233c7" class="tk">intRegOffset</a>))) <a id="233c23" class="tk">|</a> \</td></tr>
+<tr name="234" id="234">
+<td><a id="l234" class='ln'>234</a></td><td></td></tr>
+<tr name="235" id="235">
+<td><a id="l235" class='ln'>235</a></td><td>    ((<a id="235c7" class="tk">enable</a> <a id="235c14" class="tk">?</a> 1U <a id="235c19" class="tk">:</a> 0U) <a id="235c25" class="tk">&lt;&lt;</a> <a id="235c28" class="tk">intRegOffset</a>);</td></tr>
+<tr name="236" id="236">
+<td><a id="l236" class='ln'>236</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="237" id="237">
+<td><a id="l237" class='ln'>237</a></td><td></td></tr>
+<tr name="238" id="238">
+<td><a id="l238" class='ln'>238</a></td><td>   <span class="kw">case</span> <a id="238c9" class="tk">LPUART_CTRL_REG_ID</a><a id="238c27" class="tk">:</a></td></tr>
+<tr name="239" id="239">
+<td><a id="l239" class='ln'>239</a></td><td>    <a id="239c5" class="tk">base</a>-&gt;<a id="239c11" class="tk">CTRL</a> = (<a id="239c19" class="tk">base</a>-&gt;<a id="239c25" class="tk">CTRL</a> <a id="239c30" class="tk">&amp;</a> <a id="239c32" class="tk">~</a>(1UL <a id="239c38" class="tk">&lt;&lt;</a> <a id="239c41" class="tk">intRegOffset</a>)) <a id="239c56" class="tk">|</a> ((<a id="239c60" class="tk">enable</a> <a id="239c67" class="tk">?</a> 1U <a id="239c72" class="tk">:</a> 0U) <a id="239c78" class="tk">&lt;&lt;</a></td></tr>
+<tr name="240" id="240">
+<td><a id="l240" class='ln'>240</a></td><td>      <a id="240c7" class="tk">intRegOffset</a>);</td></tr>
+<tr name="241" id="241">
+<td><a id="l241" class='ln'>241</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="242" id="242">
+<td><a id="l242" class='ln'>242</a></td><td></td></tr>
+<tr name="243" id="243">
+<td><a id="l243" class='ln'>243</a></td><td>   <span class="kw">case</span> <a id="243c9" class="tk">LPUART_DATA_REG_ID</a><a id="243c27" class="tk">:</a></td></tr>
+<tr name="244" id="244">
+<td><a id="l244" class='ln'>244</a></td><td>    <a id="244c5" class="tk">base</a>-&gt;<a id="244c11" class="tk">DATA</a> = (<a id="244c19" class="tk">base</a>-&gt;<a id="244c25" class="tk">DATA</a> <a id="244c30" class="tk">&amp;</a> <a id="244c32" class="tk">~</a>(1UL <a id="244c38" class="tk">&lt;&lt;</a> <a id="244c41" class="tk">intRegOffset</a>)) <a id="244c56" class="tk">|</a> ((<a id="244c60" class="tk">enable</a> <a id="244c67" class="tk">?</a> 1U <a id="244c72" class="tk">:</a> 0U) <a id="244c78" class="tk">&lt;&lt;</a></td></tr>
+<tr name="245" id="245">
+<td><a id="l245" class='ln'>245</a></td><td>      <a id="245c7" class="tk">intRegOffset</a>);</td></tr>
+<tr name="246" id="246">
+<td><a id="l246" class='ln'>246</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="247" id="247">
+<td><a id="l247" class='ln'>247</a></td><td></td></tr>
+<tr name="248" id="248">
+<td><a id="l248" class='ln'>248</a></td><td>   <span class="kw">case</span> <a id="248c9" class="tk">LPUART_MATCH_REG_ID</a><a id="248c28" class="tk">:</a></td></tr>
+<tr name="249" id="249">
+<td><a id="l249" class='ln'>249</a></td><td>    <a id="249c5" class="tk">base</a>-&gt;<a id="249c11" class="tk">MATCH</a> = (<a id="249c20" class="tk">base</a>-&gt;<a id="249c26" class="tk">MATCH</a> <a id="249c32" class="tk">&amp;</a> <a id="249c34" class="tk">~</a>(1UL <a id="249c40" class="tk">&lt;&lt;</a> <a id="249c43" class="tk">intRegOffset</a>)) <a id="249c58" class="tk">|</a> ((<a id="249c62" class="tk">enable</a> <a id="249c69" class="tk">?</a> 1U <a id="249c74" class="tk">:</a> 0U) <a id="249c80" class="tk">&lt;&lt;</a></td></tr>
+<tr name="250" id="250">
+<td><a id="l250" class='ln'>250</a></td><td>      <a id="250c7" class="tk">intRegOffset</a>);</td></tr>
+<tr name="251" id="251">
+<td><a id="l251" class='ln'>251</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="252" id="252">
+<td><a id="l252" class='ln'>252</a></td><td></td></tr>
+<tr name="253" id="253">
+<td><a id="l253" class='ln'>253</a></td><td><span class="pp">#if</span> <a id="253c5" class="tk">FEATURE_LPUART_HAS_MODEM_SUPPORT</a></td></tr>
+<tr name="254" id="254">
+<td><a id="l254" class='ln'>254</a></td><td></td></tr>
+<tr name="255" id="255">
+<td><a id="l255" class='ln'>255</a></td><td>   <span class="kw">case</span> <a id="255c9" class="tk">LPUART_MODIR_REG_ID</a><a id="255c28" class="tk">:</a></td></tr>
+<tr name="256" id="256">
+<td><a id="l256" class='ln'>256</a></td><td>    <a id="256c5" class="tk">base</a>-&gt;<a id="256c11" class="tk">MODIR</a> = (<a id="256c20" class="tk">base</a>-&gt;<a id="256c26" class="tk">MODIR</a> <a id="256c32" class="tk">&amp;</a> <a id="256c34" class="tk">~</a>(1UL <a id="256c40" class="tk">&lt;&lt;</a> <a id="256c43" class="tk">intRegOffset</a>)) <a id="256c58" class="tk">|</a> ((<a id="256c62" class="tk">enable</a> <a id="256c69" class="tk">?</a> 1U <a id="256c74" class="tk">:</a> 0U) <a id="256c80" class="tk">&lt;&lt;</a></td></tr>
+<tr name="257" id="257">
+<td><a id="l257" class='ln'>257</a></td><td>      <a id="257c7" class="tk">intRegOffset</a>);</td></tr>
+<tr name="258" id="258">
+<td><a id="l258" class='ln'>258</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="259" id="259">
+<td><a id="l259" class='ln'>259</a></td><td></td></tr>
+<tr name="260" id="260">
+<td><a id="l260" class='ln'>260</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="261" id="261">
+<td><a id="l261" class='ln'>261</a></td><td></td></tr>
+<tr name="262" id="262">
+<td><a id="l262" class='ln'>262</a></td><td><span class="pp">#if</span> <a id="262c5" class="tk">FEATURE_LPUART_FIFO_SIZE</a> <a id="262c30" class="tk">&gt;</a> 0U</td></tr>
+<tr name="263" id="263">
+<td><a id="l263" class='ln'>263</a></td><td></td></tr>
+<tr name="264" id="264">
+<td><a id="l264" class='ln'>264</a></td><td>   <span class="kw">case</span> <a id="264c9" class="tk">LPUART_FIFO_REG_ID</a><a id="264c27" class="tk">:</a></td></tr>
+<tr name="265" id="265">
+<td><a id="l265" class='ln'>265</a></td><td>    <a id="265c5" class="tk">base</a>-&gt;<a id="265c11" class="tk">FIFO</a> = (<a id="265c19" class="tk">base</a>-&gt;<a id="265c25" class="tk">FIFO</a> <a id="265c30" class="tk">&amp;</a> (<a id="265c33" class="tk">~</a><a id="265c34" class="tk">FEATURE_LPUART_FIFO_REG_FLAGS_MASK</a> <a id="265c69" class="tk">&amp;</a> <a id="265c71" class="tk">~</a>(1UL <a id="265c77" class="tk">&lt;&lt;</a></td></tr>
+<tr name="266" id="266">
+<td><a id="l266" class='ln'>266</a></td><td>      <a id="266c7" class="tk">intRegOffset</a>))) <a id="266c23" class="tk">|</a> \</td></tr>
+<tr name="267" id="267">
+<td><a id="l267" class='ln'>267</a></td><td></td></tr>
+<tr name="268" id="268">
+<td><a id="l268" class='ln'>268</a></td><td>    ((<a id="268c7" class="tk">enable</a> <a id="268c14" class="tk">?</a> 1U <a id="268c19" class="tk">:</a> 0U) <a id="268c25" class="tk">&lt;&lt;</a> <a id="268c28" class="tk">intRegOffset</a>);</td></tr>
+<tr name="269" id="269">
+<td><a id="l269" class='ln'>269</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="270" id="270">
+<td><a id="l270" class='ln'>270</a></td><td></td></tr>
+<tr name="271" id="271">
+<td><a id="l271" class='ln'>271</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="272" id="272">
+<td><a id="l272" class='ln'>272</a></td><td></td></tr>
+<tr name="273" id="273">
+<td><a id="l273" class='ln'>273</a></td><td>   <span class="kw">default</span> <a id="273c12" class="tk">:</a></td></tr>
+<tr name="274" id="274">
+<td><a id="l274" class='ln'>274</a></td><td>    <span class="ct">/* Invalid parameter: return */</span></td></tr>
+<tr name="275" id="275">
+<td><a id="l275" class='ln'>275</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="276" id="276">
+<td><a id="l276" class='ln'>276</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="277" id="277">
+<td><a id="l277" class='ln'>277</a></td><td><span class="br">}</span></td></tr>
+<tr name="278" id="278">
+<td><a id="l278" class='ln'>278</a></td><td></td></tr>
+<tr name="279" id="279">
+<td><a id="l279" class='ln'>279</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="280" id="280">
+<td><a id="l280" class='ln'>280</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="281" id="281">
+<td><a id="l281" class='ln'>281</a></td><td><span class="ct"> * Function Name : LPUART_GetIntMode</span></td></tr>
+<tr name="282" id="282">
+<td><a id="l282" class='ln'>282</a></td><td><span class="ct"> * Description   : Returns whether LPUART module interrupt is enabled/disabled.</span></td></tr>
+<tr name="283" id="283">
+<td><a id="l283" class='ln'>283</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="284" id="284">
+<td><a id="l284" class='ln'>284</a></td><td><span class="kw">bool</span> <a id="284c6" class="tk">LPUART_GetIntMode</a>(<span class="kw">const</span> <a id="284c30" class="tk">LPUART_Type</a> <a id="284c42" class="tk">*</a> <a id="284c44" class="tk">base</a>, <a id="284c50" class="tk">lpuart_interrupt_t</a> <a id="284c69" class="tk">intSrc</a>)</td></tr>
+<tr name="285" id="285">
+<td><a id="l285" class='ln'>285</a></td><td><span class="br">{</span></td></tr>
+<tr name="286" id="286">
+<td><a id="l286" class='ln'>286</a></td><td>  <a id="286c3" class="tk">uint32_t</a> <a id="286c12" class="tk">reg</a> = (<a id="286c19" class="tk">uint32_t</a>)(<a id="286c29" class="tk">intSrc</a>) <a id="286c37" class="tk">&gt;&gt;</a> <a id="286c40" class="tk">LPUART_SHIFT</a>;</td></tr>
+<tr name="287" id="287">
+<td><a id="l287" class='ln'>287</a></td><td>  <span class="kw">bool</span> <a id="287c8" class="tk">retVal</a> = false;</td></tr>
+<tr name="288" id="288">
+<td><a id="l288" class='ln'>288</a></td><td>  <span class="kw">switch</span> ( <a id="288c12" class="tk">reg</a> )</td></tr>
+<tr name="289" id="289">
+<td><a id="l289" class='ln'>289</a></td><td>  <span class="br">{</span></td></tr>
+<tr name="290" id="290">
+<td><a id="l290" class='ln'>290</a></td><td>   <span class="kw">case</span> <a id="290c9" class="tk">LPUART_BAUD_REG_ID</a><a id="290c27" class="tk">:</a></td></tr>
+<tr name="291" id="291">
+<td><a id="l291" class='ln'>291</a></td><td>    <a id="291c5" class="tk">retVal</a> = (((<a id="291c17" class="tk">base</a>-&gt;<a id="291c23" class="tk">BAUD</a> <a id="291c28" class="tk">&gt;&gt;</a> (<a id="291c32" class="tk">uint16_t</a>)(<a id="291c42" class="tk">intSrc</a>)) <a id="291c51" class="tk">&amp;</a> 1U) <a id="291c57" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="292" id="292">
+<td><a id="l292" class='ln'>292</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="293" id="293">
+<td><a id="l293" class='ln'>293</a></td><td></td></tr>
+<tr name="294" id="294">
+<td><a id="l294" class='ln'>294</a></td><td>   <span class="kw">case</span> <a id="294c9" class="tk">LPUART_STAT_REG_ID</a><a id="294c27" class="tk">:</a></td></tr>
+<tr name="295" id="295">
+<td><a id="l295" class='ln'>295</a></td><td>    <a id="295c5" class="tk">retVal</a> = (((<a id="295c17" class="tk">base</a>-&gt;<a id="295c23" class="tk">STAT</a> <a id="295c28" class="tk">&gt;&gt;</a> (<a id="295c32" class="tk">uint16_t</a>)(<a id="295c42" class="tk">intSrc</a>)) <a id="295c51" class="tk">&amp;</a> 1U) <a id="295c57" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="296" id="296">
+<td><a id="l296" class='ln'>296</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="297" id="297">
+<td><a id="l297" class='ln'>297</a></td><td></td></tr>
+<tr name="298" id="298">
+<td><a id="l298" class='ln'>298</a></td><td>   <span class="kw">case</span> <a id="298c9" class="tk">LPUART_CTRL_REG_ID</a><a id="298c27" class="tk">:</a></td></tr>
+<tr name="299" id="299">
+<td><a id="l299" class='ln'>299</a></td><td>    <a id="299c5" class="tk">retVal</a> = (((<a id="299c17" class="tk">base</a>-&gt;<a id="299c23" class="tk">CTRL</a> <a id="299c28" class="tk">&gt;&gt;</a> (<a id="299c32" class="tk">uint16_t</a>)(<a id="299c42" class="tk">intSrc</a>)) <a id="299c51" class="tk">&amp;</a> 1U) <a id="299c57" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="300" id="300">
+<td><a id="l300" class='ln'>300</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="301" id="301">
+<td><a id="l301" class='ln'>301</a></td><td></td></tr>
+<tr name="302" id="302">
+<td><a id="l302" class='ln'>302</a></td><td>   <span class="kw">case</span> <a id="302c9" class="tk">LPUART_DATA_REG_ID</a><a id="302c27" class="tk">:</a></td></tr>
+<tr name="303" id="303">
+<td><a id="l303" class='ln'>303</a></td><td>    <a id="303c5" class="tk">retVal</a> = (((<a id="303c17" class="tk">base</a>-&gt;<a id="303c23" class="tk">DATA</a> <a id="303c28" class="tk">&gt;&gt;</a> (<a id="303c32" class="tk">uint16_t</a>)(<a id="303c42" class="tk">intSrc</a>)) <a id="303c51" class="tk">&amp;</a> 1U) <a id="303c57" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="304" id="304">
+<td><a id="l304" class='ln'>304</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="305" id="305">
+<td><a id="l305" class='ln'>305</a></td><td></td></tr>
+<tr name="306" id="306">
+<td><a id="l306" class='ln'>306</a></td><td>   <span class="kw">case</span> <a id="306c9" class="tk">LPUART_MATCH_REG_ID</a><a id="306c28" class="tk">:</a></td></tr>
+<tr name="307" id="307">
+<td><a id="l307" class='ln'>307</a></td><td>    <a id="307c5" class="tk">retVal</a> = (((<a id="307c17" class="tk">base</a>-&gt;<a id="307c23" class="tk">MATCH</a> <a id="307c29" class="tk">&gt;&gt;</a> (<a id="307c33" class="tk">uint16_t</a>)(<a id="307c43" class="tk">intSrc</a>)) <a id="307c52" class="tk">&amp;</a> 1U) <a id="307c58" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="308" id="308">
+<td><a id="l308" class='ln'>308</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="309" id="309">
+<td><a id="l309" class='ln'>309</a></td><td></td></tr>
+<tr name="310" id="310">
+<td><a id="l310" class='ln'>310</a></td><td><span class="pp">#if</span> <a id="310c5" class="tk">FEATURE_LPUART_HAS_MODEM_SUPPORT</a></td></tr>
+<tr name="311" id="311">
+<td><a id="l311" class='ln'>311</a></td><td></td></tr>
+<tr name="312" id="312">
+<td><a id="l312" class='ln'>312</a></td><td>   <span class="kw">case</span> <a id="312c9" class="tk">LPUART_MODIR_REG_ID</a><a id="312c28" class="tk">:</a></td></tr>
+<tr name="313" id="313">
+<td><a id="l313" class='ln'>313</a></td><td>    <a id="313c5" class="tk">retVal</a> = (((<a id="313c17" class="tk">base</a>-&gt;<a id="313c23" class="tk">MODIR</a> <a id="313c29" class="tk">&gt;&gt;</a> (<a id="313c33" class="tk">uint16_t</a>)(<a id="313c43" class="tk">intSrc</a>)) <a id="313c52" class="tk">&amp;</a> 1U) <a id="313c58" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="314" id="314">
+<td><a id="l314" class='ln'>314</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="315" id="315">
+<td><a id="l315" class='ln'>315</a></td><td></td></tr>
+<tr name="316" id="316">
+<td><a id="l316" class='ln'>316</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="317" id="317">
+<td><a id="l317" class='ln'>317</a></td><td></td></tr>
+<tr name="318" id="318">
+<td><a id="l318" class='ln'>318</a></td><td><span class="pp">#if</span> <a id="318c5" class="tk">FEATURE_LPUART_FIFO_SIZE</a> <a id="318c30" class="tk">&gt;</a> 0U</td></tr>
+<tr name="319" id="319">
+<td><a id="l319" class='ln'>319</a></td><td></td></tr>
+<tr name="320" id="320">
+<td><a id="l320" class='ln'>320</a></td><td>   <span class="kw">case</span> <a id="320c9" class="tk">LPUART_FIFO_REG_ID</a><a id="320c27" class="tk">:</a></td></tr>
+<tr name="321" id="321">
+<td><a id="l321" class='ln'>321</a></td><td>    <a id="321c5" class="tk">retVal</a> = (((<a id="321c17" class="tk">base</a>-&gt;<a id="321c23" class="tk">FIFO</a> <a id="321c28" class="tk">&gt;&gt;</a> (<a id="321c32" class="tk">uint16_t</a>)(<a id="321c42" class="tk">intSrc</a>)) <a id="321c51" class="tk">&amp;</a> 1U) <a id="321c57" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="322" id="322">
+<td><a id="l322" class='ln'>322</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="323" id="323">
+<td><a id="l323" class='ln'>323</a></td><td></td></tr>
+<tr name="324" id="324">
+<td><a id="l324" class='ln'>324</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="325" id="325">
+<td><a id="l325" class='ln'>325</a></td><td></td></tr>
+<tr name="326" id="326">
+<td><a id="l326" class='ln'>326</a></td><td>   <span class="kw">default</span> <a id="326c12" class="tk">:</a></td></tr>
+<tr name="327" id="327">
+<td><a id="l327" class='ln'>327</a></td><td>    <span class="ct">/* Invalid parameter: return */</span></td></tr>
+<tr name="328" id="328">
+<td><a id="l328" class='ln'>328</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="329" id="329">
+<td><a id="l329" class='ln'>329</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="330" id="330">
+<td><a id="l330" class='ln'>330</a></td><td></td></tr>
+<tr name="331" id="331">
+<td><a id="l331" class='ln'>331</a></td><td>  <span class="kw">return</span> <a id="331c10" class="tk">retVal</a>;</td></tr>
+<tr name="332" id="332">
+<td><a id="l332" class='ln'>332</a></td><td><span class="br">}</span></td></tr>
+<tr name="333" id="333">
+<td><a id="l333" class='ln'>333</a></td><td></td></tr>
+<tr name="334" id="334">
+<td><a id="l334" class='ln'>334</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="335" id="335">
+<td><a id="l335" class='ln'>335</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="336" id="336">
+<td><a id="l336" class='ln'>336</a></td><td><span class="ct"> * Function Name : LPUART_GetStatusFlag</span></td></tr>
+<tr name="337" id="337">
+<td><a id="l337" class='ln'>337</a></td><td><span class="ct"> * Description   : LPUART get status flag by passing flag enum.</span></td></tr>
+<tr name="338" id="338">
+<td><a id="l338" class='ln'>338</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="339" id="339">
+<td><a id="l339" class='ln'>339</a></td><td><span class="kw">bool</span> <a id="339c6" class="tk">LPUART_GetStatusFlag</a>(<span class="kw">const</span> <a id="339c33" class="tk">LPUART_Type</a> <a id="339c45" class="tk">*</a> <a id="339c47" class="tk">base</a>, <a id="339c53" class="tk">lpuart_status_flag_t</a></td></tr>
+<tr name="340" id="340">
+<td><a id="l340" class='ln'>340</a></td><td>  <a id="340c3" class="tk">statusFlag</a>)</td></tr>
+<tr name="341" id="341">
+<td><a id="l341" class='ln'>341</a></td><td><span class="br">{</span></td></tr>
+<tr name="342" id="342">
+<td><a id="l342" class='ln'>342</a></td><td>  <a id="342c3" class="tk">uint32_t</a> <a id="342c12" class="tk">reg</a> = (<a id="342c19" class="tk">uint32_t</a>)(<a id="342c29" class="tk">statusFlag</a>) <a id="342c41" class="tk">&gt;&gt;</a> <a id="342c44" class="tk">LPUART_SHIFT</a>;</td></tr>
+<tr name="343" id="343">
+<td><a id="l343" class='ln'>343</a></td><td>  <span class="kw">bool</span> <a id="343c8" class="tk">retVal</a> = false;</td></tr>
+<tr name="344" id="344">
+<td><a id="l344" class='ln'>344</a></td><td>  <span class="kw">switch</span> ( <a id="344c12" class="tk">reg</a> )</td></tr>
+<tr name="345" id="345">
+<td><a id="l345" class='ln'>345</a></td><td>  <span class="br">{</span></td></tr>
+<tr name="346" id="346">
+<td><a id="l346" class='ln'>346</a></td><td>   <span class="kw">case</span> <a id="346c9" class="tk">LPUART_BAUD_REG_ID</a><a id="346c27" class="tk">:</a></td></tr>
+<tr name="347" id="347">
+<td><a id="l347" class='ln'>347</a></td><td>    <a id="347c5" class="tk">retVal</a> = (((<a id="347c17" class="tk">base</a>-&gt;<a id="347c23" class="tk">BAUD</a> <a id="347c28" class="tk">&gt;&gt;</a> (<a id="347c32" class="tk">uint16_t</a>)(<a id="347c42" class="tk">statusFlag</a>)) <a id="347c55" class="tk">&amp;</a> 1U) <a id="347c61" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="348" id="348">
+<td><a id="l348" class='ln'>348</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="349" id="349">
+<td><a id="l349" class='ln'>349</a></td><td></td></tr>
+<tr name="350" id="350">
+<td><a id="l350" class='ln'>350</a></td><td>   <span class="kw">case</span> <a id="350c9" class="tk">LPUART_STAT_REG_ID</a><a id="350c27" class="tk">:</a></td></tr>
+<tr name="351" id="351">
+<td><a id="l351" class='ln'>351</a></td><td>    <a id="351c5" class="tk">retVal</a> = (((<a id="351c17" class="tk">base</a>-&gt;<a id="351c23" class="tk">STAT</a> <a id="351c28" class="tk">&gt;&gt;</a> (<a id="351c32" class="tk">uint16_t</a>)(<a id="351c42" class="tk">statusFlag</a>)) <a id="351c55" class="tk">&amp;</a> 1U) <a id="351c61" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="352" id="352">
+<td><a id="l352" class='ln'>352</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="353" id="353">
+<td><a id="l353" class='ln'>353</a></td><td></td></tr>
+<tr name="354" id="354">
+<td><a id="l354" class='ln'>354</a></td><td>   <span class="kw">case</span> <a id="354c9" class="tk">LPUART_CTRL_REG_ID</a><a id="354c27" class="tk">:</a></td></tr>
+<tr name="355" id="355">
+<td><a id="l355" class='ln'>355</a></td><td>    <a id="355c5" class="tk">retVal</a> = (((<a id="355c17" class="tk">base</a>-&gt;<a id="355c23" class="tk">CTRL</a> <a id="355c28" class="tk">&gt;&gt;</a> (<a id="355c32" class="tk">uint16_t</a>)(<a id="355c42" class="tk">statusFlag</a>)) <a id="355c55" class="tk">&amp;</a> 1U) <a id="355c61" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="356" id="356">
+<td><a id="l356" class='ln'>356</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="357" id="357">
+<td><a id="l357" class='ln'>357</a></td><td></td></tr>
+<tr name="358" id="358">
+<td><a id="l358" class='ln'>358</a></td><td>   <span class="kw">case</span> <a id="358c9" class="tk">LPUART_DATA_REG_ID</a><a id="358c27" class="tk">:</a></td></tr>
+<tr name="359" id="359">
+<td><a id="l359" class='ln'>359</a></td><td>    <a id="359c5" class="tk">retVal</a> = (((<a id="359c17" class="tk">base</a>-&gt;<a id="359c23" class="tk">DATA</a> <a id="359c28" class="tk">&gt;&gt;</a> (<a id="359c32" class="tk">uint16_t</a>)(<a id="359c42" class="tk">statusFlag</a>)) <a id="359c55" class="tk">&amp;</a> 1U) <a id="359c61" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="360" id="360">
+<td><a id="l360" class='ln'>360</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="361" id="361">
+<td><a id="l361" class='ln'>361</a></td><td></td></tr>
+<tr name="362" id="362">
+<td><a id="l362" class='ln'>362</a></td><td>   <span class="kw">case</span> <a id="362c9" class="tk">LPUART_MATCH_REG_ID</a><a id="362c28" class="tk">:</a></td></tr>
+<tr name="363" id="363">
+<td><a id="l363" class='ln'>363</a></td><td>    <a id="363c5" class="tk">retVal</a> = (((<a id="363c17" class="tk">base</a>-&gt;<a id="363c23" class="tk">MATCH</a> <a id="363c29" class="tk">&gt;&gt;</a> (<a id="363c33" class="tk">uint16_t</a>)(<a id="363c43" class="tk">statusFlag</a>)) <a id="363c56" class="tk">&amp;</a> 1U) <a id="363c62" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="364" id="364">
+<td><a id="l364" class='ln'>364</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="365" id="365">
+<td><a id="l365" class='ln'>365</a></td><td></td></tr>
+<tr name="366" id="366">
+<td><a id="l366" class='ln'>366</a></td><td><span class="pp">#if</span> <a id="366c5" class="tk">FEATURE_LPUART_HAS_MODEM_SUPPORT</a></td></tr>
+<tr name="367" id="367">
+<td><a id="l367" class='ln'>367</a></td><td></td></tr>
+<tr name="368" id="368">
+<td><a id="l368" class='ln'>368</a></td><td>   <span class="kw">case</span> <a id="368c9" class="tk">LPUART_MODIR_REG_ID</a><a id="368c28" class="tk">:</a></td></tr>
+<tr name="369" id="369">
+<td><a id="l369" class='ln'>369</a></td><td>    <a id="369c5" class="tk">retVal</a> = (((<a id="369c17" class="tk">base</a>-&gt;<a id="369c23" class="tk">MODIR</a> <a id="369c29" class="tk">&gt;&gt;</a> (<a id="369c33" class="tk">uint16_t</a>)(<a id="369c43" class="tk">statusFlag</a>)) <a id="369c56" class="tk">&amp;</a> 1U) <a id="369c62" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="370" id="370">
+<td><a id="l370" class='ln'>370</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="371" id="371">
+<td><a id="l371" class='ln'>371</a></td><td></td></tr>
+<tr name="372" id="372">
+<td><a id="l372" class='ln'>372</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="373" id="373">
+<td><a id="l373" class='ln'>373</a></td><td></td></tr>
+<tr name="374" id="374">
+<td><a id="l374" class='ln'>374</a></td><td><span class="pp">#if</span> <a id="374c5" class="tk">FEATURE_LPUART_FIFO_SIZE</a> <a id="374c30" class="tk">&gt;</a> 0U</td></tr>
+<tr name="375" id="375">
+<td><a id="l375" class='ln'>375</a></td><td></td></tr>
+<tr name="376" id="376">
+<td><a id="l376" class='ln'>376</a></td><td>   <span class="kw">case</span> <a id="376c9" class="tk">LPUART_FIFO_REG_ID</a><a id="376c27" class="tk">:</a></td></tr>
+<tr name="377" id="377">
+<td><a id="l377" class='ln'>377</a></td><td>    <a id="377c5" class="tk">retVal</a> = (((<a id="377c17" class="tk">base</a>-&gt;<a id="377c23" class="tk">FIFO</a> <a id="377c28" class="tk">&gt;&gt;</a> (<a id="377c32" class="tk">uint16_t</a>)(<a id="377c42" class="tk">statusFlag</a>)) <a id="377c55" class="tk">&amp;</a> 1U) <a id="377c61" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="378" id="378">
+<td><a id="l378" class='ln'>378</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="379" id="379">
+<td><a id="l379" class='ln'>379</a></td><td></td></tr>
+<tr name="380" id="380">
+<td><a id="l380" class='ln'>380</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="381" id="381">
+<td><a id="l381" class='ln'>381</a></td><td></td></tr>
+<tr name="382" id="382">
+<td><a id="l382" class='ln'>382</a></td><td>   <span class="kw">default</span><a id="382c11" class="tk">:</a></td></tr>
+<tr name="383" id="383">
+<td><a id="l383" class='ln'>383</a></td><td>    <span class="ct">/* Invalid parameter: return */</span></td></tr>
+<tr name="384" id="384">
+<td><a id="l384" class='ln'>384</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="385" id="385">
+<td><a id="l385" class='ln'>385</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="386" id="386">
+<td><a id="l386" class='ln'>386</a></td><td></td></tr>
+<tr name="387" id="387">
+<td><a id="l387" class='ln'>387</a></td><td>  <span class="kw">return</span> <a id="387c10" class="tk">retVal</a>;</td></tr>
+<tr name="388" id="388">
+<td><a id="l388" class='ln'>388</a></td><td><span class="br">}</span></td></tr>
+<tr name="389" id="389">
+<td><a id="l389" class='ln'>389</a></td><td></td></tr>
+<tr name="390" id="390">
+<td><a id="l390" class='ln'>390</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="391" id="391">
+<td><a id="l391" class='ln'>391</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="392" id="392">
+<td><a id="l392" class='ln'>392</a></td><td><span class="ct"> * Function Name : LPUART_ClearStatusFlag</span></td></tr>
+<tr name="393" id="393">
+<td><a id="l393" class='ln'>393</a></td><td><span class="ct"> * Description   : LPUART clears an individual status flag</span></td></tr>
+<tr name="394" id="394">
+<td><a id="l394" class='ln'>394</a></td><td><span class="ct"> * (see lpuart_status_flag_t for list of status bits).</span></td></tr>
+<tr name="395" id="395">
+<td><a id="l395" class='ln'>395</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="396" id="396">
+<td><a id="l396" class='ln'>396</a></td><td><a id="396c1" class="tk">status_t</a> <a id="396c10" class="tk">LPUART_ClearStatusFlag</a>(<a id="396c33" class="tk">LPUART_Type</a> <a id="396c45" class="tk">*</a> <a id="396c47" class="tk">base</a>,</td></tr>
+<tr name="397" id="397">
+<td><a id="l397" class='ln'>397</a></td><td>  <a id="397c3" class="tk">lpuart_status_flag_t</a> <a id="397c24" class="tk">statusFlag</a>)</td></tr>
+<tr name="398" id="398">
+<td><a id="l398" class='ln'>398</a></td><td><span class="br">{</span></td></tr>
+<tr name="399" id="399">
+<td><a id="l399" class='ln'>399</a></td><td>  <a id="399c3" class="tk">status_t</a> <a id="399c12" class="tk">returnCode</a> = <a id="399c25" class="tk">STATUS_SUCCESS</a>;</td></tr>
+<tr name="400" id="400">
+<td><a id="l400" class='ln'>400</a></td><td>  <span class="kw">switch</span> (<a id="400c11" class="tk">statusFlag</a>)</td></tr>
+<tr name="401" id="401">
+<td><a id="l401" class='ln'>401</a></td><td>  <span class="br">{</span></td></tr>
+<tr name="402" id="402">
+<td><a id="l402" class='ln'>402</a></td><td>    <span class="ct">/* These flags are cleared automatically by other lpuart operations</span></td></tr>
+<tr name="403" id="403">
+<td><a id="l403" class='ln'>403</a></td><td><span class="ct">     * and cannot be manually cleared, return error code */</span></td></tr>
+<tr name="404" id="404">
+<td><a id="l404" class='ln'>404</a></td><td>   <span class="kw">case</span> <a id="404c9" class="tk">LPUART_TX_DATA_REG_EMPTY</a><a id="404c33" class="tk">:</a></td></tr>
+<tr name="405" id="405">
+<td><a id="l405" class='ln'>405</a></td><td>   <span class="kw">case</span> <a id="405c9" class="tk">LPUART_TX_COMPLETE</a><a id="405c27" class="tk">:</a></td></tr>
+<tr name="406" id="406">
+<td><a id="l406" class='ln'>406</a></td><td>   <span class="kw">case</span> <a id="406c9" class="tk">LPUART_RX_DATA_REG_FULL</a><a id="406c32" class="tk">:</a></td></tr>
+<tr name="407" id="407">
+<td><a id="l407" class='ln'>407</a></td><td>   <span class="kw">case</span> <a id="407c9" class="tk">LPUART_RX_ACTIVE</a><a id="407c25" class="tk">:</a></td></tr>
+<tr name="408" id="408">
+<td><a id="l408" class='ln'>408</a></td><td></td></tr>
+<tr name="409" id="409">
+<td><a id="l409" class='ln'>409</a></td><td><span class="pp">#if</span> <a id="409c5" class="tk">FEATURE_LPUART_HAS_EXTENDED_DATA_REGISTER_FLAGS</a></td></tr>
+<tr name="410" id="410">
+<td><a id="l410" class='ln'>410</a></td><td></td></tr>
+<tr name="411" id="411">
+<td><a id="l411" class='ln'>411</a></td><td>   <span class="kw">case</span> <a id="411c9" class="tk">LPUART_NOISE_IN_CURRENT_WORD</a><a id="411c37" class="tk">:</a></td></tr>
+<tr name="412" id="412">
+<td><a id="l412" class='ln'>412</a></td><td>   <span class="kw">case</span> <a id="412c9" class="tk">LPUART_PARITY_ERR_IN_CURRENT_WORD</a><a id="412c42" class="tk">:</a></td></tr>
+<tr name="413" id="413">
+<td><a id="l413" class='ln'>413</a></td><td></td></tr>
+<tr name="414" id="414">
+<td><a id="l414" class='ln'>414</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="415" id="415">
+<td><a id="l415" class='ln'>415</a></td><td></td></tr>
+<tr name="416" id="416">
+<td><a id="l416" class='ln'>416</a></td><td>    <a id="416c5" class="tk">returnCode</a> = <a id="416c18" class="tk">STATUS_ERROR</a>;</td></tr>
+<tr name="417" id="417">
+<td><a id="l417" class='ln'>417</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="418" id="418">
+<td><a id="l418" class='ln'>418</a></td><td></td></tr>
+<tr name="419" id="419">
+<td><a id="l419" class='ln'>419</a></td><td>   <span class="kw">case</span> <a id="419c9" class="tk">LPUART_IDLE_LINE_DETECT</a><a id="419c32" class="tk">:</a></td></tr>
+<tr name="420" id="420">
+<td><a id="l420" class='ln'>420</a></td><td>    <a id="420c5" class="tk">base</a>-&gt;<a id="420c11" class="tk">STAT</a> = (<a id="420c19" class="tk">base</a>-&gt;<a id="420c25" class="tk">STAT</a> <a id="420c30" class="tk">&amp;</a> (<a id="420c33" class="tk">~</a><a id="420c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="420c71" class="tk">|</a></td></tr>
+<tr name="421" id="421">
+<td><a id="l421" class='ln'>421</a></td><td>      <a id="421c7" class="tk">LPUART_STAT_IDLE_MASK</a>;</td></tr>
+<tr name="422" id="422">
+<td><a id="l422" class='ln'>422</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="423" id="423">
+<td><a id="l423" class='ln'>423</a></td><td></td></tr>
+<tr name="424" id="424">
+<td><a id="l424" class='ln'>424</a></td><td>   <span class="kw">case</span> <a id="424c9" class="tk">LPUART_RX_OVERRUN</a><a id="424c26" class="tk">:</a></td></tr>
+<tr name="425" id="425">
+<td><a id="l425" class='ln'>425</a></td><td>    <a id="425c5" class="tk">base</a>-&gt;<a id="425c11" class="tk">STAT</a> = (<a id="425c19" class="tk">base</a>-&gt;<a id="425c25" class="tk">STAT</a> <a id="425c30" class="tk">&amp;</a> (<a id="425c33" class="tk">~</a><a id="425c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="425c71" class="tk">|</a></td></tr>
+<tr name="426" id="426">
+<td><a id="l426" class='ln'>426</a></td><td>      <a id="426c7" class="tk">LPUART_STAT_OR_MASK</a>;</td></tr>
+<tr name="427" id="427">
+<td><a id="l427" class='ln'>427</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="428" id="428">
+<td><a id="l428" class='ln'>428</a></td><td></td></tr>
+<tr name="429" id="429">
+<td><a id="l429" class='ln'>429</a></td><td>   <span class="kw">case</span> <a id="429c9" class="tk">LPUART_NOISE_DETECT</a><a id="429c28" class="tk">:</a></td></tr>
+<tr name="430" id="430">
+<td><a id="l430" class='ln'>430</a></td><td>    <a id="430c5" class="tk">base</a>-&gt;<a id="430c11" class="tk">STAT</a> = (<a id="430c19" class="tk">base</a>-&gt;<a id="430c25" class="tk">STAT</a> <a id="430c30" class="tk">&amp;</a> (<a id="430c33" class="tk">~</a><a id="430c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="430c71" class="tk">|</a></td></tr>
+<tr name="431" id="431">
+<td><a id="l431" class='ln'>431</a></td><td>      <a id="431c7" class="tk">LPUART_STAT_NF_MASK</a>;</td></tr>
+<tr name="432" id="432">
+<td><a id="l432" class='ln'>432</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="433" id="433">
+<td><a id="l433" class='ln'>433</a></td><td></td></tr>
+<tr name="434" id="434">
+<td><a id="l434" class='ln'>434</a></td><td>   <span class="kw">case</span> <a id="434c9" class="tk">LPUART_FRAME_ERR</a><a id="434c25" class="tk">:</a></td></tr>
+<tr name="435" id="435">
+<td><a id="l435" class='ln'>435</a></td><td>    <a id="435c5" class="tk">base</a>-&gt;<a id="435c11" class="tk">STAT</a> = (<a id="435c19" class="tk">base</a>-&gt;<a id="435c25" class="tk">STAT</a> <a id="435c30" class="tk">&amp;</a> (<a id="435c33" class="tk">~</a><a id="435c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="435c71" class="tk">|</a></td></tr>
+<tr name="436" id="436">
+<td><a id="l436" class='ln'>436</a></td><td>      <a id="436c7" class="tk">LPUART_STAT_FE_MASK</a>;</td></tr>
+<tr name="437" id="437">
+<td><a id="l437" class='ln'>437</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="438" id="438">
+<td><a id="l438" class='ln'>438</a></td><td></td></tr>
+<tr name="439" id="439">
+<td><a id="l439" class='ln'>439</a></td><td>   <span class="kw">case</span> <a id="439c9" class="tk">LPUART_PARITY_ERR</a><a id="439c26" class="tk">:</a></td></tr>
+<tr name="440" id="440">
+<td><a id="l440" class='ln'>440</a></td><td>    <a id="440c5" class="tk">base</a>-&gt;<a id="440c11" class="tk">STAT</a> = (<a id="440c19" class="tk">base</a>-&gt;<a id="440c25" class="tk">STAT</a> <a id="440c30" class="tk">&amp;</a> (<a id="440c33" class="tk">~</a><a id="440c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="440c71" class="tk">|</a></td></tr>
+<tr name="441" id="441">
+<td><a id="l441" class='ln'>441</a></td><td>      <a id="441c7" class="tk">LPUART_STAT_PF_MASK</a>;</td></tr>
+<tr name="442" id="442">
+<td><a id="l442" class='ln'>442</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="443" id="443">
+<td><a id="l443" class='ln'>443</a></td><td></td></tr>
+<tr name="444" id="444">
+<td><a id="l444" class='ln'>444</a></td><td>   <span class="kw">case</span> <a id="444c9" class="tk">LPUART_LIN_BREAK_DETECT</a><a id="444c32" class="tk">:</a></td></tr>
+<tr name="445" id="445">
+<td><a id="l445" class='ln'>445</a></td><td>    <a id="445c5" class="tk">base</a>-&gt;<a id="445c11" class="tk">STAT</a> = (<a id="445c19" class="tk">base</a>-&gt;<a id="445c25" class="tk">STAT</a> <a id="445c30" class="tk">&amp;</a> (<a id="445c33" class="tk">~</a><a id="445c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="445c71" class="tk">|</a></td></tr>
+<tr name="446" id="446">
+<td><a id="l446" class='ln'>446</a></td><td>      <a id="446c7" class="tk">LPUART_STAT_LBKDIF_MASK</a>;</td></tr>
+<tr name="447" id="447">
+<td><a id="l447" class='ln'>447</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="448" id="448">
+<td><a id="l448" class='ln'>448</a></td><td></td></tr>
+<tr name="449" id="449">
+<td><a id="l449" class='ln'>449</a></td><td>   <span class="kw">case</span> <a id="449c9" class="tk">LPUART_RX_ACTIVE_EDGE_DETECT</a><a id="449c37" class="tk">:</a></td></tr>
+<tr name="450" id="450">
+<td><a id="l450" class='ln'>450</a></td><td>    <a id="450c5" class="tk">base</a>-&gt;<a id="450c11" class="tk">STAT</a> = (<a id="450c19" class="tk">base</a>-&gt;<a id="450c25" class="tk">STAT</a> <a id="450c30" class="tk">&amp;</a> (<a id="450c33" class="tk">~</a><a id="450c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="450c71" class="tk">|</a></td></tr>
+<tr name="451" id="451">
+<td><a id="l451" class='ln'>451</a></td><td>      <a id="451c7" class="tk">LPUART_STAT_RXEDGIF_MASK</a>;</td></tr>
+<tr name="452" id="452">
+<td><a id="l452" class='ln'>452</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="453" id="453">
+<td><a id="l453" class='ln'>453</a></td><td></td></tr>
+<tr name="454" id="454">
+<td><a id="l454" class='ln'>454</a></td><td><span class="pp">#if</span> <a id="454c5" class="tk">FEATURE_LPUART_HAS_ADDRESS_MATCHING</a></td></tr>
+<tr name="455" id="455">
+<td><a id="l455" class='ln'>455</a></td><td></td></tr>
+<tr name="456" id="456">
+<td><a id="l456" class='ln'>456</a></td><td>   <span class="kw">case</span> <a id="456c9" class="tk">LPUART_MATCH_ADDR_ONE</a><a id="456c30" class="tk">:</a></td></tr>
+<tr name="457" id="457">
+<td><a id="l457" class='ln'>457</a></td><td>    <a id="457c5" class="tk">base</a>-&gt;<a id="457c11" class="tk">STAT</a> = (<a id="457c19" class="tk">base</a>-&gt;<a id="457c25" class="tk">STAT</a> <a id="457c30" class="tk">&amp;</a> (<a id="457c33" class="tk">~</a><a id="457c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="457c71" class="tk">|</a></td></tr>
+<tr name="458" id="458">
+<td><a id="l458" class='ln'>458</a></td><td>      <a id="458c7" class="tk">LPUART_STAT_MA1F_MASK</a>;</td></tr>
+<tr name="459" id="459">
+<td><a id="l459" class='ln'>459</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="460" id="460">
+<td><a id="l460" class='ln'>460</a></td><td></td></tr>
+<tr name="461" id="461">
+<td><a id="l461" class='ln'>461</a></td><td>   <span class="kw">case</span> <a id="461c9" class="tk">LPUART_MATCH_ADDR_TWO</a><a id="461c30" class="tk">:</a></td></tr>
+<tr name="462" id="462">
+<td><a id="l462" class='ln'>462</a></td><td>    <a id="462c5" class="tk">base</a>-&gt;<a id="462c11" class="tk">STAT</a> = (<a id="462c19" class="tk">base</a>-&gt;<a id="462c25" class="tk">STAT</a> <a id="462c30" class="tk">&amp;</a> (<a id="462c33" class="tk">~</a><a id="462c34" class="tk">FEATURE_LPUART_STAT_REG_FLAGS_MASK</a>)) <a id="462c71" class="tk">|</a></td></tr>
+<tr name="463" id="463">
+<td><a id="l463" class='ln'>463</a></td><td>      <a id="463c7" class="tk">LPUART_STAT_MA2F_MASK</a>;</td></tr>
+<tr name="464" id="464">
+<td><a id="l464" class='ln'>464</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="465" id="465">
+<td><a id="l465" class='ln'>465</a></td><td></td></tr>
+<tr name="466" id="466">
+<td><a id="l466" class='ln'>466</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="467" id="467">
+<td><a id="l467" class='ln'>467</a></td><td></td></tr>
+<tr name="468" id="468">
+<td><a id="l468" class='ln'>468</a></td><td><span class="pp">#if</span> <a id="468c5" class="tk">FEATURE_LPUART_FIFO_SIZE</a> <a id="468c30" class="tk">&gt;</a> 0U</td></tr>
+<tr name="469" id="469">
+<td><a id="l469" class='ln'>469</a></td><td></td></tr>
+<tr name="470" id="470">
+<td><a id="l470" class='ln'>470</a></td><td>   <span class="kw">case</span> <a id="470c9" class="tk">LPUART_FIFO_TX_OF</a><a id="470c26" class="tk">:</a></td></tr>
+<tr name="471" id="471">
+<td><a id="l471" class='ln'>471</a></td><td>    <a id="471c5" class="tk">base</a>-&gt;<a id="471c11" class="tk">FIFO</a> = (<a id="471c19" class="tk">base</a>-&gt;<a id="471c25" class="tk">FIFO</a> <a id="471c30" class="tk">&amp;</a> (<a id="471c33" class="tk">~</a><a id="471c34" class="tk">FEATURE_LPUART_FIFO_REG_FLAGS_MASK</a>)) <a id="471c71" class="tk">|</a></td></tr>
+<tr name="472" id="472">
+<td><a id="l472" class='ln'>472</a></td><td>      <a id="472c7" class="tk">LPUART_FIFO_TXOF_MASK</a>;</td></tr>
+<tr name="473" id="473">
+<td><a id="l473" class='ln'>473</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="474" id="474">
+<td><a id="l474" class='ln'>474</a></td><td></td></tr>
+<tr name="475" id="475">
+<td><a id="l475" class='ln'>475</a></td><td>   <span class="kw">case</span> <a id="475c9" class="tk">LPUART_FIFO_RX_UF</a><a id="475c26" class="tk">:</a></td></tr>
+<tr name="476" id="476">
+<td><a id="l476" class='ln'>476</a></td><td>    <a id="476c5" class="tk">base</a>-&gt;<a id="476c11" class="tk">FIFO</a> = (<a id="476c19" class="tk">base</a>-&gt;<a id="476c25" class="tk">FIFO</a> <a id="476c30" class="tk">&amp;</a> (<a id="476c33" class="tk">~</a><a id="476c34" class="tk">FEATURE_LPUART_FIFO_REG_FLAGS_MASK</a>)) <a id="476c71" class="tk">|</a></td></tr>
+<tr name="477" id="477">
+<td><a id="l477" class='ln'>477</a></td><td>      <a id="477c7" class="tk">LPUART_FIFO_RXUF_MASK</a>;</td></tr>
+<tr name="478" id="478">
+<td><a id="l478" class='ln'>478</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="479" id="479">
+<td><a id="l479" class='ln'>479</a></td><td></td></tr>
+<tr name="480" id="480">
+<td><a id="l480" class='ln'>480</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="481" id="481">
+<td><a id="l481" class='ln'>481</a></td><td></td></tr>
+<tr name="482" id="482">
+<td><a id="l482" class='ln'>482</a></td><td>   <span class="kw">default</span><a id="482c11" class="tk">:</a></td></tr>
+<tr name="483" id="483">
+<td><a id="l483" class='ln'>483</a></td><td>    <a id="483c5" class="tk">returnCode</a> = <a id="483c18" class="tk">STATUS_ERROR</a>;</td></tr>
+<tr name="484" id="484">
+<td><a id="l484" class='ln'>484</a></td><td>    <span class="kw">break</span>;</td></tr>
+<tr name="485" id="485">
+<td><a id="l485" class='ln'>485</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="486" id="486">
+<td><a id="l486" class='ln'>486</a></td><td></td></tr>
+<tr name="487" id="487">
+<td><a id="l487" class='ln'>487</a></td><td>  <span class="kw">return</span> (<a id="487c11" class="tk">returnCode</a>);</td></tr>
+<tr name="488" id="488">
+<td><a id="l488" class='ln'>488</a></td><td><span class="br">}</span></td></tr>
+<tr name="489" id="489">
+<td><a id="l489" class='ln'>489</a></td><td></td></tr>
+<tr name="490" id="490">
+<td><a id="l490" class='ln'>490</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="491" id="491">
+<td><a id="l491" class='ln'>491</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="492" id="492">
+<td><a id="l492" class='ln'>492</a></td><td><span class="ct"> * Function Name : LPUART_SetErrorInterrupts</span></td></tr>
+<tr name="493" id="493">
+<td><a id="l493" class='ln'>493</a></td><td><span class="ct"> * Description   : Enable or disable the LPUART error interrupts.</span></td></tr>
+<tr name="494" id="494">
+<td><a id="l494" class='ln'>494</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="495" id="495">
+<td><a id="l495" class='ln'>495</a></td><td><span class="kw">void</span> <a id="495c6" class="tk">LPUART_SetErrorInterrupts</a>(<a id="495c32" class="tk">LPUART_Type</a> <a id="495c44" class="tk">*</a> <a id="495c46" class="tk">base</a>, <span class="kw">bool</span> <a id="495c57" class="tk">enable</a>)</td></tr>
+<tr name="496" id="496">
+<td><a id="l496" class='ln'>496</a></td><td><span class="br">{</span></td></tr>
+<tr name="497" id="497">
+<td><a id="l497" class='ln'>497</a></td><td>  <span class="ct">/* Configure the error interrupts */</span></td></tr>
+<tr name="498" id="498">
+<td><a id="l498" class='ln'>498</a></td><td>  <a id="498c3" class="tk">LPUART_SetIntMode</a>(<a id="498c21" class="tk">base</a>, <a id="498c27" class="tk">LPUART_INT_RX_OVERRUN</a>, <a id="498c50" class="tk">enable</a>);</td></tr>
+<tr name="499" id="499">
+<td><a id="l499" class='ln'>499</a></td><td>  <a id="499c3" class="tk">LPUART_SetIntMode</a>(<a id="499c21" class="tk">base</a>, <a id="499c27" class="tk">LPUART_INT_PARITY_ERR_FLAG</a>, <a id="499c55" class="tk">enable</a>);</td></tr>
+<tr name="500" id="500">
+<td><a id="l500" class='ln'>500</a></td><td>  <a id="500c3" class="tk">LPUART_SetIntMode</a>(<a id="500c21" class="tk">base</a>, <a id="500c27" class="tk">LPUART_INT_NOISE_ERR_FLAG</a>, <a id="500c54" class="tk">enable</a>);</td></tr>
+<tr name="501" id="501">
+<td><a id="l501" class='ln'>501</a></td><td>  <a id="501c3" class="tk">LPUART_SetIntMode</a>(<a id="501c21" class="tk">base</a>, <a id="501c27" class="tk">LPUART_INT_FRAME_ERR_FLAG</a>, <a id="501c54" class="tk">enable</a>);</td></tr>
+<tr name="502" id="502">
+<td><a id="l502" class='ln'>502</a></td><td><span class="br">}</span></td></tr>
+<tr name="503" id="503">
+<td><a id="l503" class='ln'>503</a></td><td></td></tr>
+<tr name="504" id="504">
+<td><a id="l504" class='ln'>504</a></td><td><span class="ct">/*******************************************************************************</span></td></tr>
+<tr name="505" id="505">
+<td><a id="l505" class='ln'>505</a></td><td><span class="ct"> * EOF</span></td></tr>
+<tr name="506" id="506">
+<td><a id="l506" class='ln'>506</a></td><td><span class="ct"> ******************************************************************************/</span></td></tr>
+<tr name="507" id="507">
+<td><a id="l507" class='ln'>507</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

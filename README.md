@@ -1,7 +1,7 @@
 # Drive-by-wire_ACC_Autosteer_project
-Steer-by-Wire, Adaptive Cruise Control (ACC) and Auto-steering controller design using NXP microcontroller 
+*Steer-by-Wire, Adaptive Cruise Control (ACC) and Auto-steering controller design using NXP microcontroller 
 - Simulated connected vehicle ecosystem over CAN bus, implementing ACC and auto-steering by shared vehicle position and velocity  
-- Implemented ACC using Stateflow modelling to dynamically switch between position and velocity control.  Bicycle vehicle dynamics model used to estimate the trajectory; designed and tuned PD controller for Automatic Steering control to follow trajectory 
+- Implemented ACC using Stateflow modelling to dynamically switch between position and velocity control.  Bicycle vehicle dynamics model used to estimate the trajectory; designed and tuned PD controller for Automatic Steering control to follow trajectory*
 
 **Introduction**
 

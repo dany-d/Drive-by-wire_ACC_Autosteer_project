@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	  Copyright : 2019 NXP, Inc. All Rights Reserved.
+	  This configuration file is a standard interchange file that's format is maintained
+	  by NXP, Inc. The configuration file is a derivative work
+	  of the Processor Expert Software technology licensed for use by customers
+	  as defined as SOFTWARE in the product's End User License Agreement. This file
+	  and format are free to use and distribute for read-only purposes. You do not have
+	  the right to create these files or modify this format or use for any purposes other
+	  than interchange with the Processor Expert Software technology.
+	  THIS SOFTWARE IS PROVIDED 'AS IS'.
+	  NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT
+	  LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+	  PURPOSE APPLY TO THIS SOFTWARE. IN NO EVENT WILL NXP BE LIABLE, WHETHER
+	  IN CONTRACT, TORT, OR OTHERWISE, FOR ANY INCIDENTAL, SPECIAL, INDIRECT,
+	  CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR
+	  ANY LOSS OF USE, LOSS OF TIME, INCONVENIENCE, COMMERCIAL LOSS, OR LOST PROFITS,
+	  SAVINGS, OR REVENUES TO THE FULL EXTENT SUCH MAY BE DISCLAIMED BY LAW.
+-->
+<export xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ProjectInfoDescription.xsd">
+  <PROCESSOR>
+    <DeviceID>S32K144</DeviceID>
+    <CoreNum>1</CoreNum>
+    <Cores>
+      <Core>
+        <CoreSet>cortex-m4</CoreSet>
+      </Core>
+    </Cores>
+  </PROCESSOR>
+  <PATHS>
+    <LinkerCommandFile>S32K14x.ld</LinkerCommandFile>
+    <IncludePaths>
+      <Path>.</Path>
+      <Path>common\</Path>
+      <Path>inc\</Path>
+      <Path>S32K144\include\</Path>
+      <Path>src\clock\S32K1xx\</Path>
+      <Path>src\power\S32K1xx\</Path>
+    </IncludePaths>
+    <SourceCodePaths>
+      <Path>.</Path>
+    </SourceCodePaths>
+  </PATHS>
+  <FILES>
+    <GeneratedCs>
+      <PathName>Final_project.c</PathName>
+      <PathName>Final_project_data.c</PathName>
+      <PathName>Lead_car_find.c</PathName>
+      <PathName>Lead_car_find_wrapper.c</PathName>
+      <PathName>VD_equation.c</PathName>
+      <PathName>VD_equation_wrapper.c</PathName>
+      <PathName>adc_driver.c</PathName>
+      <PathName>clock_S32K1xx.c</PathName>
+      <PathName>clock_manager.c</PathName>
+      <PathName>edma_driver.c</PathName>
+      <PathName>edma_hw_access.c</PathName>
+      <PathName>edma_irq.c</PathName>
+      <PathName>fcan0_s32k14_rx_isr.c</PathName>
+      <PathName>flexcan_driver.c</PathName>
+      <PathName>flexcan_hw_access.c</PathName>
+      <PathName>flexcan_irq.c</PathName>
+      <PathName>ftm0_pwm_params.c</PathName>
+      <PathName>ftm3_pwm_params.c</PathName>
+      <PathName>ftm_common.c</PathName>
+      <PathName>ftm_hw_access.c</PathName>
+      <PathName>ftm_ic_driver.c</PathName>
+      <PathName>ftm_mc_driver.c</PathName>
+      <PathName>ftm_oc_driver.c</PathName>
+      <PathName>ftm_pwm_driver.c</PathName>
+      <PathName>ftm_qd_driver.c</PathName>
+      <PathName>interrupt_manager.c</PathName>
+      <PathName>lpit_driver.c</PathName>
+      <PathName>lpuart_driver.c</PathName>
+      <PathName>lpuart_hw_access.c</PathName>
+      <PathName>lpuart_irq.c</PathName>
+      <PathName>mbd_main.c</PathName>
+      <PathName>osif_baremetal.c</PathName>
+      <PathName>path_data.c</PathName>
+      <PathName>pins_driver.c</PathName>
+      <PathName>pins_port_hw_access.c</PathName>
+      <PathName>power_manager.c</PathName>
+      <PathName>power_manager_S32K1xx.c</PathName>
+      <PathName>power_smc_hw_access.c</PathName>
+      <PathName>s32k_clock_init.c</PathName>
+      <PathName>startup.c</PathName>
+      <PathName>system_S32K144.c</PathName>
+      <PathName>vehicle_dynamics.c</PathName>
+      <PathName>vehicle_dynamics_wrapper.c</PathName>
+    </GeneratedCs>
+    <GeneratedHs>
+      <PathName>Final_project.h</PathName>
+      <PathName>Final_project_private.h</PathName>
+      <PathName>Final_project_types.h</PathName>
+      <PathName>adc_driver.h</PathName>
+      <PathName>adc_hw_access.h</PathName>
+      <PathName>callbacks.h</PathName>
+      <PathName>devassert.h</PathName>
+      <PathName>device_registers.h</PathName>
+      <PathName>edma_driver.h</PathName>
+      <PathName>edma_hw_access.h</PathName>
+      <PathName>edma_irq.h</PathName>
+      <PathName>fcan0_s32k14_rx_isr.h</PathName>
+      <PathName>flexcan_driver.h</PathName>
+      <PathName>flexcan_hw_access.h</PathName>
+      <PathName>flexcan_irq.h</PathName>
+      <PathName>ftm0_pwm_params.h</PathName>
+      <PathName>ftm2_qd_params.h</PathName>
+      <PathName>ftm3_pwm_params.h</PathName>
+      <PathName>ftm_common.h</PathName>
+      <PathName>ftm_hw_access.h</PathName>
+      <PathName>ftm_ic_driver.h</PathName>
+      <PathName>ftm_mc_driver.h</PathName>
+      <PathName>ftm_oc_driver.h</PathName>
+      <PathName>ftm_pwm_driver.h</PathName>
+      <PathName>ftm_qd_driver.h</PathName>
+      <PathName>lpit_hw_access.h</PathName>
+      <PathName>lpuart_driver.h</PathName>
+      <PathName>lpuart_hw_access.h</PathName>
+      <PathName>lpuart_irq.h</PathName>
+      <PathName>multiword_types.h</PathName>
+      <PathName>osif.h</PathName>
+      <PathName>pins_gpio_hw_access.h</PathName>
+      <PathName>pins_port_hw_access.h</PathName>
+      <PathName>power_scg_hw_access.h</PathName>
+      <PathName>rtw_continuous.h</PathName>
+      <PathName>rtw_solver.h</PathName>
+      <PathName>rtwtypes.h</PathName>
+      <PathName>s32k_clock_init.h</PathName>
+      <PathName>startup.h</PathName>
+      <PathName>status.h</PathName>
+      <PathName>system_S32K144.h</PathName>
+      <PathName>zero_crossing_types.h</PathName>
+      <PathName>common\s32_core_cm4.h</PathName>
+      <PathName>inc\clock_manager.h</PathName>
+      <PathName>inc\interrupt_manager.h</PathName>
+      <PathName>inc\lpit_driver.h</PathName>
+      <PathName>inc\pins_driver.h</PathName>
+      <PathName>inc\power_manager.h</PathName>
+      <PathName>S32K144\include\S32K144.h</PathName>
+      <PathName>S32K144\include\S32K144_features.h</PathName>
+      <PathName>src\clock\S32K1xx\clock_S32K1xx.h</PathName>
+      <PathName>src\clock\S32K1xx\pcc_hw_access.h</PathName>
+      <PathName>src\clock\S32K1xx\pmc_hw_access.h</PathName>
+      <PathName>src\clock\S32K1xx\scg_hw_access.h</PathName>
+      <PathName>src\clock\S32K1xx\sim_hw_access.h</PathName>
+      <PathName>src\clock\S32K1xx\smc_hw_access.h</PathName>
+      <PathName>src\power\S32K1xx\power_manager_S32K1xx.h</PathName>
+      <PathName>src\power\S32K1xx\power_rcm_hw_access.h</PathName>
+      <PathName>src\power\S32K1xx\power_smc_hw_access.h</PathName>
+    </GeneratedHs>
+    <GeneratedASMs>
+      <PathName>startup_S32K144.s</PathName>
+    </GeneratedASMs>
+    <Libraries>
+      <PathName>S32K14x_AMMCLIB.a</PathName>
+    </Libraries>
+  </FILES>
+  <OPTIONS>
+   <BuildOptions>
+    <CCoptList>
+      <Option>-mcpu=cortex-m4</Option>
+      <Option>-mthumb</Option>
+      <Option>-mfloat-abi=hard</Option>
+      <Option>-mfpu=fpv4-sp-d16</Option>
+      <Option>-O1</Option>
+      <Option>-g</Option>
+      <Option>-gstrict-dwarf</Option>
+      <Option>-DRT</Option>
+      <Option>-DmwSize=size_t</Option>
+      <Option>-include stdbool.h</Option>
+      <Option>-DARM_MATH_CM4</Option>
+      <Option>-DCPU_S32K144HFT0VLLT</Option>
+      <Option>-D__FPU_PRESENT=1</Option>
+      <Option>-D__FPU_USED=1</Option>
+      <Option>-D__NVIC_PRIO_BITS=FEATURE_NVIC_PRIO_BITS</Option>
+      <Option>-I. -I.\common\ -I.\inc\ -I.\S32K144\include\ -I.\src\clock\S32K1xx\ -I.\src\power\S32K1xx\ -I"C:\MBDToolbox\Toolboxes\NXP_MBDToolbox_S32K1xx\code\tools\gcc-6.3-arm32-eabi/arm-none-eabi/include"</Option>
+    </CCoptList>
+    <ASMoptList>
+      <Option>-mcpu=cortex-m4</Option>
+      <Option>-mthumb</Option>
+      <Option>-mfloat-abi=hard</Option>
+      <Option>-mfpu=fpv4-sp-d16</Option>
+      <Option>-g</Option>
+    </ASMoptList>
+    <LinkerOptList>
+      <Option>-mcpu=cortex-m4</Option>
+      <Option>-mthumb</Option>
+      <Option>-mfloat-abi=hard</Option>
+      <Option>-mfpu=fpv4-sp-d16</Option>
+      <Option>-Xlinker --gc-sections</Option>
+      <Option>-Xlinker --defsym=__ram_vector_table__=1</Option>
+      <Option>-specs=nosys.specs</Option>
+      <Option>-Wl,-Map,Final_project.map</Option>
+      <Option>-T "S32K14x.ld"</Option>
+      <Option>--sysroot=C:\MBDToolbox\Toolboxes\NXP_MBDToolbox_S32K1xx\code\tools\gcc-6.3-arm32-eabi/arm-none-eabi/newlib</Option>
+    </LinkerOptList>
+   </BuildOptions>
+  </OPTIONS>
+</export>

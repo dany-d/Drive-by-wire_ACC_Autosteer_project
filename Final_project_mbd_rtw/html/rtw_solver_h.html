@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * File: rtw_solver.h</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * Abstract:</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *   Type definitions for continuous-time solver support.</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct">/* Copyright 1990-2017 The MathWorks, Inc. */</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="pp">#ifndef</span> <a id="10c9" class="tk">RTW_SOLVER_H__</a></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="pp">#define</span> <a id="11c9" class="tk">RTW_SOLVER_H__</a></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="pp">#include "rtw_continuous.h"</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct">/* =============================================================================</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="ct"> * Solver object</span></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="ct"> * =============================================================================</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="pp">#ifndef</span> <a id="18c9" class="tk">NO_FLOATS</a>                      <span class="ct">/* ERT integer-only */</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="ct"> * Enum for solver tolerance</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="kw">typedef</span> <span class="kw">enum</span> <span class="br">{</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td>  <a id="24c3" class="tk">SL_SOLVER_TOLERANCE_AUTO</a> = 0,        <span class="ct">/* Set Automatically by Solver */</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td>  <a id="25c3" class="tk">SL_SOLVER_TOLERANCE_LOCAL</a> = 1,       <span class="ct">/* Set Locally, e.g., by Blocks */</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td>  <a id="26c3" class="tk">SL_SOLVER_TOLERANCE_GLOBAL</a> = 2,      <span class="ct">/* Set Globally, e.g., by Block Diagram */</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td>  <a id="27c3" class="tk">SL_SOLVER_TOLERANCE_UNDEFINED</a> = 255  <span class="ct">/* Signal uninitialized */</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="br">}</span> <a id="28c3" class="tk">SL_SolverToleranceControlFlag_T</a>;</td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="ct"> * Enum for jacobian method control</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="kw">typedef</span> <span class="kw">enum</span> <span class="br">{</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td>  <a id="34c3" class="tk">SL_JM_BD_AUTO</a> = 0,</td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td>  <a id="35c3" class="tk">SL_JM_BD_SPARSE_PERTURBATION</a>,</td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td>  <a id="36c3" class="tk">SL_JM_BD_FULL_PERTURBATION</a>,</td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td>  <a id="37c3" class="tk">SL_JM_BD_SPARSE_ANALYTICAL</a>,</td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td>  <a id="38c3" class="tk">SL_JM_BD_FULL_ANALYTICAL</a></td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><span class="br">}</span> <a id="39c3" class="tk">slJmBdControl</a>;</td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="kw">typedef</span> <span class="kw">struct</span> <a id="41c16" class="tk">_ssSolverInfo_tag</a> <span class="br">{</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td>  <span class="kw">void</span> <a id="42c8" class="tk">*</a><a id="42c9" class="tk">rtModelPtr</a>;</td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td>  <a id="43c3" class="tk">SimTimeStep</a> <a id="43c15" class="tk">*</a><a id="43c16" class="tk">simTimeStepPtr</a>;</td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td>  <span class="kw">void</span> <a id="44c8" class="tk">*</a><a id="44c9" class="tk">solverData</a>;</td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td>  <span class="kw">const</span> <a id="45c9" class="tk">char_T</a> <a id="45c16" class="tk">*</a><a id="45c17" class="tk">solverName</a>;</td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td>  <a id="46c3" class="tk">boolean_T</a> <a id="46c13" class="tk">isVariableStepSolver</a>;</td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td>  <a id="47c3" class="tk">boolean_T</a> <a id="47c13" class="tk">solverNeedsReset</a>;</td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td>  <a id="48c3" class="tk">SolverMode</a> <a id="48c14" class="tk">solverMode</a>;</td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td>  <a id="49c3" class="tk">time_T</a> <a id="49c10" class="tk">solverStopTime</a>;</td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td>  <a id="50c3" class="tk">time_T</a> <a id="50c10" class="tk">*</a><a id="50c11" class="tk">stepSizePtr</a>;</td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td>  <a id="51c3" class="tk">time_T</a> <a id="51c10" class="tk">minStepSize</a>;</td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td>  <a id="52c3" class="tk">time_T</a> <a id="52c10" class="tk">maxStepSize</a>;</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td>  <a id="53c3" class="tk">time_T</a> <a id="53c10" class="tk">fixedStepSize</a>;</td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td>  <a id="54c3" class="tk">int_T</a> <a id="54c9" class="tk">solverShapePreserveControl</a>;</td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td>  <a id="55c3" class="tk">int_T</a> <a id="55c9" class="tk">solverMaxConsecutiveMinStep</a>;</td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>  <a id="56c3" class="tk">int_T</a> <a id="56c9" class="tk">maxNumMinSteps</a>;</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td>  <a id="57c3" class="tk">int_T</a> <a id="57c9" class="tk">solverMaxOrder</a>;</td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td>  <a id="58c3" class="tk">real_T</a> <a id="58c10" class="tk">solverConsecutiveZCsStepRelTol</a>;</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td>  <a id="59c3" class="tk">int_T</a> <a id="59c9" class="tk">solverMaxConsecutiveZCs</a>;</td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td>  <a id="60c3" class="tk">int_T</a> <a id="60c9" class="tk">solverExtrapolationOrder</a>;</td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td>  <a id="61c3" class="tk">int_T</a> <a id="61c9" class="tk">solverNumberNewtonIterations</a>;</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td>  <a id="62c3" class="tk">int_T</a> <a id="62c9" class="tk">solverRefineFactor</a>;</td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td>  <a id="63c3" class="tk">real_T</a> <a id="63c10" class="tk">solverRelTol</a>;</td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td>  <a id="64c3" class="tk">real_T</a> <a id="64c10" class="tk">unused_real_T_1</a>;</td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td>  <a id="65c3" class="tk">real_T</a> <a id="65c10" class="tk">*</a><a id="65c11" class="tk">*</a><a id="65c12" class="tk">dXPtr</a>;</td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td>  <a id="66c3" class="tk">time_T</a> <a id="66c10" class="tk">*</a><a id="66c11" class="tk">*</a><a id="66c12" class="tk">tPtr</a>;</td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td>  <a id="67c3" class="tk">int_T</a> <a id="67c9" class="tk">*</a><a id="67c10" class="tk">numContStatesPtr</a>;</td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td>  <a id="68c3" class="tk">real_T</a> <a id="68c10" class="tk">*</a><a id="68c11" class="tk">*</a><a id="68c12" class="tk">contStatesPtr</a>;</td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td>  <a id="69c3" class="tk">int_T</a><a id="69c8" class="tk">*</a> <a id="69c10" class="tk">numPeriodicContStatesPtr</a>;</td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td>  <a id="70c3" class="tk">int_T</a><a id="70c8" class="tk">*</a><a id="70c9" class="tk">*</a> <a id="70c11" class="tk">periodicContStateIndicesPtr</a>;</td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td>  <a id="71c3" class="tk">real_T</a><a id="71c9" class="tk">*</a><a id="71c10" class="tk">*</a> <a id="71c12" class="tk">periodicContStateRangesPtr</a>;</td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td>  <a id="72c3" class="tk">real_T</a><a id="72c9" class="tk">*</a> <a id="72c11" class="tk">zcSignalVector</a>;</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td>  <a id="73c3" class="tk">uint8_T</a><a id="73c10" class="tk">*</a> <a id="73c12" class="tk">zcEventsVector</a>;</td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td>  <a id="74c3" class="tk">uint8_T</a><a id="74c10" class="tk">*</a> <a id="74c12" class="tk">zcSignalAttrib</a>;</td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td>  <a id="75c3" class="tk">int_T</a> <a id="75c9" class="tk">zcSignalVectorLength</a>;</td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td>  <a id="76c3" class="tk">uint8_T</a><a id="76c10" class="tk">*</a> <a id="76c12" class="tk">reserved</a>;</td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td>  <a id="77c3" class="tk">boolean_T</a> <a id="77c13" class="tk">foundContZcEvents</a>;</td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td>  <a id="78c3" class="tk">boolean_T</a> <a id="78c13" class="tk">isAtLeftPostOfContZcEvent</a>;</td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td>  <a id="79c3" class="tk">boolean_T</a> <a id="79c13" class="tk">isAtRightPostOfContZcEvent</a>;</td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td>  <a id="80c3" class="tk">boolean_T</a> <a id="80c13" class="tk">adaptiveZcDetection</a>;</td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td>  <a id="81c3" class="tk">int_T</a> <a id="81c9" class="tk">numZcSignals</a>;</td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td>  <a id="82c3" class="tk">boolean_T</a> <a id="82c13" class="tk">stateProjection</a>;</td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td>  <a id="83c3" class="tk">boolean_T</a> <a id="83c13" class="tk">robustResetMethod</a>;         <span class="ct">/* user's preference */</span></td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td>  <a id="84c3" class="tk">boolean_T</a> <a id="84c13" class="tk">updateJacobianAtReset</a>;     <span class="ct">/* S-Fcn request (sticky) */</span></td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td>  <a id="85c3" class="tk">boolean_T</a> <a id="85c13" class="tk">consistencyChecking</a>;</td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td>  <a id="86c3" class="tk">ssMatrixType</a> <a id="86c16" class="tk">massMatrixType</a>;</td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td>  <a id="87c3" class="tk">int_T</a> <a id="87c9" class="tk">massMatrixNzMax</a>;</td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td>  <a id="88c3" class="tk">int_T</a><a id="88c8" class="tk">*</a> <a id="88c10" class="tk">massMatrixIr</a>;</td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td>  <a id="89c3" class="tk">int_T</a><a id="89c8" class="tk">*</a> <a id="89c10" class="tk">massMatrixJc</a>;</td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td>  <a id="90c3" class="tk">real_T</a><a id="90c9" class="tk">*</a> <a id="90c11" class="tk">massMatrixPr</a>;</td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td>  <span class="kw">const</span> <a id="91c9" class="tk">char_T</a> <a id="91c16" class="tk">*</a><a id="91c17" class="tk">*</a><a id="91c18" class="tk">errStatusPtr</a>;</td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td>  <a id="92c3" class="tk">RTWRTModelMethodsInfo</a> <a id="92c25" class="tk">*</a><a id="92c26" class="tk">modelMethodsPtr</a>;</td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td>  <a id="93c3" class="tk">real_T</a> <a id="93c10" class="tk">zcThreshold</a>;</td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td>  <a id="94c3" class="tk">int_T</a> <a id="94c9" class="tk">zeroCrossAlgorithm</a>;</td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td>  <a id="95c3" class="tk">int_T</a> <a id="95c9" class="tk">consecutiveZCsError</a>;</td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td>  <a id="96c3" class="tk">boolean_T</a> <a id="96c13" class="tk">CTOutputIncnstWithState</a>;</td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td>  <a id="97c3" class="tk">boolean_T</a> <a id="97c13" class="tk">isComputingJacobian</a>;</td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td>  <a id="98c3" class="tk">slJmBdControl</a> <a id="98c17" class="tk">solverJacobianMethodControl</a>;</td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td>  <a id="99c3" class="tk">int_T</a> <a id="99c9" class="tk">ignoredZcDiagnostic</a>;</td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td>  <a id="100c3" class="tk">int_T</a> <a id="100c9" class="tk">maskedZcDiagnostic</a>;</td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td>  <a id="101c3" class="tk">boolean_T</a> <a id="101c13" class="tk">isOutputMethodComputed</a>;</td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td><span class="br">}</span> <a id="102c3" class="tk">ssSolverInfo</a>;</td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td><span class="ct">/* Support old name RTWSolverInfo */</span></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td><span class="kw">typedef</span> <a id="105c9" class="tk">ssSolverInfo</a> <a id="105c22" class="tk">RTWSolverInfo</a>;</td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td></td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td><span class="pp">#define</span> <a id="107c9" class="tk">rtsiSetRTModelPtr</a>(<a id="107c27" class="tk">S</a>,<a id="107c29" class="tk">rtmp</a>)      ((<a id="107c42" class="tk">S</a>)-&gt;<a id="107c46" class="tk">rtModelPtr</a> = (<a id="107c60" class="tk">rtmp</a>))</td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td><span class="pp">#define</span> <a id="108c9" class="tk">rtsiGetRTModelPtr</a>(<a id="108c27" class="tk">S</a>)           (<a id="108c41" class="tk">S</a>)-&gt;<a id="108c45" class="tk">rtModelPtr</a></td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td><span class="pp">#define</span> <a id="109c9" class="tk">rtsiSetSimTimeStepPtr</a>(<a id="109c31" class="tk">S</a>,<a id="109c33" class="tk">stp</a>)   ((<a id="109c42" class="tk">S</a>)-&gt;<a id="109c46" class="tk">simTimeStepPtr</a> = (<a id="109c64" class="tk">stp</a>))</td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td><span class="pp">#define</span> <a id="110c9" class="tk">rtsiGetSimTimeStepPtr</a>(<a id="110c31" class="tk">S</a>)       ((<a id="110c42" class="tk">S</a>)-&gt;<a id="110c46" class="tk">simTimeStepPtr</a>)</td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td><span class="pp">#define</span> <a id="111c9" class="tk">rtsiGetSimTimeStep</a>(<a id="111c28" class="tk">S</a>)          <a id="111c40" class="tk">*</a>((<a id="111c43" class="tk">S</a>)-&gt;<a id="111c47" class="tk">simTimeStepPtr</a>)</td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td><span class="pp">#define</span> <a id="112c9" class="tk">rtsiSetSimTimeStep</a>(<a id="112c28" class="tk">S</a>,<a id="112c30" class="tk">st</a>)       (<a id="112c41" class="tk">*</a>((<a id="112c44" class="tk">S</a>)-&gt;<a id="112c48" class="tk">simTimeStepPtr</a>) = (<a id="112c67" class="tk">st</a>))</td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td><span class="pp">#define</span> <a id="113c9" class="tk">rtsiSetSolverData</a>(<a id="113c27" class="tk">S</a>,<a id="113c29" class="tk">sd</a>)        ((<a id="113c42" class="tk">S</a>)-&gt;<a id="113c46" class="tk">solverData</a> = (<a id="113c60" class="tk">sd</a>))</td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td><span class="pp">#define</span> <a id="114c9" class="tk">rtsiGetSolverData</a>(<a id="114c27" class="tk">S</a>)           (<a id="114c41" class="tk">S</a>)-&gt;<a id="114c45" class="tk">solverData</a></td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td><span class="pp">#define</span> <a id="115c9" class="tk">rtsiSetSolverName</a>(<a id="115c27" class="tk">S</a>,<a id="115c29" class="tk">sn</a>)        ((<a id="115c42" class="tk">S</a>)-&gt;<a id="115c46" class="tk">solverName</a> = (<a id="115c60" class="tk">sn</a>))</td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td><span class="pp">#define</span> <a id="116c9" class="tk">rtsiGetSolverName</a>(<a id="116c27" class="tk">S</a>)           (<a id="116c41" class="tk">S</a>)-&gt;<a id="116c45" class="tk">solverName</a></td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td><span class="pp">#define</span> <a id="117c9" class="tk">rtsiSetVariableStepSolver</a>(<a id="117c35" class="tk">S</a>,<a id="117c37" class="tk">vs</a>) ((<a id="117c43" class="tk">S</a>)-&gt;<a id="117c47" class="tk">isVariableStepSolver</a> = (<a id="117c71" class="tk">vs</a>))</td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td><span class="pp">#define</span> <a id="118c9" class="tk">rtsiIsVariableStepSolver</a>(<a id="118c34" class="tk">S</a>)    (<a id="118c41" class="tk">S</a>)-&gt;<a id="118c45" class="tk">isVariableStepSolver</a></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td><span class="pp">#define</span> <a id="119c9" class="tk">rtsiSetSolverNeedsReset</a>(<a id="119c33" class="tk">S</a>,<a id="119c35" class="tk">sn</a>)  ((<a id="119c42" class="tk">S</a>)-&gt;<a id="119c46" class="tk">solverNeedsReset</a> = (<a id="119c66" class="tk">sn</a>))</td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td><span class="pp">#define</span> <a id="120c9" class="tk">rtsiGetSolverNeedsReset</a>(<a id="120c33" class="tk">S</a>)     (<a id="120c41" class="tk">S</a>)-&gt;<a id="120c45" class="tk">solverNeedsReset</a></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="pp">#define</span> <a id="121c9" class="tk">rtsiSetContTimeOutputInconsistentWithStateAtMajorStep</a>(<a id="121c63" class="tk">S</a>,<a id="121c65" class="tk">sn</a>) ((<a id="121c71" class="tk">S</a>)-&gt;<a id="121c75" class="tk">CTOutputIncnstWithState</a> = (<a id="121c102" class="tk">sn</a>))</td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="pp">#define</span> <a id="122c9" class="tk">rtsiGetContTimeOutputInconsistentWithStateAtMajorStep</a>(<a id="122c63" class="tk">S</a>) (<a id="122c67" class="tk">S</a>)-&gt;<a id="122c71" class="tk">CTOutputIncnstWithState</a></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td><span class="pp">#define</span> <a id="123c9" class="tk">rtsiSetBlkStateChange</a>(<a id="123c31" class="tk">S</a>,<a id="123c33" class="tk">sn</a>)    ((<a id="123c42" class="tk">S</a>)-&gt;<a id="123c46" class="tk">CTOutputIncnstWithState</a> = (<a id="123c73" class="tk">sn</a>))</td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td><span class="pp">#define</span> <a id="124c9" class="tk">rtsiGetBlkStateChange</a>(<a id="124c31" class="tk">S</a>)       (<a id="124c41" class="tk">S</a>)-&gt;<a id="124c45" class="tk">CTOutputIncnstWithState</a></td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="pp">#define</span> <a id="125c9" class="tk">rtsiSetBlockStateForSolverChangedAtMajorStep</a>(<a id="125c54" class="tk">S</a>,<a id="125c56" class="tk">sn</a>) ((<a id="125c62" class="tk">S</a>)-&gt;<a id="125c66" class="tk">solverNeedsReset</a> = (<a id="125c86" class="tk">sn</a>))</td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td><span class="pp">#define</span> <a id="126c9" class="tk">rtsiGetBlockStateForSolverChangedAtMajorStep</a>(<a id="126c54" class="tk">S</a>) (<a id="126c58" class="tk">S</a>)-&gt;<a id="126c62" class="tk">solverNeedsReset</a></td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><span class="pp">#define</span> <a id="127c9" class="tk">rtsiSetSolverMode</a>(<a id="127c27" class="tk">S</a>,<a id="127c29" class="tk">sm</a>)        ((<a id="127c42" class="tk">S</a>)-&gt;<a id="127c46" class="tk">solverMode</a> = (<a id="127c60" class="tk">sm</a>))</td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td><span class="pp">#define</span> <a id="128c9" class="tk">rtsiGetSolverMode</a>(<a id="128c27" class="tk">S</a>)           (<a id="128c41" class="tk">S</a>)-&gt;<a id="128c45" class="tk">solverMode</a></td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td><span class="pp">#define</span> <a id="129c9" class="tk">rtsiSetSolverStopTime</a>(<a id="129c31" class="tk">S</a>,<a id="129c33" class="tk">st</a>)    ((<a id="129c42" class="tk">S</a>)-&gt;<a id="129c46" class="tk">solverStopTime</a> = (<a id="129c64" class="tk">st</a>))</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td><span class="pp">#define</span> <a id="130c9" class="tk">rtsiGetSolverStopTime</a>(<a id="130c31" class="tk">S</a>)       (<a id="130c41" class="tk">S</a>)-&gt;<a id="130c45" class="tk">solverStopTime</a></td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td><span class="pp">#define</span> <a id="131c9" class="tk">rtsiSetStepSizePtr</a>(<a id="131c28" class="tk">S</a>,<a id="131c30" class="tk">ssp</a>)      ((<a id="131c42" class="tk">S</a>)-&gt;<a id="131c46" class="tk">stepSizePtr</a> = (<a id="131c61" class="tk">ssp</a>))</td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td><span class="pp">#define</span> <a id="132c9" class="tk">rtsiSetStepSize</a>(<a id="132c25" class="tk">S</a>,<a id="132c27" class="tk">ss</a>)          (<a id="132c41" class="tk">*</a>((<a id="132c44" class="tk">S</a>)-&gt;<a id="132c48" class="tk">stepSizePtr</a>) = (<a id="132c64" class="tk">ss</a>))</td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td><span class="pp">#define</span> <a id="133c9" class="tk">rtsiGetStepSize</a>(<a id="133c25" class="tk">S</a>)             <a id="133c40" class="tk">*</a>((<a id="133c43" class="tk">S</a>)-&gt;<a id="133c47" class="tk">stepSizePtr</a>)</td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td><span class="pp">#define</span> <a id="134c9" class="tk">rtsiSetMinStepSize</a>(<a id="134c28" class="tk">S</a>,<a id="134c30" class="tk">ss</a>)       (((<a id="134c43" class="tk">S</a>)-&gt;<a id="134c47" class="tk">minStepSize</a> = (<a id="134c62" class="tk">ss</a>)))</td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td><span class="pp">#define</span> <a id="135c9" class="tk">rtsiGetMinStepSize</a>(<a id="135c28" class="tk">S</a>)          (<a id="135c41" class="tk">S</a>)-&gt;<a id="135c45" class="tk">minStepSize</a></td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td><span class="pp">#define</span> <a id="136c9" class="tk">rtsiSetMaxStepSize</a>(<a id="136c28" class="tk">S</a>,<a id="136c30" class="tk">ss</a>)       ((<a id="136c42" class="tk">S</a>)-&gt;<a id="136c46" class="tk">maxStepSize</a> = (<a id="136c61" class="tk">ss</a>))</td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td><span class="pp">#define</span> <a id="137c9" class="tk">rtsiGetMaxStepSize</a>(<a id="137c28" class="tk">S</a>)          (<a id="137c41" class="tk">S</a>)-&gt;<a id="137c45" class="tk">maxStepSize</a></td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td><span class="pp">#define</span> <a id="138c9" class="tk">rtsiSetFixedStepSize</a>(<a id="138c30" class="tk">S</a>,<a id="138c32" class="tk">ss</a>)     ((<a id="138c42" class="tk">S</a>)-&gt;<a id="138c46" class="tk">fixedStepSize</a> = (<a id="138c63" class="tk">ss</a>))</td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="pp">#define</span> <a id="139c9" class="tk">rtsiGetFixedStepSize</a>(<a id="139c30" class="tk">S</a>)        (<a id="139c41" class="tk">S</a>)-&gt;<a id="139c45" class="tk">fixedStepSize</a></td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td><span class="pp">#define</span> <a id="140c9" class="tk">rtsiSetMaxNumMinSteps</a>(<a id="140c31" class="tk">S</a>,<a id="140c33" class="tk">mns</a>)   ((<a id="140c42" class="tk">S</a>)-&gt;<a id="140c46" class="tk">maxNumMinSteps</a> = (<a id="140c64" class="tk">mns</a>))</td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td><span class="pp">#define</span> <a id="141c9" class="tk">rtsiGetMaxNumMinSteps</a>(<a id="141c31" class="tk">S</a>)       (<a id="141c41" class="tk">S</a>)-&gt;<a id="141c45" class="tk">maxNumMinSteps</a></td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td><span class="pp">#define</span> <a id="142c9" class="tk">rtsiSetSolverMaxOrder</a>(<a id="142c31" class="tk">S</a>,<a id="142c33" class="tk">smo</a>)   ((<a id="142c42" class="tk">S</a>)-&gt;<a id="142c46" class="tk">solverMaxOrder</a> = (<a id="142c64" class="tk">smo</a>))</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td><span class="pp">#define</span> <a id="143c9" class="tk">rtsiGetSolverMaxOrder</a>(<a id="143c31" class="tk">S</a>)       (<a id="143c41" class="tk">S</a>)-&gt;<a id="143c45" class="tk">solverMaxOrder</a></td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td><span class="pp">#define</span> <a id="144c9" class="tk">rtsiSetSolverJacobianMethodControl</a>(<a id="144c44" class="tk">S</a>,<a id="144c46" class="tk">smcm</a>) (<a id="144c53" class="tk">ssGetSolverInfo</a>(<a id="144c69" class="tk">S</a>)-&gt;<a id="144c73" class="tk">solverJacobianMethodControl</a> = (<a id="144c104" class="tk">smcm</a>))</td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td><span class="pp">#define</span> <a id="145c9" class="tk">rtsiGetSolverJacobianMethodControl</a>(<a id="145c44" class="tk">S</a>) <a id="145c47" class="tk">ssGetSolverInfo</a>(<a id="145c63" class="tk">S</a>)-&gt;<a id="145c67" class="tk">solverJacobianMethodControl</a></td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td><span class="pp">#define</span> <a id="146c9" class="tk">rtsiSetSolverShapePreserveControl</a>(<a id="146c43" class="tk">S</a>,<a id="146c45" class="tk">smcm</a>) (<a id="146c52" class="tk">ssGetSolverInfo</a>(<a id="146c68" class="tk">S</a>)-&gt;<a id="146c72" class="tk">solverShapePreserveControl</a> = (<a id="146c102" class="tk">smcm</a>))</td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td><span class="pp">#define</span> <a id="147c9" class="tk">rtsiGetSolverShapePreserveControl</a>(<a id="147c43" class="tk">S</a>) <a id="147c46" class="tk">ssGetSolverInfo</a>(<a id="147c62" class="tk">S</a>)-&gt;<a id="147c66" class="tk">solverShapePreserveControl</a></td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td><span class="pp">#define</span> <a id="148c9" class="tk">rtsiSetSolverConsecutiveZCsStepRelTol</a>(<a id="148c47" class="tk">S</a>,<a id="148c49" class="tk">scr</a>) (<a id="148c55" class="tk">ssGetSolverInfo</a>(<a id="148c71" class="tk">S</a>)-&gt;<a id="148c75" class="tk">solverConsecutiveZCsStepRelTol</a> = (<a id="148c109" class="tk">scr</a>))</td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td><span class="pp">#define</span> <a id="149c9" class="tk">rtsiGetSolverConsecutiveZCsStepRelTol</a>(<a id="149c47" class="tk">S</a>) <a id="149c50" class="tk">ssGetSolverInfo</a>(<a id="149c66" class="tk">S</a>)-&gt;<a id="149c70" class="tk">solverConsecutiveZCsStepRelTol</a></td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td><span class="pp">#define</span> <a id="150c9" class="tk">rtsiSetSolverMaxConsecutiveZCs</a>(<a id="150c40" class="tk">S</a>,<a id="150c42" class="tk">smcz</a>) (<a id="150c49" class="tk">ssGetSolverInfo</a>(<a id="150c65" class="tk">S</a>)-&gt;<a id="150c69" class="tk">solverMaxConsecutiveZCs</a> = (<a id="150c96" class="tk">smcz</a>))</td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td><span class="pp">#define</span> <a id="151c9" class="tk">rtsiGetSolverMaxConsecutiveZCs</a>(<a id="151c40" class="tk">S</a>) <a id="151c43" class="tk">ssGetSolverInfo</a>(<a id="151c59" class="tk">S</a>)-&gt;<a id="151c63" class="tk">solverMaxConsecutiveZCs</a></td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td><span class="pp">#define</span> <a id="152c9" class="tk">rtsiSetSolverMaxConsecutiveMinStep</a>(<a id="152c44" class="tk">S</a>,<a id="152c46" class="tk">smcm</a>) (<a id="152c53" class="tk">ssGetSolverInfo</a>(<a id="152c69" class="tk">S</a>)-&gt;<a id="152c73" class="tk">solverMaxConsecutiveMinStep</a> = (<a id="152c104" class="tk">smcm</a>))</td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td><span class="pp">#define</span> <a id="153c9" class="tk">rtsiGetSolverMaxConsecutiveMinStep</a>(<a id="153c44" class="tk">S</a>) <a id="153c47" class="tk">ssGetSolverInfo</a>(<a id="153c63" class="tk">S</a>)-&gt;<a id="153c67" class="tk">solverMaxConsecutiveMinStep</a></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td><span class="pp">#define</span> <a id="154c9" class="tk">rtsiSetSolverExtrapolationOrder</a>(<a id="154c41" class="tk">S</a>,<a id="154c43" class="tk">seo</a>) ((<a id="154c50" class="tk">S</a>)-&gt;<a id="154c54" class="tk">solverExtrapolationOrder</a> = (<a id="154c82" class="tk">seo</a>))</td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td><span class="pp">#define</span> <a id="155c9" class="tk">rtsiGetSolverExtrapolationOrder</a>(<a id="155c41" class="tk">S</a>) (<a id="155c45" class="tk">S</a>)-&gt;<a id="155c49" class="tk">solverExtrapolationOrder</a></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td><span class="pp">#define</span> <a id="156c9" class="tk">rtsiSetSolverNumberNewtonIterations</a>(<a id="156c45" class="tk">S</a>,<a id="156c47" class="tk">nni</a>) ((<a id="156c54" class="tk">S</a>)-&gt;<a id="156c58" class="tk">solverNumberNewtonIterations</a> = (<a id="156c90" class="tk">nni</a>))</td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td><span class="pp">#define</span> <a id="157c9" class="tk">rtsiGetSolverNumberNewtonIterations</a>(<a id="157c45" class="tk">S</a>) (<a id="157c49" class="tk">S</a>)-&gt;<a id="157c53" class="tk">solverNumberNewtonIterations</a></td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td><span class="pp">#define</span> <a id="158c9" class="tk">rtsiSetSolverRefineFactor</a>(<a id="158c35" class="tk">S</a>,<a id="158c37" class="tk">smo</a>) ((<a id="158c44" class="tk">S</a>)-&gt;<a id="158c48" class="tk">solverRefineFactor</a> = (<a id="158c70" class="tk">smo</a>))</td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td><span class="pp">#define</span> <a id="159c9" class="tk">rtsiGetSolverRefineFactor</a>(<a id="159c35" class="tk">S</a>)   (<a id="159c41" class="tk">S</a>)-&gt;<a id="159c45" class="tk">solverRefineFactor</a></td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td><span class="pp">#define</span> <a id="160c9" class="tk">rtsiSetSolverRelTol</a>(<a id="160c29" class="tk">S</a>,<a id="160c31" class="tk">smo</a>)     ((<a id="160c42" class="tk">S</a>)-&gt;<a id="160c46" class="tk">solverRelTol</a> = (<a id="160c62" class="tk">smo</a>))</td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td><span class="pp">#define</span> <a id="161c9" class="tk">rtsiGetSolverRelTol</a>(<a id="161c29" class="tk">S</a>)         (<a id="161c41" class="tk">S</a>)-&gt;<a id="161c45" class="tk">solverRelTol</a></td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td><span class="pp">#define</span> <a id="162c9" class="tk">rtsiSetSolverMassMatrixType</a>(<a id="162c37" class="tk">S</a>,<a id="162c39" class="tk">type</a>) ((<a id="162c47" class="tk">S</a>)-&gt;<a id="162c51" class="tk">massMatrixType</a> = (<a id="162c69" class="tk">type</a>))</td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td><span class="pp">#define</span> <a id="163c9" class="tk">rtsiGetSolverMassMatrixType</a>(<a id="163c37" class="tk">S</a>) (<a id="163c41" class="tk">S</a>)-&gt;<a id="163c45" class="tk">massMatrixType</a></td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td><span class="pp">#define</span> <a id="164c9" class="tk">rtsiSetSolverMassMatrixNzMax</a>(<a id="164c38" class="tk">S</a>,<a id="164c40" class="tk">nzMax</a>) ((<a id="164c49" class="tk">S</a>)-&gt;<a id="164c53" class="tk">massMatrixNzMax</a> = (<a id="164c72" class="tk">nzMax</a>))</td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td><span class="pp">#define</span> <a id="165c9" class="tk">rtsiGetSolverMassMatrixNzMax</a>(<a id="165c38" class="tk">S</a>) (<a id="165c42" class="tk">S</a>)-&gt;<a id="165c46" class="tk">massMatrixNzMax</a></td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td><span class="pp">#define</span> <a id="166c9" class="tk">rtsiSetSolverMassMatrixIr</a>(<a id="166c35" class="tk">S</a>,<a id="166c37" class="tk">ir</a>) ((<a id="166c43" class="tk">S</a>)-&gt;<a id="166c47" class="tk">massMatrixIr</a> = (<a id="166c63" class="tk">ir</a>))</td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td><span class="pp">#define</span> <a id="167c9" class="tk">rtsiGetSolverMassMatrixIr</a>(<a id="167c35" class="tk">S</a>)   (<a id="167c41" class="tk">S</a>)-&gt;<a id="167c45" class="tk">massMatrixIr</a></td></tr>
+<tr name="168" id="168">
+<td><a id="l168" class='ln'>168</a></td><td><span class="pp">#define</span> <a id="168c9" class="tk">rtsiSetSolverMassMatrixJc</a>(<a id="168c35" class="tk">S</a>,<a id="168c37" class="tk">jc</a>) ((<a id="168c43" class="tk">S</a>)-&gt;<a id="168c47" class="tk">massMatrixJc</a> = (<a id="168c63" class="tk">jc</a>))</td></tr>
+<tr name="169" id="169">
+<td><a id="l169" class='ln'>169</a></td><td><span class="pp">#define</span> <a id="169c9" class="tk">rtsiGetSolverMassMatrixJc</a>(<a id="169c35" class="tk">S</a>)   (<a id="169c41" class="tk">S</a>)-&gt;<a id="169c45" class="tk">massMatrixJc</a></td></tr>
+<tr name="170" id="170">
+<td><a id="l170" class='ln'>170</a></td><td><span class="pp">#define</span> <a id="170c9" class="tk">rtsiSetSolverMassMatrixPr</a>(<a id="170c35" class="tk">S</a>,<a id="170c37" class="tk">pr</a>) ((<a id="170c43" class="tk">S</a>)-&gt;<a id="170c47" class="tk">massMatrixPr</a> = (<a id="170c63" class="tk">pr</a>))</td></tr>
+<tr name="171" id="171">
+<td><a id="l171" class='ln'>171</a></td><td><span class="pp">#define</span> <a id="171c9" class="tk">rtsiGetSolverMassMatrixPr</a>(<a id="171c35" class="tk">S</a>)   (<a id="171c41" class="tk">S</a>)-&gt;<a id="171c45" class="tk">massMatrixPr</a></td></tr>
+<tr name="172" id="172">
+<td><a id="l172" class='ln'>172</a></td><td><span class="pp">#define</span> <a id="172c9" class="tk">rtsiSetdXPtr</a>(<a id="172c22" class="tk">S</a>,<a id="172c24" class="tk">dxp</a>)            ((<a id="172c42" class="tk">S</a>)-&gt;<a id="172c46" class="tk">dXPtr</a> = (<a id="172c55" class="tk">dxp</a>))</td></tr>
+<tr name="173" id="173">
+<td><a id="l173" class='ln'>173</a></td><td><span class="pp">#define</span> <a id="173c9" class="tk">rtsiSetdX</a>(<a id="173c19" class="tk">S</a>,<a id="173c21" class="tk">dx</a>)                (<a id="173c41" class="tk">*</a>((<a id="173c44" class="tk">S</a>)-&gt;<a id="173c48" class="tk">dXPtr</a>) = (<a id="173c58" class="tk">dx</a>))</td></tr>
+<tr name="174" id="174">
+<td><a id="l174" class='ln'>174</a></td><td><span class="pp">#define</span> <a id="174c9" class="tk">rtsiGetdX</a>(<a id="174c19" class="tk">S</a>)                   <a id="174c40" class="tk">*</a>((<a id="174c43" class="tk">S</a>)-&gt;<a id="174c47" class="tk">dXPtr</a>)</td></tr>
+<tr name="175" id="175">
+<td><a id="l175" class='ln'>175</a></td><td><span class="pp">#define</span> <a id="175c9" class="tk">rtsiSetTPtr</a>(<a id="175c21" class="tk">S</a>,<a id="175c23" class="tk">tp</a>)              ((<a id="175c42" class="tk">S</a>)-&gt;<a id="175c46" class="tk">tPtr</a> = (<a id="175c54" class="tk">tp</a>))</td></tr>
+<tr name="176" id="176">
+<td><a id="l176" class='ln'>176</a></td><td><span class="pp">#define</span> <a id="176c9" class="tk">rtsiSetT</a>(<a id="176c18" class="tk">S</a>,<a id="176c20" class="tk">t</a>)                  ((<a id="176c42" class="tk">*</a>((<a id="176c45" class="tk">S</a>)-&gt;<a id="176c49" class="tk">tPtr</a>))[0] = (<a id="176c62" class="tk">t</a>))</td></tr>
+<tr name="177" id="177">
+<td><a id="l177" class='ln'>177</a></td><td><span class="pp">#define</span> <a id="177c9" class="tk">rtsiGetT</a>(<a id="177c18" class="tk">S</a>)                    (<a id="177c41" class="tk">*</a>((<a id="177c44" class="tk">S</a>)-&gt;<a id="177c48" class="tk">tPtr</a>))[0]</td></tr>
+<tr name="178" id="178">
+<td><a id="l178" class='ln'>178</a></td><td><span class="pp">#define</span> <a id="178c9" class="tk">rtsiSetContStatesPtr</a>(<a id="178c30" class="tk">S</a>,<a id="178c32" class="tk">cp</a>)     ((<a id="178c42" class="tk">S</a>)-&gt;<a id="178c46" class="tk">contStatesPtr</a> = (<a id="178c63" class="tk">cp</a>))</td></tr>
+<tr name="179" id="179">
+<td><a id="l179" class='ln'>179</a></td><td><span class="pp">#define</span> <a id="179c9" class="tk">rtsiGetContStates</a>(<a id="179c27" class="tk">S</a>)           <a id="179c40" class="tk">*</a>((<a id="179c43" class="tk">S</a>)-&gt;<a id="179c47" class="tk">contStatesPtr</a>)</td></tr>
+<tr name="180" id="180">
+<td><a id="l180" class='ln'>180</a></td><td><span class="pp">#define</span> <a id="180c9" class="tk">rtsiSetNumContStatesPtr</a>(<a id="180c33" class="tk">S</a>,<a id="180c35" class="tk">cp</a>)  ((<a id="180c42" class="tk">S</a>)-&gt;<a id="180c46" class="tk">numContStatesPtr</a> = (<a id="180c66" class="tk">cp</a>))</td></tr>
+<tr name="181" id="181">
+<td><a id="l181" class='ln'>181</a></td><td><span class="pp">#define</span> <a id="181c9" class="tk">rtsiGetNumContStates</a>(<a id="181c30" class="tk">S</a>)        <a id="181c40" class="tk">*</a>((<a id="181c43" class="tk">S</a>)-&gt;<a id="181c47" class="tk">numContStatesPtr</a>)</td></tr>
+<tr name="182" id="182">
+<td><a id="l182" class='ln'>182</a></td><td><span class="pp">#define</span> <a id="182c9" class="tk">rtsiSetNumPeriodicContStatesPtr</a>(<a id="182c41" class="tk">S</a>,<a id="182c43" class="tk">cp</a>) ((<a id="182c49" class="tk">S</a>)-&gt;<a id="182c53" class="tk">numPeriodicContStatesPtr</a> = (<a id="182c81" class="tk">cp</a>))</td></tr>
+<tr name="183" id="183">
+<td><a id="l183" class='ln'>183</a></td><td><span class="pp">#define</span> <a id="183c9" class="tk">rtsiGetNumPeriodicContStates</a>(<a id="183c38" class="tk">S</a>) <a id="183c41" class="tk">*</a>((<a id="183c44" class="tk">S</a>)-&gt;<a id="183c48" class="tk">numPeriodicContStatesPtr</a>)</td></tr>
+<tr name="184" id="184">
+<td><a id="l184" class='ln'>184</a></td><td><span class="pp">#define</span> <a id="184c9" class="tk">rtsiSetPeriodicContStateIndicesPtr</a>(<a id="184c44" class="tk">S</a>,<a id="184c46" class="tk">cp</a>) ((<a id="184c52" class="tk">S</a>)-&gt;<a id="184c56" class="tk">periodicContStateIndicesPtr</a> = (<a id="184c87" class="tk">cp</a>))</td></tr>
+<tr name="185" id="185">
+<td><a id="l185" class='ln'>185</a></td><td><span class="pp">#define</span> <a id="185c9" class="tk">rtsiGetPeriodicContStateIndices</a>(<a id="185c41" class="tk">S</a>) <a id="185c44" class="tk">*</a>((<a id="185c47" class="tk">S</a>)-&gt;<a id="185c51" class="tk">periodicContStateIndicesPtr</a>)</td></tr>
+<tr name="186" id="186">
+<td><a id="l186" class='ln'>186</a></td><td><span class="pp">#define</span> <a id="186c9" class="tk">rtsiSetPeriodicContStateRangesPtr</a>(<a id="186c43" class="tk">S</a>,<a id="186c45" class="tk">cp</a>) ((<a id="186c51" class="tk">S</a>)-&gt;<a id="186c55" class="tk">periodicContStateRangesPtr</a> = (<a id="186c85" class="tk">cp</a>))</td></tr>
+<tr name="187" id="187">
+<td><a id="l187" class='ln'>187</a></td><td><span class="pp">#define</span> <a id="187c9" class="tk">rtsiGetPeriodicContStateRanges</a>(<a id="187c40" class="tk">S</a>) <a id="187c43" class="tk">*</a>((<a id="187c46" class="tk">S</a>)-&gt;<a id="187c50" class="tk">periodicContStateRangesPtr</a>)</td></tr>
+<tr name="188" id="188">
+<td><a id="l188" class='ln'>188</a></td><td><span class="pp">#define</span> <a id="188c9" class="tk">rtsiSetErrorStatusPtr</a>(<a id="188c31" class="tk">S</a>,<a id="188c33" class="tk">esp</a>)   ((<a id="188c42" class="tk">S</a>)-&gt;<a id="188c46" class="tk">errStatusPtr</a> = (<a id="188c62" class="tk">esp</a>))</td></tr>
+<tr name="189" id="189">
+<td><a id="l189" class='ln'>189</a></td><td><span class="pp">#define</span> <a id="189c9" class="tk">rtsiSetErrorStatus</a>(<a id="189c28" class="tk">S</a>,<a id="189c30" class="tk">es</a>)       (<a id="189c41" class="tk">*</a>((<a id="189c44" class="tk">S</a>)-&gt;<a id="189c48" class="tk">errStatusPtr</a>) = (<a id="189c65" class="tk">es</a>))</td></tr>
+<tr name="190" id="190">
+<td><a id="l190" class='ln'>190</a></td><td><span class="pp">#define</span> <a id="190c9" class="tk">rtsiGetErrorStatus</a>(<a id="190c28" class="tk">S</a>)          <a id="190c40" class="tk">*</a>((<a id="190c43" class="tk">S</a>)-&gt;<a id="190c47" class="tk">errStatusPtr</a>)</td></tr>
+<tr name="191" id="191">
+<td><a id="l191" class='ln'>191</a></td><td><span class="pp">#define</span> <a id="191c9" class="tk">rtsiSetModelMethodsPtr</a>(<a id="191c32" class="tk">S</a>,<a id="191c34" class="tk">mmp</a>)  ((<a id="191c42" class="tk">S</a>)-&gt;<a id="191c46" class="tk">modelMethodsPtr</a> = (<a id="191c65" class="tk">mmp</a>))</td></tr>
+<tr name="192" id="192">
+<td><a id="l192" class='ln'>192</a></td><td><span class="pp">#define</span> <a id="192c9" class="tk">rtsiGetModelMethodsPtr</a>(<a id="192c32" class="tk">S</a>)      (<a id="192c41" class="tk">S</a>)-&gt;<a id="192c45" class="tk">modelMethodsPtr</a></td></tr>
+<tr name="193" id="193">
+<td><a id="l193" class='ln'>193</a></td><td><span class="pp">#define</span> <a id="193c9" class="tk">rtsiSetSolverComputingJacobian</a>(<a id="193c40" class="tk">S</a>,<a id="193c42" class="tk">val</a>) ((<a id="193c49" class="tk">S</a>)-&gt;<a id="193c53" class="tk">isComputingJacobian</a> = (<a id="193c76" class="tk">val</a>))</td></tr>
+<tr name="194" id="194">
+<td><a id="l194" class='ln'>194</a></td><td><span class="pp">#define</span> <a id="194c9" class="tk">rtsiIsSolverComputingJacobian</a>(<a id="194c39" class="tk">S</a>) (<a id="194c43" class="tk">S</a>)-&gt;<a id="194c47" class="tk">isComputingJacobian</a></td></tr>
+<tr name="195" id="195">
+<td><a id="l195" class='ln'>195</a></td><td><span class="pp">#define</span> <a id="195c9" class="tk">rtsiSetSolverOutputComputed</a>(<a id="195c37" class="tk">S</a>,<a id="195c39" class="tk">val</a>) ((<a id="195c46" class="tk">S</a>)-&gt;<a id="195c50" class="tk">isOutputMethodComputed</a> = (<a id="195c76" class="tk">val</a>))</td></tr>
+<tr name="196" id="196">
+<td><a id="l196" class='ln'>196</a></td><td><span class="pp">#define</span> <a id="196c9" class="tk">rtsiIsSolverOutputComputed</a>(<a id="196c36" class="tk">S</a>)  (<a id="196c41" class="tk">S</a>)-&gt;<a id="196c45" class="tk">isOutputMethodComputed</a></td></tr>
+<tr name="197" id="197">
+<td><a id="l197" class='ln'>197</a></td><td><span class="pp">#endif</span>                                 <span class="ct">/* !NO_FLOATS */</span></td></tr>
+<tr name="198" id="198">
+<td><a id="l198" class='ln'>198</a></td><td><span class="pp">#endif</span>                                 <span class="ct">/* RTW_SOLVER_H__ */</span></td></tr>
+<tr name="199" id="199">
+<td><a id="l199" class='ln'>199</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

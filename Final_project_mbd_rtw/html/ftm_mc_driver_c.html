@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * Copyright (c) 2016, Freescale Semiconductor, Inc.</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> * Copyright 2016-2018 NXP</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * All rights reserved.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * THIS SOFTWARE IS PROVIDED BY NXP "AS IS" AND ANY EXPRESSED OR</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> * IN NO EVENT SHALL NXP OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct"> * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="ct"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct"> * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="ct"> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</span></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct"> * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="ct"> * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF</span></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="ct"> * THE POSSIBILITY OF SUCH DAMAGE.</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="ct">/*!</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="ct"> * @file ftm_mc_driver.c</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="ct"> * @page misra_violations MISRA-C:2012 violations</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="ct"> * Violates MISRA 2012 Required Rule 8.4, external symbol defined without a prior</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="ct"> * declaration.</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="ct"> * The symbols are declared in the driver common file as external; they are needed</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="ct"> * at driver initialization to install the correct interrupt handler, but are not</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="ct"> * a part of the public API.</span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="ct"> * Violates MISRA 2012 Advisory Rule 8.7, External could be made static.</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="ct"> * The function is defined for use by application code.</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="pp">#include "ftm_mc_driver.h"</span></td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td><span class="pp">#include "ftm_hw_access.h"</span></td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td></td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td><span class="ct">/*******************************************************************************</span></td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><span class="ct"> * Code</span></td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><span class="ct"> ******************************************************************************/</span></td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td><span class="ct"> * Function Name : FTM_DRV_InitCounter</span></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="ct"> * Description   : Initializes the FTM counter. This function provides access to the</span></td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td><span class="ct"> * FTM counter settings. The counter can be run in Up counting or Up-down counting modes.</span></td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td><span class="ct"> * To run the counter in Free running mode, choose Up counting option and provide</span></td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td><span class="ct"> * 0x0 for the countStartVal and 0xFFFF for countFinalVal. Please call this</span></td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td><span class="ct"> * function only when FTM is used as timer/counter.</span></td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td><span class="ct"> * Implements    : FTM_DRV_InitCounter_Activity</span></td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td><a id="52c1" class="tk">status_t</a> <a id="52c10" class="tk">FTM_DRV_InitCounter</a>(<a id="52c30" class="tk">uint32_t</a> <a id="52c39" class="tk">instance</a>,</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td>  <span class="kw">const</span> <a id="53c9" class="tk">ftm_timer_param_t</a> <a id="53c27" class="tk">*</a> <a id="53c29" class="tk">timer</a>)</td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td><span class="br">{</span></td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td>  <a id="55c3" class="tk">DEV_ASSERT</a>(<a id="55c14" class="tk">instance</a> <a id="55c23" class="tk">&lt;</a> <a id="55c25" class="tk">FTM_INSTANCE_COUNT</a>);</td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>  <a id="56c3" class="tk">DEV_ASSERT</a>(<a id="56c14" class="tk">timer</a> <a id="56c20" class="tk">!=</a> <a id="56c23" class="tk">NULL</a>);</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td>  <a id="57c3" class="tk">DEV_ASSERT</a>((<a id="57c15" class="tk">FTM_MODE_UP_TIMER</a> <a id="57c33" class="tk">==</a> <a id="57c36" class="tk">timer</a>-&gt;<a id="57c43" class="tk">mode</a>) <a id="57c49" class="tk">||</a> (<a id="57c53" class="tk">FTM_MODE_UP_DOWN_TIMER</a> <a id="57c76" class="tk">==</a></td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td>              <a id="58c15" class="tk">timer</a>-&gt;<a id="58c22" class="tk">mode</a>));</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td>  <a id="59c3" class="tk">FTM_Type</a> <a id="59c12" class="tk">*</a> <a id="59c14" class="tk">ftmBase</a> = <a id="59c24" class="tk">g_ftmBase</a>[<a id="59c34" class="tk">instance</a>];</td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td>  <a id="60c3" class="tk">ftm_state_t</a> <a id="60c15" class="tk">*</a> <a id="60c17" class="tk">state</a> = <a id="60c25" class="tk">ftmStatePtr</a>[<a id="60c37" class="tk">instance</a>];</td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td>  <a id="61c3" class="tk">status_t</a> <a id="61c12" class="tk">retStatus</a> = <a id="61c24" class="tk">STATUS_SUCCESS</a>;</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td>  <a id="62c3" class="tk">uint8_t</a> <a id="62c11" class="tk">channel</a> = 0U;</td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td>  <span class="kw">if</span> ((<a id="63c8" class="tk">NULL</a> <a id="63c13" class="tk">!=</a> <a id="63c16" class="tk">state</a>) <a id="63c23" class="tk">&amp;&amp;</a> (<a id="63c27" class="tk">FTM_MODE_NOT_INITIALIZED</a> <a id="63c52" class="tk">==</a> <a id="63c55" class="tk">state</a>-&gt;<a id="63c62" class="tk">ftmMode</a>)) <span class="br">{</span></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td>    <span class="ct">/* Disable counter clock */</span></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td>    <a id="65c5" class="tk">FTM_DRV_SetClockSource</a>(<a id="65c28" class="tk">ftmBase</a>, <a id="65c37" class="tk">FTM_CLOCK_SOURCE_NONE</a>);</td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td></td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td>    <span class="ct">/* Clear the overflow flag */</span></td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td>    <a id="68c5" class="tk">FTM_DRV_ClearTimerOverflow</a>(<a id="68c32" class="tk">ftmBase</a>);</td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td></td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td>    <span class="ct">/* Set counter initial and maximum values */</span></td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td>    <a id="71c5" class="tk">FTM_DRV_SetCounterInitVal</a>(<a id="71c31" class="tk">ftmBase</a>, <a id="71c40" class="tk">timer</a>-&gt;<a id="71c47" class="tk">initialValue</a>);</td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td>    <a id="72c5" class="tk">FTM_DRV_SetMod</a>(<a id="72c20" class="tk">ftmBase</a>, <a id="72c29" class="tk">timer</a>-&gt;<a id="72c36" class="tk">finalValue</a>);</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td></td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td>    <span class="ct">/* Disable the quadrature decoder mode */</span></td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td>    <a id="75c5" class="tk">FTM_DRV_SetQuadDecoderCmd</a>(<a id="75c31" class="tk">ftmBase</a>, false);</td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td></td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td>    <span class="ct">/* Use FTM as counter, disable all the channels */</span></td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td>    <span class="kw">for</span> (<a id="78c10" class="tk">channel</a> = 0U; <a id="78c24" class="tk">channel</a> <a id="78c32" class="tk">&lt;</a> <a id="78c34" class="tk">FEATURE_FTM_CHANNEL_COUNT</a>; <a id="78c61" class="tk">channel</a><a id="78c68" class="tk">++</a>) <span class="br">{</span></td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td>      <a id="79c7" class="tk">FTM_DRV_SetChnEdgeLevel</a>(<a id="79c31" class="tk">ftmBase</a>, <a id="79c40" class="tk">channel</a>, 0U);</td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td></td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td>    <span class="ct">/* Check the FTM counter modes */</span></td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td>    <span class="kw">if</span> (<a id="83c9" class="tk">FTM_MODE_UP_TIMER</a> <a id="83c27" class="tk">==</a> <a id="83c30" class="tk">timer</a>-&gt;<a id="83c37" class="tk">mode</a>) <span class="br">{</span></td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td>      <a id="84c7" class="tk">FTM_DRV_SetCpwms</a>(<a id="84c24" class="tk">ftmBase</a>, false);</td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td>    <span class="br">}</span> <span class="kw">else</span> <span class="kw">if</span> (<a id="85c16" class="tk">FTM_MODE_UP_DOWN_TIMER</a> <a id="85c39" class="tk">==</a> <a id="85c42" class="tk">timer</a>-&gt;<a id="85c49" class="tk">mode</a>) <span class="br">{</span></td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td>      <a id="86c7" class="tk">FTM_DRV_SetCpwms</a>(<a id="86c24" class="tk">ftmBase</a>, true);</td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td>    <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td>      <span class="ct">/* Do nothing */</span></td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td></td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td>    <a id="91c5" class="tk">state</a>-&gt;<a id="91c12" class="tk">ftmMode</a> = <a id="91c22" class="tk">timer</a>-&gt;<a id="91c29" class="tk">mode</a>;</td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td>  <span class="br">}</span> <span class="kw">else</span> <span class="br">{</span></td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td>    <a id="93c5" class="tk">retStatus</a> = <a id="93c17" class="tk">STATUS_ERROR</a>;</td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td>  <span class="br">}</span></td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td></td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td>  <span class="kw">return</span> <a id="96c10" class="tk">retStatus</a>;</td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td><span class="br">}</span></td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td></td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td><span class="ct"> * Function Name : FTM_DRV_CounterStart</span></td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td><span class="ct"> * Description   : Starts the FTM counter.</span></td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td><span class="ct"> * Implements    : FTM_DRV_CounterStart_Activity</span></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td><a id="106c1" class="tk">status_t</a> <a id="106c10" class="tk">FTM_DRV_CounterStart</a>(<a id="106c31" class="tk">uint32_t</a> <a id="106c40" class="tk">instance</a>)</td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td><span class="br">{</span></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td>  <a id="108c3" class="tk">DEV_ASSERT</a>(<a id="108c14" class="tk">instance</a> <a id="108c23" class="tk">&lt;</a> <a id="108c25" class="tk">FTM_INSTANCE_COUNT</a>);</td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td>  <a id="109c3" class="tk">FTM_Type</a> <a id="109c12" class="tk">*</a> <a id="109c14" class="tk">ftmBase</a> = <a id="109c24" class="tk">g_ftmBase</a>[<a id="109c34" class="tk">instance</a>];</td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td>  <span class="kw">const</span> <a id="110c9" class="tk">ftm_state_t</a> <a id="110c21" class="tk">*</a> <a id="110c23" class="tk">state</a> = <a id="110c31" class="tk">ftmStatePtr</a>[<a id="110c43" class="tk">instance</a>];</td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td></td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td>  <span class="ct">/* Check the clock source is available for FTM counter */</span></td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td>  <a id="113c3" class="tk">DEV_ASSERT</a>(<a id="113c14" class="tk">state</a>-&gt;<a id="113c21" class="tk">ftmSourceClockFrequency</a> <a id="113c45" class="tk">&gt;</a> 0U);</td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td></td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td>  <span class="ct">/* Enable counter clock */</span></td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td>  <a id="116c3" class="tk">FTM_DRV_SetClockSource</a>(<a id="116c26" class="tk">ftmBase</a>, <a id="116c35" class="tk">state</a>-&gt;<a id="116c42" class="tk">ftmClockSource</a>);</td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td>  <span class="kw">return</span> <a id="117c10" class="tk">STATUS_SUCCESS</a>;</td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td><span class="br">}</span></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td></td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="ct"> * Function Name : FTM_DRV_CounterStop</span></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td><span class="ct"> * Description   : Stops the FTM counter.</span></td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="ct"> * Implements    : FTM_DRV_CounterStop_Activity</span></td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><a id="127c1" class="tk">status_t</a> <a id="127c10" class="tk">FTM_DRV_CounterStop</a>(<a id="127c30" class="tk">uint32_t</a> <a id="127c39" class="tk">instance</a>)</td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td><span class="br">{</span></td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td>  <a id="129c3" class="tk">DEV_ASSERT</a>(<a id="129c14" class="tk">instance</a> <a id="129c23" class="tk">&lt;</a> <a id="129c25" class="tk">FTM_INSTANCE_COUNT</a>);</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td>  <a id="130c3" class="tk">FTM_Type</a> <a id="130c12" class="tk">*</a> <a id="130c14" class="tk">ftmBase</a> = <a id="130c24" class="tk">g_ftmBase</a>[<a id="130c34" class="tk">instance</a>];</td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td>  <a id="131c3" class="tk">ftm_state_t</a> <a id="131c15" class="tk">*</a> <a id="131c17" class="tk">state</a> = <a id="131c25" class="tk">ftmStatePtr</a>[<a id="131c37" class="tk">instance</a>];</td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td></td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td>  <span class="ct">/* Stop the FTM counter */</span></td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td>  <a id="134c3" class="tk">FTM_DRV_SetClockSource</a>(<a id="134c26" class="tk">ftmBase</a>, <a id="134c35" class="tk">FTM_CLOCK_SOURCE_NONE</a>);</td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td>  <a id="135c3" class="tk">state</a>-&gt;<a id="135c10" class="tk">ftmMode</a> = <a id="135c20" class="tk">FTM_MODE_NOT_INITIALIZED</a>;</td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td>  <span class="kw">return</span> <a id="136c10" class="tk">STATUS_SUCCESS</a>;</td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td><span class="br">}</span></td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td></td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="ct">/*FUNCTION**********************************************************************</span></td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td><span class="ct"> * Function Name : FTM_DRV_CounterRead</span></td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td><span class="ct"> * Description   : Reads back the current value of the FTM counter.</span></td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td><span class="ct"> * Implements    : FTM_DRV_CounterRead_Activity</span></td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td><span class="ct"> *END**************************************************************************/</span></td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td><a id="146c1" class="tk">uint32_t</a> <a id="146c10" class="tk">FTM_DRV_CounterRead</a>(<a id="146c30" class="tk">uint32_t</a> <a id="146c39" class="tk">instance</a>)</td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td><span class="br">{</span></td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td>  <a id="148c3" class="tk">DEV_ASSERT</a>(<a id="148c14" class="tk">instance</a> <a id="148c23" class="tk">&lt;</a> <a id="148c25" class="tk">FTM_INSTANCE_COUNT</a>);</td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td>  <a id="149c3" class="tk">FTM_Type</a> <span class="kw">const</span> <a id="149c18" class="tk">*</a> <a id="149c20" class="tk">ftmBase</a> = <a id="149c30" class="tk">g_ftmBase</a>[<a id="149c40" class="tk">instance</a>];</td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td>  <span class="kw">return</span> <a id="150c10" class="tk">FTM_DRV_GetCounter</a>(<a id="150c29" class="tk">ftmBase</a>);</td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td><span class="br">}</span></td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td></td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td><span class="ct">/*******************************************************************************</span></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td><span class="ct"> * EOF</span></td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td><span class="ct"> ******************************************************************************/</span></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

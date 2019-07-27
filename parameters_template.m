@@ -19,10 +19,10 @@ dc_satlow = .24;
 % Auto Steering
 % Tune steering controllers here
 n_desired = 0;
-S_Kd1 = 0.0875;  
-S_Kp1 = 13.45;   
+S_Kd1 =0.0875;  %0.0875
+S_Kp1 = 13.4;   % 13.4
 S_Kp2 = 1473.5;
-S_Kd2 = 164;
+S_Kd2 = 165;
 
 % Given ===================================================================
 % Vehicle specs

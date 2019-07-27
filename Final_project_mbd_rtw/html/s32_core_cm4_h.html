@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * Copyright (c) 2015-2016 Freescale Semiconductor, Inc.</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> * Copyright 2016-2017 NXP</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * All rights reserved.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * THIS SOFTWARE IS PROVIDED BY NXP "AS IS" AND ANY EXPRESSED OR</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> * IN NO EVENT SHALL NXP OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct"> * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="ct"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct"> * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="ct"> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,</span></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct"> * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="ct"> * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF</span></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="ct"> * THE POSSIBILITY OF SUCH DAMAGE.</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="ct">/*!</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="ct"> * @file s32_core_cm4.h</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="ct"> * @page misra_violations MISRA-C:2012 violations</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="ct"> * Violates MISRA 2012 Advisory Directive 4.9, Function-like macro</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="ct"> * Function-like macros are used instead of inline functions in order to ensure</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="ct"> * that the performance will not be decreased if the functions will not be</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="ct"> * inlined by the compiler.</span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="ct"> * @section [global]</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="ct"> * Violates MISRA 2012 Advisory Rule 2.5, Global macro not referenced.</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="ct"> * The macros defined are used only on some of the drivers, so this might be reported</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="ct"> * when the analysis is made only on one driver.</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td></td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td><span class="ct"> * Tool Chains:</span></td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><span class="ct"> *   GNUC flag is defined also by ARM compiler - it shows the current major version of the compatible GCC version</span></td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><span class="ct"> *   __GNUC__   : GNU Compiler Collection</span></td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td><span class="ct"> *   __ghs__    : Green Hills ARM Compiler</span></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="ct"> *   __ICCARM__ : IAR ARM Compiler</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td><span class="ct"> *   __DCC__    : Wind River Diab Compiler</span></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td><span class="ct"> *   __ARMCC_VERSION:  ARM Compiler</span></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td></td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td><span class="pp">#if</span> <a id="46c5" class="tk">!</a><a id="46c6" class="tk">defined</a> (<a id="46c15" class="tk">CORE_CM4_H</a>)</td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td><span class="pp">#define</span> <a id="47c9" class="tk">CORE_CM4_H</a></td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td></td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td></td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td><span class="pp">#ifdef</span> <a id="50c8" class="tk">__cplusplus</a></td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td><span class="kw">extern</span> "C" <span class="br">{</span></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td></td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td><span class="ct">/** \brief  BKPT_ASM</span></td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td><span class="ct"> *   Macro to be used to trigger an debug interrupt</span></td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td><span class="pp">#define</span> <a id="58c9" class="tk">BKPT_ASM</a> <span class="kw">__asm</span>("BKPT #0\n\t")</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td></td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td></td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td><span class="ct">/** \brief  Enable FPU</span></td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td><span class="ct"> *   ENABLE_FPU indicates whether SystemInit will enable the Floating point unit (FPU)</span></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td><span class="pp">#if</span> <a id="65c5" class="tk">defined</a> (<a id="65c14" class="tk">__GNUC__</a>) <a id="65c24" class="tk">||</a> <a id="65c27" class="tk">defined</a> (<a id="65c36" class="tk">__ARMCC_VERSION</a>)</td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td><span class="pp">#if</span> <a id="66c5" class="tk">defined</a> (<a id="66c14" class="tk">__VFP_FP__</a>) <a id="66c26" class="tk">&amp;&amp;</a> <a id="66c29" class="tk">!</a><a id="66c30" class="tk">defined</a> (<a id="66c39" class="tk">__SOFTFP__</a>)</td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td><span class="pp">#define</span> <a id="67c9" class="tk">ENABLE_FPU</a></td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td></td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td><span class="pp">#elif</span> <a id="70c7" class="tk">defined</a> (<a id="70c16" class="tk">__ICCARM__</a>)</td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td><span class="pp">#if</span> <a id="71c5" class="tk">defined</a> <a id="71c13" class="tk">__ARMVFP__</a></td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td><span class="pp">#define</span> <a id="72c9" class="tk">ENABLE_FPU</a></td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td></td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td><span class="pp">#elif</span> <a id="75c7" class="tk">defined</a> (<a id="75c16" class="tk">__ghs__</a>) <a id="75c25" class="tk">||</a> <a id="75c28" class="tk">defined</a> (<a id="75c37" class="tk">__DCC__</a>)</td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td><span class="pp">#if</span> <a id="76c5" class="tk">defined</a> (<a id="76c14" class="tk">__VFP__</a>)</td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td><span class="pp">#define</span> <a id="77c9" class="tk">ENABLE_FPU</a></td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td><span class="pp">#endif</span> <span class="ct">/* if defined (__GNUC__) */</span></td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td></td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td><span class="ct">/** \brief  Enable interrupts</span></td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td><span class="pp">#if</span> <a id="83c5" class="tk">defined</a> (<a id="83c14" class="tk">__GNUC__</a>)</td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td><span class="pp">#define</span> <a id="84c9" class="tk">ENABLE_INTERRUPTS</a>() <span class="kw">__asm</span> <span class="kw">volatile</span> ("cpsie i" <a id="84c55" class="tk">:</a> <a id="84c57" class="tk">:</a> <a id="84c59" class="tk">:</a> "memory");</td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td><span class="pp">#define</span> <a id="86c9" class="tk">ENABLE_INTERRUPTS</a>() <span class="kw">__asm</span>("cpsie i")</td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td></td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td></td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td><span class="ct">/** \brief  Disable interrupts</span></td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td><span class="pp">#if</span> <a id="92c5" class="tk">defined</a> (<a id="92c14" class="tk">__GNUC__</a>)</td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td><span class="pp">#define</span> <a id="93c9" class="tk">DISABLE_INTERRUPTS</a>() <span class="kw">__asm</span> <span class="kw">volatile</span> ("cpsid i" <a id="93c56" class="tk">:</a> <a id="93c58" class="tk">:</a> <a id="93c60" class="tk">:</a> "memory");</td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td><span class="pp">#define</span> <a id="95c9" class="tk">DISABLE_INTERRUPTS</a>() <span class="kw">__asm</span>("cpsid i")</td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td></td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td></td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td><span class="ct">/** \brief  Enter low-power standby state</span></td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td><span class="ct"> *    WFI (Wait For Interrupt) makes the processor suspend execution (Clock is stopped) until an IRQ interrupts.</span></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td><span class="pp">#if</span> <a id="102c5" class="tk">defined</a> (<a id="102c14" class="tk">__GNUC__</a>)</td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td><span class="pp">#define</span> <a id="103c9" class="tk">STANDBY</a>() <span class="kw">__asm</span> <span class="kw">volatile</span> ("wfi")</td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td><span class="pp">#define</span> <a id="105c9" class="tk">STANDBY</a>() <span class="kw">__asm</span>("wfi")</td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td></td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td><span class="ct">/** \brief  Reverse byte order in a word.</span></td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td><span class="pp">#if</span> <a id="111c5" class="tk">defined</a> (<a id="111c14" class="tk">__GNUC__</a>) <a id="111c24" class="tk">||</a> <a id="111c27" class="tk">defined</a> (<a id="111c36" class="tk">__ICCARM__</a>) <a id="111c48" class="tk">||</a> <a id="111c51" class="tk">defined</a> (<a id="111c60" class="tk">__ghs__</a>) <a id="111c69" class="tk">||</a> <a id="111c72" class="tk">defined</a> (<a id="111c81" class="tk">__ARMCC_VERSION</a>)</td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td><span class="pp">#define</span> <a id="112c9" class="tk">REV_BYTES_32</a>(<a id="112c22" class="tk">a</a>, <a id="112c25" class="tk">b</a>) <span class="kw">__asm</span> <span class="kw">volatile</span> ("rev %0, %1" <a id="112c57" class="tk">:</a> "=r" (<a id="112c65" class="tk">b</a>) <a id="112c68" class="tk">:</a> "r" (<a id="112c75" class="tk">a</a>))</td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td><span class="pp">#define</span> <a id="114c9" class="tk">REV_BYTES_32</a>(<a id="114c22" class="tk">a</a>, <a id="114c25" class="tk">b</a>) (<a id="114c29" class="tk">b</a> = ((<a id="114c35" class="tk">a</a> <a id="114c37" class="tk">&amp;</a> 0xFF000000U) <a id="114c52" class="tk">&gt;&gt;</a> 24U) <a id="114c60" class="tk">|</a> ((<a id="114c64" class="tk">a</a> <a id="114c66" class="tk">&amp;</a> 0xFF0000U) <a id="114c79" class="tk">&gt;&gt;</a> 8U) \</td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td>                                <a id="115c118" class="tk">|</a> ((<a id="115c122" class="tk">a</a> <a id="115c124" class="tk">&amp;</a> 0xFF00U) <a id="115c135" class="tk">&lt;&lt;</a> 8U) <a id="115c142" class="tk">|</a> ((<a id="115c146" class="tk">a</a> <a id="115c148" class="tk">&amp;</a> 0xFFU) <a id="115c157" class="tk">&lt;&lt;</a> 24U))</td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td></td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td><span class="ct">/** \brief  Reverse byte order in each halfword independently.</span></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td><span class="pp">#if</span> <a id="120c5" class="tk">defined</a> (<a id="120c14" class="tk">__GNUC__</a>) <a id="120c24" class="tk">||</a> <a id="120c27" class="tk">defined</a> (<a id="120c36" class="tk">__ICCARM__</a>) <a id="120c48" class="tk">||</a> <a id="120c51" class="tk">defined</a> (<a id="120c60" class="tk">__ghs__</a>) <a id="120c69" class="tk">||</a> <a id="120c72" class="tk">defined</a> (<a id="120c81" class="tk">__ARMCC_VERSION</a>)</td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="pp">#define</span> <a id="121c9" class="tk">REV_BYTES_16</a>(<a id="121c22" class="tk">a</a>, <a id="121c25" class="tk">b</a>) <span class="kw">__asm</span> <span class="kw">volatile</span> ("rev16 %0, %1" <a id="121c59" class="tk">:</a> "=r" (<a id="121c67" class="tk">b</a>) <a id="121c70" class="tk">:</a> "r" (<a id="121c77" class="tk">a</a>))</td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td><span class="pp">#define</span> <a id="123c9" class="tk">REV_BYTES_16</a>(<a id="123c22" class="tk">a</a>, <a id="123c25" class="tk">b</a>) (<a id="123c29" class="tk">b</a> = ((<a id="123c35" class="tk">a</a> <a id="123c37" class="tk">&amp;</a> 0xFF000000U) <a id="123c52" class="tk">&gt;&gt;</a> 8U) <a id="123c59" class="tk">|</a> ((<a id="123c63" class="tk">a</a> <a id="123c65" class="tk">&amp;</a> 0xFF0000U) <a id="123c78" class="tk">&lt;&lt;</a> 8U) \</td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td>                                <a id="124c117" class="tk">|</a> ((<a id="124c121" class="tk">a</a> <a id="124c123" class="tk">&amp;</a> 0xFF00U) <a id="124c134" class="tk">&gt;&gt;</a> 8U) <a id="124c141" class="tk">|</a> ((<a id="124c145" class="tk">a</a> <a id="124c147" class="tk">&amp;</a> 0xFFU) <a id="124c156" class="tk">&lt;&lt;</a> 8U))</td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td></td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><span class="ct">/** \brief  Places a function in RAM.</span></td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td><span class="pp">#if</span> <a id="129c5" class="tk">defined</a> ( <a id="129c15" class="tk">__GNUC__</a> ) <a id="129c26" class="tk">||</a> <a id="129c29" class="tk">defined</a> (<a id="129c38" class="tk">__ARMCC_VERSION</a>)</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td>    <span class="pp">#define</span> <a id="130c13" class="tk">START_FUNCTION_DECLARATION_RAMSECTION</a></td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td>    <span class="pp">#define</span> <a id="131c13" class="tk">END_FUNCTION_DECLARATION_RAMSECTION</a>        <a id="131c56" class="tk">__attribute__</a>((<a id="131c71" class="tk">section</a> (".code_ram")));</td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td><span class="pp">#elif</span> <a id="132c7" class="tk">defined</a> ( <a id="132c17" class="tk">__ghs__</a> )</td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td>    <span class="pp">#define</span> <a id="133c13" class="tk">START_FUNCTION_DECLARATION_RAMSECTION</a>      <a id="133c56" class="tk">_Pragma</a>("ghs callmode=far")</td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td>    <span class="pp">#define</span> <a id="134c13" class="tk">END_FUNCTION_DECLARATION_RAMSECTION</a>        <a id="134c56" class="tk">__attribute__</a>((<a id="134c71" class="tk">section</a> (".code_ram")));\</td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td>                                                       <a id="135c150" class="tk">_Pragma</a>("ghs callmode=default")</td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td><span class="pp">#elif</span> <a id="136c7" class="tk">defined</a> ( <a id="136c17" class="tk">__ICCARM__</a> )</td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td>    <span class="pp">#define</span> <a id="137c13" class="tk">START_FUNCTION_DECLARATION_RAMSECTION</a>      <a id="137c56" class="tk">__ramfunc</a></td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td>    <span class="pp">#define</span> <a id="138c13" class="tk">END_FUNCTION_DECLARATION_RAMSECTION</a>        ;</td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="pp">#elif</span> <a id="139c7" class="tk">defined</a> ( <a id="139c17" class="tk">__DCC__</a> )</td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td>    <span class="pp">#define</span> <a id="140c13" class="tk">START_FUNCTION_DECLARATION_RAMSECTION</a>      <a id="140c56" class="tk">_Pragma</a>("section CODE \".code_ram\"") \</td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td>                                                       <a id="141c149" class="tk">_Pragma</a>("use_section CODE")</td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td>    <span class="pp">#define</span> <a id="142c13" class="tk">END_FUNCTION_DECLARATION_RAMSECTION</a>        ; \</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td>                                                       <a id="143c113" class="tk">_Pragma</a>("section CODE \".text\"")</td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td>    <span class="ct">/* Keep compatibility with software analysis tools */</span></td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td>    <span class="pp">#define</span> <a id="146c13" class="tk">START_FUNCTION_DECLARATION_RAMSECTION</a></td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td>    <span class="pp">#define</span> <a id="147c13" class="tk">END_FUNCTION_DECLARATION_RAMSECTION</a>        ;</td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td></td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td>    <span class="ct">/* For GCC, IAR, GHS, Diab and ARMC there is no need to specify the section when</span></td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td><span class="ct">    defining a function, it is enough to specify it at the declaration. This</span></td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td><span class="ct">    also enables compatibility with software analysis tools. */</span></td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td>    <span class="pp">#define</span> <a id="153c13" class="tk">START_FUNCTION_DEFINITION_RAMSECTION</a></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td>    <span class="pp">#define</span> <a id="154c13" class="tk">END_FUNCTION_DEFINITION_RAMSECTION</a></td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td><span class="pp">#if</span> <a id="156c5" class="tk">defined</a> (<a id="156c14" class="tk">__ICCARM__</a>)</td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td>    <span class="pp">#define</span> <a id="157c13" class="tk">DISABLE_CHECK_RAMSECTION_FUNCTION_CALL</a>     <a id="157c56" class="tk">_Pragma</a>("diag_suppress=Ta022")</td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td>    <span class="pp">#define</span> <a id="158c13" class="tk">ENABLE_CHECK_RAMSECTION_FUNCTION_CALL</a>      <a id="158c56" class="tk">_Pragma</a>("diag_default=Ta022")</td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td>    <span class="pp">#define</span> <a id="160c13" class="tk">DISABLE_CHECK_RAMSECTION_FUNCTION_CALL</a></td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td>    <span class="pp">#define</span> <a id="161c13" class="tk">ENABLE_CHECK_RAMSECTION_FUNCTION_CALL</a></td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td></td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td><span class="ct">/** \brief  Get Core ID</span></td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td><span class="ct"> *   GET_CORE_ID returns the processor identification number for cm4</span></td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="168" id="168">
+<td><a id="l168" class='ln'>168</a></td><td><span class="pp">#define</span> <a id="168c9" class="tk">GET_CORE_ID</a>()	0U</td></tr>
+<tr name="169" id="169">
+<td><a id="l169" class='ln'>169</a></td><td></td></tr>
+<tr name="170" id="170">
+<td><a id="l170" class='ln'>170</a></td><td><span class="ct">/** \brief  Data alignment.</span></td></tr>
+<tr name="171" id="171">
+<td><a id="l171" class='ln'>171</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="172" id="172">
+<td><a id="l172" class='ln'>172</a></td><td><span class="pp">#if</span> <a id="172c5" class="tk">defined</a> ( <a id="172c15" class="tk">__GNUC__</a> ) <a id="172c26" class="tk">||</a> <a id="172c29" class="tk">defined</a> ( <a id="172c39" class="tk">__ghs__</a> ) <a id="172c49" class="tk">||</a> <a id="172c52" class="tk">defined</a> ( <a id="172c62" class="tk">__DCC__</a> ) <a id="172c72" class="tk">||</a> <a id="172c75" class="tk">defined</a> (<a id="172c84" class="tk">__ARMCC_VERSION</a>)</td></tr>
+<tr name="173" id="173">
+<td><a id="l173" class='ln'>173</a></td><td>    <span class="pp">#define</span> <a id="173c13" class="tk">ALIGNED</a>(<a id="173c21" class="tk">x</a>)      <a id="173c29" class="tk">__attribute__</a>((<a id="173c44" class="tk">aligned</a>(<a id="173c52" class="tk">x</a>)))</td></tr>
+<tr name="174" id="174">
+<td><a id="l174" class='ln'>174</a></td><td><span class="pp">#elif</span> <a id="174c7" class="tk">defined</a> ( <a id="174c17" class="tk">__ICCARM__</a> )</td></tr>
+<tr name="175" id="175">
+<td><a id="l175" class='ln'>175</a></td><td>    <span class="pp">#define</span> <a id="175c13" class="tk">stringify</a>(<a id="175c23" class="tk">s</a>) <a id="175c26" class="tk">tostring</a>(<a id="175c35" class="tk">s</a>)</td></tr>
+<tr name="176" id="176">
+<td><a id="l176" class='ln'>176</a></td><td>    <span class="pp">#define</span> <a id="176c13" class="tk">tostring</a>(<a id="176c22" class="tk">s</a>) #<a id="176c26" class="tk">s</a></td></tr>
+<tr name="177" id="177">
+<td><a id="l177" class='ln'>177</a></td><td>    <span class="pp">#define</span> <a id="177c13" class="tk">ALIGNED</a>(<a id="177c21" class="tk">x</a>)      <a id="177c29" class="tk">_Pragma</a>(<a id="177c37" class="tk">stringify</a>(<a id="177c47" class="tk">data_alignment</a>=<a id="177c62" class="tk">x</a>))</td></tr>
+<tr name="178" id="178">
+<td><a id="l178" class='ln'>178</a></td><td><span class="pp">#else</span></td></tr>
+<tr name="179" id="179">
+<td><a id="l179" class='ln'>179</a></td><td>    <span class="ct">/* Keep compatibility with software analysis tools */</span></td></tr>
+<tr name="180" id="180">
+<td><a id="l180" class='ln'>180</a></td><td>    <span class="pp">#define</span> <a id="180c13" class="tk">ALIGNED</a>(<a id="180c21" class="tk">x</a>)</td></tr>
+<tr name="181" id="181">
+<td><a id="l181" class='ln'>181</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="182" id="182">
+<td><a id="l182" class='ln'>182</a></td><td></td></tr>
+<tr name="183" id="183">
+<td><a id="l183" class='ln'>183</a></td><td><span class="ct">/** \brief  Endianness.</span></td></tr>
+<tr name="184" id="184">
+<td><a id="l184" class='ln'>184</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="185" id="185">
+<td><a id="l185" class='ln'>185</a></td><td><span class="pp">#define</span> <a id="185c9" class="tk">CORE_LITTLE_ENDIAN</a></td></tr>
+<tr name="186" id="186">
+<td><a id="l186" class='ln'>186</a></td><td></td></tr>
+<tr name="187" id="187">
+<td><a id="l187" class='ln'>187</a></td><td><span class="pp">#ifdef</span> <a id="187c8" class="tk">__cplusplus</a></td></tr>
+<tr name="188" id="188">
+<td><a id="l188" class='ln'>188</a></td><td><span class="br">}</span></td></tr>
+<tr name="189" id="189">
+<td><a id="l189" class='ln'>189</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="190" id="190">
+<td><a id="l190" class='ln'>190</a></td><td></td></tr>
+<tr name="191" id="191">
+<td><a id="l191" class='ln'>191</a></td><td><span class="pp">#endif</span> <span class="ct">/* CORE_CM4_H */</span></td></tr>
+<tr name="192" id="192">
+<td><a id="l192" class='ln'>192</a></td><td></td></tr>
+<tr name="193" id="193">
+<td><a id="l193" class='ln'>193</a></td><td><span class="ct">/*******************************************************************************</span></td></tr>
+<tr name="194" id="194">
+<td><a id="l194" class='ln'>194</a></td><td><span class="ct"> * EOF</span></td></tr>
+<tr name="195" id="195">
+<td><a id="l195" class='ln'>195</a></td><td><span class="ct"> ******************************************************************************/</span></td></tr>
+<tr name="196" id="196">
+<td><a id="l196" class='ln'>196</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

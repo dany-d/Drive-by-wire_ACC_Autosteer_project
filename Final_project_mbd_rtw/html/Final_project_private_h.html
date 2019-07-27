@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * Academic License - for use in teaching, academic research, and meeting</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> * course requirements at degree granting institutions only.  Not for</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * government, commercial, or other organizational use.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * File: Final_project_private.h</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * Code generated for Simulink model 'Final_project'.</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct"> * Model version                   : 1.291</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="ct"> * Simulink Coder version          : 8.14 (R2018a) 06-Feb-2018</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="ct"> * MBDT for S32K1xx Series Version : 2018.R1 (R2016b-R2018a) 23-Jul-2018</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="ct"> * C/C++ source code generated on  : Fri Apr 19 12:10:53 2019</span></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="ct"> * Target selection: mbd_s32k14.tlc</span></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="ct"> * Embedded hardware selection: ARM Compatible-&gt;ARM Cortex</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="ct"> * Code generation objectives: Unspecified</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="ct"> * Validation result: Not run</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="pp">#ifndef</span> <a id="21c9" class="tk">RTW_HEADER_Final_project_private_h_</a></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="pp">#define</span> <a id="22c9" class="tk">RTW_HEADER_Final_project_private_h_</a></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="pp">#include "rtwtypes.h"</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="pp">#include "multiword_types.h"</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="pp">#include "zero_crossing_types.h"</span></td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="pp">#include "path_data.h"</span></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="pp">#include "path_data.h"</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="pp">#include "Final_project.h"</span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="pp">#ifndef</span> <a id="29c9" class="tk">UCHAR_MAX</a></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="pp">#include &lt;limits.h&gt;</span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="pp">#if</span> ( <a id="33c7" class="tk">UCHAR_MAX</a> <a id="33c17" class="tk">!=</a> (0xFFU) ) <a id="33c30" class="tk">||</a> ( <a id="33c35" class="tk">SCHAR_MAX</a> <a id="33c45" class="tk">!=</a> (0x7F) )</td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="pp">#error</span> <a id="34c8" class="tk">Code</a> <a id="34c13" class="tk">was</a> <a id="34c17" class="tk">generated</a> <span class="kw">for</span> <a id="34c31" class="tk">compiler</a> <a id="34c40" class="tk">with</a> <a id="34c45" class="tk">different</a> <a id="34c55" class="tk">sized</a> <a id="34c61" class="tk">uchar</a><a id="34c66" class="tk">/</a><span class="kw">char</span>. \</td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td><a id="35c73" class="tk">Consider</a> <a id="35c82" class="tk">adjusting</a> <a id="35c92" class="tk">Test</a> <a id="35c97" class="tk">hardware</a> <a id="35c106" class="tk">word</a> <a id="35c111" class="tk">size</a> <a id="35c116" class="tk">settings</a> <a id="35c125" class="tk">on</a> <a id="35c128" class="tk">the</a> \</td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td><a id="36c132" class="tk">Hardware</a> <a id="36c141" class="tk">Implementation</a> <a id="36c156" class="tk">pane</a> <a id="36c161" class="tk">to</a> <a id="36c164" class="tk">match</a> <a id="36c170" class="tk">your</a> <a id="36c175" class="tk">compiler</a> <a id="36c184" class="tk">word</a> <a id="36c189" class="tk">sizes</a> <a id="36c195" class="tk">as</a> \</td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td><a id="37c198" class="tk">defined</a> <a id="37c206" class="tk">in</a> <a id="37c209" class="tk">limits</a>.<a id="37c216" class="tk">h</a> <a id="37c218" class="tk">of</a> <a id="37c221" class="tk">the</a> <a id="37c225" class="tk">compiler</a>. <a id="37c235" class="tk">Alternatively</a>, <a id="37c250" class="tk">you</a> <a id="37c254" class="tk">can</a> \</td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><a id="38c258" class="tk">select</a> <a id="38c265" class="tk">the</a> <a id="38c269" class="tk">Test</a> <a id="38c274" class="tk">hardware</a> <a id="38c283" class="tk">is</a> <a id="38c286" class="tk">the</a> <a id="38c290" class="tk">same</a> <a id="38c295" class="tk">as</a> <a id="38c298" class="tk">production</a> <a id="38c309" class="tk">hardware</a> <a id="38c318" class="tk">option</a> <a id="38c325" class="tk">and</a> \</td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td><a id="39c329" class="tk">select</a> <a id="39c336" class="tk">the</a> <a id="39c340" class="tk">Enable</a> <a id="39c347" class="tk">portable</a> <a id="39c356" class="tk">word</a> <a id="39c361" class="tk">sizes</a> <a id="39c367" class="tk">option</a> <a id="39c374" class="tk">on</a> <a id="39c377" class="tk">the</a> <a id="39c381" class="tk">Code</a> <a id="39c386" class="tk">Generation</a> <a id="39c397" class="tk">&gt;</a> \</td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td><a id="40c399" class="tk">Verification</a> <a id="40c412" class="tk">pane</a> <span class="kw">for</span> <a id="40c421" class="tk">ERT</a> <a id="40c425" class="tk">based</a> <a id="40c431" class="tk">targets</a>, <a id="40c440" class="tk">which</a> <a id="40c446" class="tk">will</a> <a id="40c451" class="tk">disable</a> <a id="40c459" class="tk">the</a> \</td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><a id="41c463" class="tk">preprocessor</a> <a id="41c476" class="tk">word</a> <a id="41c481" class="tk">size</a> <a id="41c486" class="tk">checks</a>.</td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="pp">#if</span> ( <a id="44c7" class="tk">USHRT_MAX</a> <a id="44c17" class="tk">!=</a> (0xFFFFU) ) <a id="44c32" class="tk">||</a> ( <a id="44c37" class="tk">SHRT_MAX</a> <a id="44c46" class="tk">!=</a> (0x7FFF) )</td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td><span class="pp">#error</span> <a id="45c8" class="tk">Code</a> <a id="45c13" class="tk">was</a> <a id="45c17" class="tk">generated</a> <span class="kw">for</span> <a id="45c31" class="tk">compiler</a> <a id="45c40" class="tk">with</a> <a id="45c45" class="tk">different</a> <a id="45c55" class="tk">sized</a> <a id="45c61" class="tk">ushort</a><a id="45c67" class="tk">/</a><span class="kw">short</span>. \</td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td><a id="46c75" class="tk">Consider</a> <a id="46c84" class="tk">adjusting</a> <a id="46c94" class="tk">Test</a> <a id="46c99" class="tk">hardware</a> <a id="46c108" class="tk">word</a> <a id="46c113" class="tk">size</a> <a id="46c118" class="tk">settings</a> <a id="46c127" class="tk">on</a> <a id="46c130" class="tk">the</a> \</td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td><a id="47c134" class="tk">Hardware</a> <a id="47c143" class="tk">Implementation</a> <a id="47c158" class="tk">pane</a> <a id="47c163" class="tk">to</a> <a id="47c166" class="tk">match</a> <a id="47c172" class="tk">your</a> <a id="47c177" class="tk">compiler</a> <a id="47c186" class="tk">word</a> <a id="47c191" class="tk">sizes</a> <a id="47c197" class="tk">as</a> \</td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td><a id="48c200" class="tk">defined</a> <a id="48c208" class="tk">in</a> <a id="48c211" class="tk">limits</a>.<a id="48c218" class="tk">h</a> <a id="48c220" class="tk">of</a> <a id="48c223" class="tk">the</a> <a id="48c227" class="tk">compiler</a>. <a id="48c237" class="tk">Alternatively</a>, <a id="48c252" class="tk">you</a> <a id="48c256" class="tk">can</a> \</td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td><a id="49c260" class="tk">select</a> <a id="49c267" class="tk">the</a> <a id="49c271" class="tk">Test</a> <a id="49c276" class="tk">hardware</a> <a id="49c285" class="tk">is</a> <a id="49c288" class="tk">the</a> <a id="49c292" class="tk">same</a> <a id="49c297" class="tk">as</a> <a id="49c300" class="tk">production</a> <a id="49c311" class="tk">hardware</a> <a id="49c320" class="tk">option</a> <a id="49c327" class="tk">and</a> \</td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td><a id="50c331" class="tk">select</a> <a id="50c338" class="tk">the</a> <a id="50c342" class="tk">Enable</a> <a id="50c349" class="tk">portable</a> <a id="50c358" class="tk">word</a> <a id="50c363" class="tk">sizes</a> <a id="50c369" class="tk">option</a> <a id="50c376" class="tk">on</a> <a id="50c379" class="tk">the</a> <a id="50c383" class="tk">Code</a> <a id="50c388" class="tk">Generation</a> <a id="50c399" class="tk">&gt;</a> \</td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td><a id="51c401" class="tk">Verification</a> <a id="51c414" class="tk">pane</a> <span class="kw">for</span> <a id="51c423" class="tk">ERT</a> <a id="51c427" class="tk">based</a> <a id="51c433" class="tk">targets</a>, <a id="51c442" class="tk">which</a> <a id="51c448" class="tk">will</a> <a id="51c453" class="tk">disable</a> <a id="51c461" class="tk">the</a> \</td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td><a id="52c465" class="tk">preprocessor</a> <a id="52c478" class="tk">word</a> <a id="52c483" class="tk">size</a> <a id="52c488" class="tk">checks</a>.</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td></td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td><span class="pp">#if</span> ( <a id="55c7" class="tk">UINT_MAX</a> <a id="55c16" class="tk">!=</a> (0xFFFFFFFFU) ) <a id="55c35" class="tk">||</a> ( <a id="55c40" class="tk">INT_MAX</a> <a id="55c48" class="tk">!=</a> (0x7FFFFFFF) )</td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td><span class="pp">#error</span> <a id="56c8" class="tk">Code</a> <a id="56c13" class="tk">was</a> <a id="56c17" class="tk">generated</a> <span class="kw">for</span> <a id="56c31" class="tk">compiler</a> <a id="56c40" class="tk">with</a> <a id="56c45" class="tk">different</a> <a id="56c55" class="tk">sized</a> <a id="56c61" class="tk">uint</a><a id="56c65" class="tk">/</a><span class="kw">int</span>. \</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td><a id="57c71" class="tk">Consider</a> <a id="57c80" class="tk">adjusting</a> <a id="57c90" class="tk">Test</a> <a id="57c95" class="tk">hardware</a> <a id="57c104" class="tk">word</a> <a id="57c109" class="tk">size</a> <a id="57c114" class="tk">settings</a> <a id="57c123" class="tk">on</a> <a id="57c126" class="tk">the</a> \</td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td><a id="58c130" class="tk">Hardware</a> <a id="58c139" class="tk">Implementation</a> <a id="58c154" class="tk">pane</a> <a id="58c159" class="tk">to</a> <a id="58c162" class="tk">match</a> <a id="58c168" class="tk">your</a> <a id="58c173" class="tk">compiler</a> <a id="58c182" class="tk">word</a> <a id="58c187" class="tk">sizes</a> <a id="58c193" class="tk">as</a> \</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td><a id="59c196" class="tk">defined</a> <a id="59c204" class="tk">in</a> <a id="59c207" class="tk">limits</a>.<a id="59c214" class="tk">h</a> <a id="59c216" class="tk">of</a> <a id="59c219" class="tk">the</a> <a id="59c223" class="tk">compiler</a>. <a id="59c233" class="tk">Alternatively</a>, <a id="59c248" class="tk">you</a> <a id="59c252" class="tk">can</a> \</td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td><a id="60c256" class="tk">select</a> <a id="60c263" class="tk">the</a> <a id="60c267" class="tk">Test</a> <a id="60c272" class="tk">hardware</a> <a id="60c281" class="tk">is</a> <a id="60c284" class="tk">the</a> <a id="60c288" class="tk">same</a> <a id="60c293" class="tk">as</a> <a id="60c296" class="tk">production</a> <a id="60c307" class="tk">hardware</a> <a id="60c316" class="tk">option</a> <a id="60c323" class="tk">and</a> \</td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td><a id="61c327" class="tk">select</a> <a id="61c334" class="tk">the</a> <a id="61c338" class="tk">Enable</a> <a id="61c345" class="tk">portable</a> <a id="61c354" class="tk">word</a> <a id="61c359" class="tk">sizes</a> <a id="61c365" class="tk">option</a> <a id="61c372" class="tk">on</a> <a id="61c375" class="tk">the</a> <a id="61c379" class="tk">Code</a> <a id="61c384" class="tk">Generation</a> <a id="61c395" class="tk">&gt;</a> \</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td><a id="62c397" class="tk">Verification</a> <a id="62c410" class="tk">pane</a> <span class="kw">for</span> <a id="62c419" class="tk">ERT</a> <a id="62c423" class="tk">based</a> <a id="62c429" class="tk">targets</a>, <a id="62c438" class="tk">which</a> <a id="62c444" class="tk">will</a> <a id="62c449" class="tk">disable</a> <a id="62c457" class="tk">the</a> \</td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td><a id="63c461" class="tk">preprocessor</a> <a id="63c474" class="tk">word</a> <a id="63c479" class="tk">size</a> <a id="63c484" class="tk">checks</a>.</td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td></td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td><span class="pp">#if</span> ( <a id="66c7" class="tk">ULONG_MAX</a> <a id="66c17" class="tk">!=</a> (0xFFFFFFFFU) ) <a id="66c36" class="tk">||</a> ( <a id="66c41" class="tk">LONG_MAX</a> <a id="66c50" class="tk">!=</a> (0x7FFFFFFF) )</td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td><span class="pp">#error</span> <a id="67c8" class="tk">Code</a> <a id="67c13" class="tk">was</a> <a id="67c17" class="tk">generated</a> <span class="kw">for</span> <a id="67c31" class="tk">compiler</a> <a id="67c40" class="tk">with</a> <a id="67c45" class="tk">different</a> <a id="67c55" class="tk">sized</a> <a id="67c61" class="tk">ulong</a><a id="67c66" class="tk">/</a><span class="kw">long</span>. \</td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><a id="68c73" class="tk">Consider</a> <a id="68c82" class="tk">adjusting</a> <a id="68c92" class="tk">Test</a> <a id="68c97" class="tk">hardware</a> <a id="68c106" class="tk">word</a> <a id="68c111" class="tk">size</a> <a id="68c116" class="tk">settings</a> <a id="68c125" class="tk">on</a> <a id="68c128" class="tk">the</a> \</td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td><a id="69c132" class="tk">Hardware</a> <a id="69c141" class="tk">Implementation</a> <a id="69c156" class="tk">pane</a> <a id="69c161" class="tk">to</a> <a id="69c164" class="tk">match</a> <a id="69c170" class="tk">your</a> <a id="69c175" class="tk">compiler</a> <a id="69c184" class="tk">word</a> <a id="69c189" class="tk">sizes</a> <a id="69c195" class="tk">as</a> \</td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td><a id="70c198" class="tk">defined</a> <a id="70c206" class="tk">in</a> <a id="70c209" class="tk">limits</a>.<a id="70c216" class="tk">h</a> <a id="70c218" class="tk">of</a> <a id="70c221" class="tk">the</a> <a id="70c225" class="tk">compiler</a>. <a id="70c235" class="tk">Alternatively</a>, <a id="70c250" class="tk">you</a> <a id="70c254" class="tk">can</a> \</td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td><a id="71c258" class="tk">select</a> <a id="71c265" class="tk">the</a> <a id="71c269" class="tk">Test</a> <a id="71c274" class="tk">hardware</a> <a id="71c283" class="tk">is</a> <a id="71c286" class="tk">the</a> <a id="71c290" class="tk">same</a> <a id="71c295" class="tk">as</a> <a id="71c298" class="tk">production</a> <a id="71c309" class="tk">hardware</a> <a id="71c318" class="tk">option</a> <a id="71c325" class="tk">and</a> \</td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td><a id="72c329" class="tk">select</a> <a id="72c336" class="tk">the</a> <a id="72c340" class="tk">Enable</a> <a id="72c347" class="tk">portable</a> <a id="72c356" class="tk">word</a> <a id="72c361" class="tk">sizes</a> <a id="72c367" class="tk">option</a> <a id="72c374" class="tk">on</a> <a id="72c377" class="tk">the</a> <a id="72c381" class="tk">Code</a> <a id="72c386" class="tk">Generation</a> <a id="72c397" class="tk">&gt;</a> \</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td><a id="73c399" class="tk">Verification</a> <a id="73c412" class="tk">pane</a> <span class="kw">for</span> <a id="73c421" class="tk">ERT</a> <a id="73c425" class="tk">based</a> <a id="73c431" class="tk">targets</a>, <a id="73c440" class="tk">which</a> <a id="73c446" class="tk">will</a> <a id="73c451" class="tk">disable</a> <a id="73c459" class="tk">the</a> \</td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td><a id="74c463" class="tk">preprocessor</a> <a id="74c476" class="tk">word</a> <a id="74c481" class="tk">size</a> <a id="74c486" class="tk">checks</a>.</td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td></td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td><span class="pp">#ifdef</span> <a id="77c8" class="tk">__cplusplus</a></td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td></td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td><span class="kw">extern</span> "C" <span class="br">{</span></td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td></td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td></td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="83c15" class="tk">VD_equation_Start_wrapper</a>(<span class="kw">const</span> <a id="83c47" class="tk">real_T</a> <a id="83c54" class="tk">*</a><a id="83c55" class="tk">L1</a>, <span class="kw">const</span> <a id="83c65" class="tk">int_T</a> <a id="83c71" class="tk">p_width0</a>,</td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td>    <span class="kw">const</span> <a id="84c11" class="tk">real_T</a> <a id="84c18" class="tk">*</a><a id="84c19" class="tk">L2</a>, <span class="kw">const</span> <a id="84c29" class="tk">int_T</a> <a id="84c35" class="tk">p_width1</a>,</td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td>    <span class="kw">const</span> <a id="85c11" class="tk">real_T</a> <a id="85c18" class="tk">*</a><a id="85c19" class="tk">m</a>, <span class="kw">const</span> <a id="85c28" class="tk">int_T</a> <a id="85c34" class="tk">p_width2</a>);</td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="86c15" class="tk">VD_equation_Outputs_wrapper</a>(<span class="kw">const</span> <a id="86c49" class="tk">real32_T</a> <a id="86c58" class="tk">*</a><a id="86c59" class="tk">delta</a>,</td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td>    <span class="kw">const</span> <a id="87c11" class="tk">real32_T</a> <a id="87c20" class="tk">*</a><a id="87c21" class="tk">u</a>,</td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td>    <span class="kw">const</span> <a id="88c11" class="tk">real32_T</a> <a id="88c20" class="tk">*</a><a id="88c21" class="tk">psi</a>,</td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td>    <a id="89c5" class="tk">real32_T</a> <a id="89c14" class="tk">*</a><a id="89c15" class="tk">x_dot</a>,</td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td>    <a id="90c5" class="tk">real32_T</a> <a id="90c14" class="tk">*</a><a id="90c15" class="tk">y_dot</a>,</td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td>    <a id="91c5" class="tk">real32_T</a> <a id="91c14" class="tk">*</a><a id="91c15" class="tk">psi_dot</a>,</td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td>    <span class="kw">const</span> <a id="92c11" class="tk">real_T</a> <a id="92c18" class="tk">*</a><a id="92c19" class="tk">L1</a>, <span class="kw">const</span> <a id="92c29" class="tk">int_T</a> <a id="92c35" class="tk">p_width0</a>,</td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td>    <span class="kw">const</span> <a id="93c11" class="tk">real_T</a> <a id="93c18" class="tk">*</a><a id="93c19" class="tk">L2</a>, <span class="kw">const</span> <a id="93c29" class="tk">int_T</a> <a id="93c35" class="tk">p_width1</a>,</td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td>    <span class="kw">const</span> <a id="94c11" class="tk">real_T</a> <a id="94c18" class="tk">*</a><a id="94c19" class="tk">m</a>, <span class="kw">const</span> <a id="94c28" class="tk">int_T</a> <a id="94c34" class="tk">p_width2</a>);</td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="95c15" class="tk">VD_equation_Terminate_wrapper</a>(<span class="kw">const</span> <a id="95c51" class="tk">real_T</a> <a id="95c58" class="tk">*</a><a id="95c59" class="tk">L1</a>, <span class="kw">const</span> <a id="95c69" class="tk">int_T</a></td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td>    <a id="96c5" class="tk">p_width0</a>,</td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td>    <span class="kw">const</span> <a id="97c11" class="tk">real_T</a> <a id="97c18" class="tk">*</a><a id="97c19" class="tk">L2</a>, <span class="kw">const</span> <a id="97c29" class="tk">int_T</a> <a id="97c35" class="tk">p_width1</a>,</td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td>    <span class="kw">const</span> <a id="98c11" class="tk">real_T</a> <a id="98c18" class="tk">*</a><a id="98c19" class="tk">m</a>, <span class="kw">const</span> <a id="98c28" class="tk">int_T</a> <a id="98c34" class="tk">p_width2</a>);</td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td></td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td><span class="pp">#ifdef</span> <a id="100c8" class="tk">__cplusplus</a></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td></td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td><span class="br">}</span></td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td><span class="pp">#ifdef</span> <a id="105c8" class="tk">__cplusplus</a></td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td></td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td><span class="kw">extern</span> "C" <span class="br">{</span></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td></td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td></td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="111c15" class="tk">Lead_car_find_Start_wrapper</a>(<span class="kw">void</span>);</td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="112c15" class="tk">Lead_car_find_Outputs_wrapper</a>(<span class="kw">const</span> <a id="112c51" class="tk">real32_T</a> <a id="112c60" class="tk">*</a><a id="112c61" class="tk">u0</a>,</td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td>    <span class="kw">const</span> <a id="113c11" class="tk">real32_T</a> <a id="113c20" class="tk">*</a><a id="113c21" class="tk">u1</a>,</td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td>    <a id="114c5" class="tk">real32_T</a> <a id="114c14" class="tk">*</a><a id="114c15" class="tk">closest_car_pos</a>,</td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td>    <a id="115c5" class="tk">real32_T</a> <a id="115c14" class="tk">*</a><a id="115c15" class="tk">closest_car_spd</a>,</td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td>    <a id="116c5" class="tk">real32_T</a> <a id="116c14" class="tk">*</a><a id="116c15" class="tk">dist</a>);</td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td>  <span class="kw">extern</span> <span class="kw">void</span> <a id="117c15" class="tk">Lead_car_find_Terminate_wrapper</a>(<span class="kw">void</span>);</td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td><span class="pp">#ifdef</span> <a id="119c8" class="tk">__cplusplus</a></td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td><span class="br">}</span></td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td></td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td><span class="kw">extern</span> <a id="124c8" class="tk">flexcan_state_t</a> <a id="124c24" class="tk">canCom0_State</a>;</td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="kw">extern</span> <a id="125c8" class="tk">flexcan_msgbuff_t</a> <a id="125c26" class="tk">canCom0_recvBuff2</a>;</td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td><span class="kw">extern</span> <a id="126c8" class="tk">flexcan_msgbuff_t</a> <a id="126c26" class="tk">canCom0_recvBuff3</a>;</td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td><span class="kw">extern</span> <a id="127c8" class="tk">flexcan_msgbuff_t</a> <a id="127c26" class="tk">canCom0_recvBuff12</a>;</td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td><span class="kw">extern</span> <a id="128c8" class="tk">flexcan_msgbuff_t</a> <a id="128c26" class="tk">canCom0_recvBuff13</a>;</td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td><span class="kw">extern</span> <a id="129c8" class="tk">flexcan_msgbuff_t</a> <a id="129c26" class="tk">canCom0_recvBuff14</a>;</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td><span class="kw">extern</span> <a id="130c8" class="tk">flexcan_msgbuff_t</a> <a id="130c26" class="tk">canCom0_recvBuff15</a>;</td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td><span class="kw">extern</span> <a id="131c8" class="tk">flexcan_msgbuff_t</a> <a id="131c26" class="tk">canCom0_recvBuff16</a>;</td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td><span class="kw">extern</span> <a id="132c8" class="tk">flexcan_msgbuff_t</a> <a id="132c26" class="tk">canCom0_recvBuff17</a>;</td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td><span class="kw">extern</span> <a id="133c8" class="tk">flexcan_msgbuff_t</a> <a id="133c26" class="tk">canCom0_recvBuff4</a>;</td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td><span class="kw">extern</span> <a id="134c8" class="tk">flexcan_msgbuff_t</a> <a id="134c26" class="tk">canCom0_recvBuff5</a>;</td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td><span class="kw">extern</span> <a id="135c8" class="tk">flexcan_msgbuff_t</a> <a id="135c26" class="tk">canCom0_recvBuff6</a>;</td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td><span class="kw">extern</span> <a id="136c8" class="tk">flexcan_msgbuff_t</a> <a id="136c26" class="tk">canCom0_recvBuff7</a>;</td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td><span class="kw">extern</span> <a id="137c8" class="tk">flexcan_msgbuff_t</a> <a id="137c26" class="tk">canCom0_recvBuff8</a>;</td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td><span class="kw">extern</span> <a id="138c8" class="tk">flexcan_msgbuff_t</a> <a id="138c26" class="tk">canCom0_recvBuff9</a>;</td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td><span class="kw">extern</span> <a id="139c8" class="tk">flexcan_msgbuff_t</a> <a id="139c26" class="tk">canCom0_recvBuff10</a>;</td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td><span class="kw">extern</span> <a id="140c8" class="tk">flexcan_msgbuff_t</a> <a id="140c26" class="tk">canCom0_recvBuff11</a>;</td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td></td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td><span class="pp">#if</span> <a id="142c5" class="tk">defined</a>(<a id="142c13" class="tk">__MWERKS__</a>)</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td></td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td><span class="kw">double</span> <a id="144c8" class="tk">fmod</a> (<span class="kw">double</span> <a id="144c21" class="tk">x</a>, <span class="kw">double</span> <a id="144c31" class="tk">y</a>);</td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td><span class="kw">double</span> <a id="145c8" class="tk">fabs</a> (<span class="kw">double</span>);</td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td></td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td></td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td><span class="kw">extern</span> <a id="149c8" class="tk">real_T</a> <a id="149c15" class="tk">uMultiWord2Double</a>(<span class="kw">const</span> <a id="149c39" class="tk">uint32_T</a> <a id="149c48" class="tk">u1</a>[], <a id="149c54" class="tk">int32_T</a> <a id="149c62" class="tk">n1</a>, <a id="149c66" class="tk">int32_T</a> <a id="149c74" class="tk">e1</a>);</td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="150c13" class="tk">uMultiWordMul</a>(<span class="kw">const</span> <a id="150c33" class="tk">uint32_T</a> <a id="150c42" class="tk">u1</a>[], <a id="150c48" class="tk">int32_T</a> <a id="150c56" class="tk">n1</a>, <span class="kw">const</span> <a id="150c66" class="tk">uint32_T</a> <a id="150c75" class="tk">u2</a>[],</td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td>  <a id="151c3" class="tk">int32_T</a> <a id="151c11" class="tk">n2</a>, <a id="151c15" class="tk">uint32_T</a> <a id="151c24" class="tk">y</a>[], <a id="151c29" class="tk">int32_T</a> <a id="151c37" class="tk">n</a>);</td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="152c13" class="tk">SwitchCaseActionSubsystem2</a>(<span class="kw">const</span> <a id="152c46" class="tk">uint8_T</a> <a id="152c54" class="tk">rtu_sn</a>[8], <a id="152c65" class="tk">real32_T</a> <a id="152c74" class="tk">*</a><a id="152c75" class="tk">rty_s</a>,</td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td>  <a id="153c3" class="tk">real32_T</a> <a id="153c12" class="tk">*</a><a id="153c13" class="tk">rty_n</a>);</td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="154c13" class="tk">SwitchCaseActionSubsystem3</a>(<span class="kw">const</span> <a id="154c46" class="tk">uint8_T</a> <a id="154c54" class="tk">rtu_psius</a>[8], <a id="154c68" class="tk">real32_T</a></td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td>  <a id="155c3" class="tk">*</a><a id="155c4" class="tk">rty_psi</a>, <a id="155c13" class="tk">real32_T</a> <a id="155c22" class="tk">*</a><a id="155c23" class="tk">rty_us</a>);</td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="156c13" class="tk">Final_project_step0</a>(<span class="kw">void</span>);</td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="157c13" class="tk">Final_project_step1</a>(<span class="kw">void</span>);</td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td><span class="kw">extern</span> <span class="kw">void</span> <a id="158c13" class="tk">Final_project_step2</a>(<span class="kw">void</span>);</td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td></td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td><span class="pp">#endif</span>                                 <span class="ct">/* RTW_HEADER_Final_project_private_h_ */</span></td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td></td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td><span class="ct"> * File trailer for generated code.</span></td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td><span class="ct"> * [EOF]</span></td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

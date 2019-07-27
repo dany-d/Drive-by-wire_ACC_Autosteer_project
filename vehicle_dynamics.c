@@ -26,7 +26,7 @@
  * | See matlabroot/simulink/src/sfuntmpl_doc.c for a more detailed template |
  *  ------------------------------------------------------------------------- 
  *
- * Created: Thu Apr 04 15:17:16 2019
+ * Created: Thu Apr 04 16:44:06 2019
  */
 
 #define S_FUNCTION_LEVEL 2
@@ -38,7 +38,7 @@
 #define IN_PORT_0_NAME        delta
 #define INPUT_0_WIDTH         1
 #define INPUT_DIMS_0_COL      1
-#define INPUT_0_DTYPE         real_T
+#define INPUT_0_DTYPE         real32_T
 #define INPUT_0_COMPLEX       COMPLEX_NO
 #define IN_0_FRAME_BASED      FRAME_NO
 #define IN_0_BUS_BASED        0
@@ -55,7 +55,7 @@
 #define IN_PORT_1_NAME        u
 #define INPUT_1_WIDTH         1
 #define INPUT_DIMS_1_COL      1
-#define INPUT_1_DTYPE         real_T
+#define INPUT_1_DTYPE         real32_T
 #define INPUT_1_COMPLEX       COMPLEX_NO
 #define IN_1_FRAME_BASED      FRAME_NO
 #define IN_1_BUS_BASED        0
@@ -72,7 +72,7 @@
 #define IN_PORT_2_NAME        psi
 #define INPUT_2_WIDTH         1
 #define INPUT_DIMS_2_COL      1
-#define INPUT_2_DTYPE         real_T
+#define INPUT_2_DTYPE         real32_T
 #define INPUT_2_COMPLEX       COMPLEX_NO
 #define IN_2_FRAME_BASED      FRAME_NO
 #define IN_2_BUS_BASED        0
@@ -91,7 +91,7 @@
 #define OUT_PORT_0_NAME       x_dot
 #define OUTPUT_0_WIDTH        1
 #define OUTPUT_DIMS_0_COL     1
-#define OUTPUT_0_DTYPE        real_T
+#define OUTPUT_0_DTYPE        real32_T
 #define OUTPUT_0_COMPLEX      COMPLEX_NO
 #define OUT_0_FRAME_BASED     FRAME_NO
 #define OUT_0_BUS_BASED       0
@@ -107,7 +107,7 @@
 #define OUT_PORT_1_NAME       y_dot
 #define OUTPUT_1_WIDTH        1
 #define OUTPUT_DIMS_1_COL     1
-#define OUTPUT_1_DTYPE        real_T
+#define OUTPUT_1_DTYPE        real32_T
 #define OUTPUT_1_COMPLEX      COMPLEX_NO
 #define OUT_1_FRAME_BASED     FRAME_NO
 #define OUT_1_BUS_BASED       0
@@ -123,7 +123,7 @@
 #define OUT_PORT_2_NAME       psi_dot
 #define OUTPUT_2_WIDTH        1
 #define OUTPUT_DIMS_2_COL     1
-#define OUTPUT_2_DTYPE        real_T
+#define OUTPUT_2_DTYPE        real32_T
 #define OUTPUT_2_COMPLEX      COMPLEX_NO
 #define OUT_2_FRAME_BASED     FRAME_NO
 #define OUT_2_BUS_BASED       0
@@ -139,7 +139,7 @@
 #define OUT_PORT_3_NAME       u_dot
 #define OUTPUT_3_WIDTH        1
 #define OUTPUT_DIMS_3_COL     1
-#define OUTPUT_3_DTYPE        real_T
+#define OUTPUT_3_DTYPE        real32_T
 #define OUTPUT_3_COMPLEX      COMPLEX_NO
 #define OUT_3_FRAME_BASED     FRAME_NO
 #define OUT_3_BUS_BASED       0
@@ -172,13 +172,13 @@
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 #include "simstruc.h"
 
-extern void vehicle_dynamics_Outputs_wrapper(const real_T *delta,
-			const real_T *u,
-			const real_T *psi,
-			real_T *x_dot,
-			real_T *y_dot,
-			real_T *psi_dot,
-			real_T *u_dot);
+extern void vehicle_dynamics_Outputs_wrapper(const real32_T *delta,
+			const real32_T *u,
+			const real32_T *psi,
+			real32_T *x_dot,
+			real32_T *y_dot,
+			real32_T *psi_dot,
+			real32_T *u_dot);
 /*====================*
  * S-function methods *
  *====================*/
@@ -206,21 +206,21 @@ static void mdlInitializeSizes(SimStruct *S)
     if (!ssSetNumInputPorts(S, NUM_INPUTS)) return;
     /* Input Port 0 */
     ssSetInputPortWidth(S, 0, INPUT_0_WIDTH);
-    ssSetInputPortDataType(S, 0, SS_DOUBLE);
+    ssSetInputPortDataType(S, 0, SS_SINGLE);
     ssSetInputPortComplexSignal(S, 0, INPUT_0_COMPLEX);
     ssSetInputPortDirectFeedThrough(S, 0, INPUT_0_FEEDTHROUGH);
     ssSetInputPortRequiredContiguous(S, 0, 1); /*direct input signal access*/
 
     /* Input Port 1 */
     ssSetInputPortWidth(S, 1, INPUT_1_WIDTH);
-    ssSetInputPortDataType(S, 1, SS_DOUBLE);
+    ssSetInputPortDataType(S, 1, SS_SINGLE);
     ssSetInputPortComplexSignal(S, 1, INPUT_1_COMPLEX);
     ssSetInputPortDirectFeedThrough(S, 1, INPUT_1_FEEDTHROUGH);
     ssSetInputPortRequiredContiguous(S, 1, 1); /*direct input signal access*/
 
     /* Input Port 2 */
     ssSetInputPortWidth(S, 2, INPUT_2_WIDTH);
-    ssSetInputPortDataType(S, 2, SS_DOUBLE);
+    ssSetInputPortDataType(S, 2, SS_SINGLE);
     ssSetInputPortComplexSignal(S, 2, INPUT_2_COMPLEX);
     ssSetInputPortDirectFeedThrough(S, 2, INPUT_2_FEEDTHROUGH);
     ssSetInputPortRequiredContiguous(S, 2, 1); /*direct input signal access*/
@@ -229,19 +229,19 @@ static void mdlInitializeSizes(SimStruct *S)
     if (!ssSetNumOutputPorts(S, NUM_OUTPUTS)) return;
     /* Output Port 0 */
     ssSetOutputPortWidth(S, 0, OUTPUT_0_WIDTH);
-    ssSetOutputPortDataType(S, 0, SS_DOUBLE);
+    ssSetOutputPortDataType(S, 0, SS_SINGLE);
     ssSetOutputPortComplexSignal(S, 0, OUTPUT_0_COMPLEX);
     /* Output Port 1 */
     ssSetOutputPortWidth(S, 1, OUTPUT_1_WIDTH);
-    ssSetOutputPortDataType(S, 1, SS_DOUBLE);
+    ssSetOutputPortDataType(S, 1, SS_SINGLE);
     ssSetOutputPortComplexSignal(S, 1, OUTPUT_1_COMPLEX);
     /* Output Port 2 */
     ssSetOutputPortWidth(S, 2, OUTPUT_2_WIDTH);
-    ssSetOutputPortDataType(S, 2, SS_DOUBLE);
+    ssSetOutputPortDataType(S, 2, SS_SINGLE);
     ssSetOutputPortComplexSignal(S, 2, OUTPUT_2_COMPLEX);
     /* Output Port 3 */
     ssSetOutputPortWidth(S, 3, OUTPUT_3_WIDTH);
-    ssSetOutputPortDataType(S, 3, SS_DOUBLE);
+    ssSetOutputPortDataType(S, 3, SS_SINGLE);
     ssSetOutputPortComplexSignal(S, 3, OUTPUT_3_COMPLEX);
     ssSetNumPWork(S, 0);
 
@@ -307,13 +307,13 @@ static void mdlStart(SimStruct *S)
  */
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    const real_T *delta = (real_T *) ssGetInputPortRealSignal(S, 0);
-    const real_T *u = (real_T *) ssGetInputPortRealSignal(S, 1);
-    const real_T *psi = (real_T *) ssGetInputPortRealSignal(S, 2);
-    real_T *x_dot = (real_T *) ssGetOutputPortRealSignal(S, 0);
-    real_T *y_dot = (real_T *) ssGetOutputPortRealSignal(S, 1);
-    real_T *psi_dot = (real_T *) ssGetOutputPortRealSignal(S, 2);
-    real_T *u_dot = (real_T *) ssGetOutputPortRealSignal(S, 3);
+    const real32_T *delta = (real32_T *) ssGetInputPortRealSignal(S, 0);
+    const real32_T *u = (real32_T *) ssGetInputPortRealSignal(S, 1);
+    const real32_T *psi = (real32_T *) ssGetInputPortRealSignal(S, 2);
+    real32_T *x_dot = (real32_T *) ssGetOutputPortRealSignal(S, 0);
+    real32_T *y_dot = (real32_T *) ssGetOutputPortRealSignal(S, 1);
+    real32_T *psi_dot = (real32_T *) ssGetOutputPortRealSignal(S, 2);
+    real32_T *u_dot = (real32_T *) ssGetOutputPortRealSignal(S, 3);
 
     vehicle_dynamics_Outputs_wrapper(delta, u, psi, x_dot, y_dot, psi_dot, u_dot);
 
